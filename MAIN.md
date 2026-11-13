@@ -97,6 +97,19 @@ All are labelled secondary or exploratory in the report.
   This rule exists for qwen3.5-397b, which is the slowest.
 - If more than 10% of a reviewer's readings are missing, its numbers are reported with that warning and it is not counted as a replication.
 
+## Changes during the run
+
+These change the order in which calls are sent.
+No prompt, cell, reviewer, definition or test changed.
+
+- The first start sent the badge cells of deepseek-v4-flash and gemma-4-31b-it mixed in with their six main cells.
+  After 46 and 99 readings the two runs were stopped and restarted so that each reviewer finishes its six main cells first and its badge cells second.
+  Finished readings were kept and none was read twice.
+- No result was computed before the restart.
+  The reason was speed: deepseek-v4-flash takes about 12 seconds a call on the real logs, and the primary comparison needs only the main cells.
+- gemma-4-31b-it fails on some very long logs: the gateway closes the call after about 60 seconds.
+  Those calls are marked as possibly billed and are not retried, so they count as missing readings under the rules above.
+
 ## Order of work
 
 1. Commit this file and `main_report.py`.
