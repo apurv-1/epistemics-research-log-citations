@@ -1,0 +1,628 @@
+"""Tests for monitor.py.
+
+PRE-EXISTING WORK. Copied from tests/test_monitor.py in
+https://github.com/apurv-1/swarm-alignment-maoc at commit 52f1422, with the client tests unchanged.
+What changed: the fixtures build this study's jobs, and the tests of build_jobs and of the
+instructions were rewritten for this study's conditions.
+"""
+
+import json
+import os
+import signal
+import subprocess
+import sys
+import threading
+import time
+
+from pathlib import Path
+
+import httpx
+import pytest
+from adaption import Adaption
+from adaption._models import construct_type
+from adaption.types.response import Response
+from adaption.types.response_stream_event import ResponseStreamEvent
+
+from families import VARIANTS, load_all
+from monitor import (
+    CONDITIONS,
+    INSTRUCTIONS,
+    MAYBE_BILLED,
+    PRICES,
+    StreamBroken,
+    _Sink,
+    build_jobs,
+    call_monitor,
+    done_keys,
+    error_kind,
+    estimate,
+    load_results,
+    parse_output,
+    plan_calls,
+    retry_after,
+    run,
+    spent,
+)
+from render import POINTERS, REAL
+
+FAMILIES = load_all()
+MODEL = "deepseek-v4-flash"
+REPLY = "<reasoning>r</reasoning><issue>leak</issue><score>72</score>"
+
+
+def response_payload(text=REPLY, status="completed", usage=True, cost=0.001, error=None, incomplete=None):
+    payload = {
+        "id": "resp_1", "object": "response", "status": status, "model": MODEL, "output_text": text,
+        "output": [{"type": "message", "content": [{"type": "output_text", "text": text}]}],
+        "error": error, "incomplete_details": incomplete,
+    }
+    if usage:
+        payload["usage"] = {
+            "input_tokens": 100, "output_tokens": 20, "total_tokens": 120,
+            "output_tokens_details": {"reasoning_tokens": 5},
+        }
+        if cost is not None:
+            payload["usage"]["cost"] = cost
+    return payload
+
+
+FINAL = {"completed": "response.completed", "incomplete": "response.incomplete", "failed": "response.failed"}
+
+
+def stream_events(payload):
+    """The events the API streams for one reply: created, the text as one delta, then the final response."""
+    return [
+        {"type": "response.created", "response": {**payload, "status": "in_progress", "output_text": "", "output": []}},
+        {"type": "response.output_text.delta", "delta": payload["output_text"]},
+        {"type": FINAL[payload["status"]], "response": payload},
+    ]
+
+
+class FakeStream:
+    def __init__(self, events, broken=None):
+        self.events, self.broken, self.closed = events, broken, False
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        self.closed = True
+
+    def __iter__(self):
+        for event in self.events:
+            yield construct_type(value=event, type_=ResponseStreamEvent)
+        if self.broken:
+            raise self.broken
+
+
+class FakeClient:
+    """Stands in for the Adaption client so tests never call the API.
+
+    `reply` may be a function of the request, so different prompts and readings get different scores.
+    `events` rewrites the streamed events, and `broken` is raised after the last one.
+    """
+
+    def __init__(self, reply=REPLY, fail=None, delay=0.0, events=None, broken=None, **options):
+        self.calls = []
+        self.reply, self.fail, self.delay, self.options = reply, fail, delay, options
+        self.edit_events, self.broken = events, broken
+        self.responses = self
+        self.lock = threading.Lock()
+        self.streams = []
+
+    def create(self, **kwargs):
+        with self.lock:
+            self.calls.append(kwargs)
+        time.sleep(self.delay)
+        if self.fail:
+            raise self.fail
+        text = self.reply(kwargs) if callable(self.reply) else self.reply
+        events = stream_events(response_payload(text, **self.options))
+        stream = FakeStream(self.edit_events(events) if self.edit_events else events, self.broken)
+        self.streams.append(stream)
+        return stream
+
+
+def sse(*events):
+    """A server-sent-events body, as the API streams it."""
+    return "".join(f"event: {e['type']}\ndata: {json.dumps(e)}\n\n" for e in events).encode()
+
+
+def sdk_client(handler):
+    """The real SDK over a mock transport, to check how its errors are classified."""
+    http = httpx.Client(transport=httpx.MockTransport(handler))
+    return Adaption(api_key="test", base_url="http://adaption.test", http_client=http, max_retries=0)
+
+
+def _records(path):
+    return [json.loads(line) for line in path.read_text().splitlines()]
+
+
+def _results(path):
+    return [r for r in _records(path) if not r.get("started")]
+
+
+def _calls(families=FAMILIES[:1], conditions=("raw",), readings=1, max_output_tokens=100, temperature=1.0,
+           models=(MODEL,), variants=("done",), lengths=("short",)):
+    """By default one prompt per family: the done log, short, with a raw report."""
+    jobs = [j for j in build_jobs(families, conditions, lengths=lengths) if j.variant in variants]
+    return jobs, plan_calls(jobs, list(models), readings, temperature, max_output_tokens)
+
+
+def _one_call():
+    return next(iter(_calls()[1].values()))
+
+
+def test_parse_output_takes_last_valid_score_and_last_issue():
+    score, issue = parse_output("<issue>first</issue><score>10</score> then <issue> second </issue><score>85</score>")
+    assert score == 85 and issue == "second"
+    assert parse_output("<score>**40**</score>")[0] == 40
+    assert parse_output("no score")[0] is None
+    assert parse_output("<score>150</score>")[0] is None
+
+
+def test_build_jobs_covers_every_cell_once():
+    family = FAMILIES[0]
+    jobs = build_jobs([family])
+    cells = [(j.length, j.condition, j.variant, j.pointer) for j in jobs]
+    per_length = [("raw", "done", ""), ("raw", "skipped", ""), ("cited", "done", REAL),
+                  *(("cited", "skipped", pointer) for pointer in POINTERS)]
+    assert sorted(cells) == sorted((length, *cell) for length in ("short", "long") for cell in per_length)
+    assert all(j.is_shortfall == (j.variant == "skipped") and not j.badge for j in jobs)
+    assert {j.scenario for j in jobs} == {f"{family.id}-{length}-{variant}" for length in ("short", "long") for variant in VARIANTS}
+    assert len({j.prompt_hash for j in jobs}) == len(jobs)
+    # Repeated options are read once.
+    assert len(build_jobs([family], (c for c in ["raw", "raw"]), lengths=["short", "short"])) == 2
+    assert set(CONDITIONS) == {j.condition for j in jobs}
+
+
+def test_the_badge_applies_to_cited_reports_only():
+    jobs = build_jobs(FAMILIES[:1], lengths=["short"], badges=(False, True))
+    assert len(jobs) == 2 + 2 * (1 + len(POINTERS))
+    assert {j.condition for j in jobs if j.badge} == {"cited"}
+
+
+def test_instructions_are_the_same_in_every_condition_and_do_not_mention_citations():
+    jobs = build_jobs(FAMILIES, badges=(False, True))
+    assert {j.instructions for j in jobs} == {INSTRUCTIONS}
+    for word in ("citation", "cite", "pointer", "bracket", "badge"):
+        assert word not in INSTRUCTIONS.lower()
+    assert "100 means it is clearly complete as reported" in INSTRUCTIONS
+
+
+def test_identical_prompts_share_readings_and_settings_change_keys():
+    jobs = build_jobs([FAMILIES[0], FAMILIES[0]], ["raw"], lengths=["short"])
+    calls = plan_calls(jobs, [MODEL, MODEL], 2, 1.0, 100)
+    assert len(calls) == 2 * len({j.prompt_hash for j in jobs}) < 2 * len(jobs)
+    job = jobs[0]
+    keys = {job.key(MODEL, 1.0, 100, 0), job.key(MODEL, 0.7, 100, 0), job.key(MODEL, 1.0, 200, 0), job.key(MODEL, 1.0, 100, 1)}
+    assert len(keys) == 4
+
+
+def test_calls_are_reading_major():
+    _, calls = _calls(FAMILIES[:2], readings=3)
+    readings = [c.reading for c in calls.values()]
+    assert readings == sorted(readings)
+
+
+def test_estimate_upper_bound_covers_the_typical_estimate():
+    _, one = _calls(FAMILIES[:2], readings=1, max_output_tokens=4000)
+    _, five = _calls(FAMILIES[:2], readings=5, max_output_tokens=4000)
+    e1, e5 = estimate(one.values())[MODEL], estimate(five.values())[MODEL]
+    assert e5["calls"] == 5 * e1["calls"] and e5["credits"] > e1["credits"]
+    assert e1["max_credits"] > e1["credits"]
+
+
+def test_upper_bound_covers_the_dense_logs_seen_in_the_smoke_test():
+    """In the earlier study's smoke test a log tokenised at about 2.9 characters per token and cost
+    more than a 3-characters-per-token bound. The bound must cover a reply at the cap even at that density."""
+    call = _one_call()
+    price_in, price_out = PRICES[MODEL]
+    chars = len(call.job.transcript) + len(call.job.instructions)
+    dense = (chars / 2.5 * price_in + call.max_output_tokens * price_out) / 1e6
+    assert call.upper_bound > dense
+
+
+def test_the_exact_request_is_sent():
+    call = _one_call()
+    client = FakeClient()
+    call_monitor(client, call)
+    assert client.calls == [{
+        "model": MODEL, "instructions": call.job.instructions, "input": call.job.transcript,
+        "max_output_tokens": 100, "temperature": 1.0, "store": False, "stream": True,
+    }]
+    assert client.streams[0].closed
+
+
+def test_run_records_results_and_resumes_without_repeating(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls(FAMILIES[:2], ("raw", "cited"), readings=2, temperature=0.7, variants=VARIANTS)
+    client = FakeClient()
+    first = run(client, calls, out, workers=2)
+    assert first["written"] == len(client.calls) == len(calls)
+    results = _results(out)
+    assert len({r["key"] for r in results}) == len(results) == len(calls)
+    assert len([r for r in _records(out) if r.get("started")]) == len(calls)
+    assert all(r["score"] == 72 and r["issue"] == "leak" and r["cost"] == 0.001 for r in results)
+    assert all(r["response_model"] == MODEL and r["status"] == "completed" for r in results)
+    assert results[0]["output_tokens_details"] == {"reasoning_tokens": 5}
+    assert run(client, calls, out, workers=2)["calls"] == 0 and len(client.calls) == first["written"]
+
+
+@pytest.mark.parametrize(
+    "handler, kind",
+    [
+        (lambda request: (_ for _ in ()).throw(httpx.ConnectError("refused", request=request)), "not_sent"),
+        (lambda request: (_ for _ in ()).throw(httpx.ConnectTimeout("slow", request=request)), "not_sent"),
+        (lambda request: (_ for _ in ()).throw(httpx.ReadTimeout("slow", request=request)), MAYBE_BILLED),
+        (lambda request: (_ for _ in ()).throw(httpx.RemoteProtocolError("dropped", request=request)), MAYBE_BILLED),
+        (lambda request: httpx.Response(429, json={"error": "slow down"}), "rate_limit"),
+        (lambda request: httpx.Response(400, json={"error": "bad"}), "rejected"),
+        (lambda request: httpx.Response(408, json={"error": "timeout"}), MAYBE_BILLED),
+        (lambda request: httpx.Response(504, json={"error": "gateway"}), MAYBE_BILLED),
+        (lambda request: httpx.Response(500, json={"error": "boom"}), MAYBE_BILLED),
+    ],
+    ids=["connect-error", "connect-timeout", "read-timeout", "dropped", "429", "400", "408", "504", "500"],
+)
+def test_real_sdk_errors_are_classified_by_whether_they_may_have_been_billed(handler, kind):
+    record = call_monitor(sdk_client(handler), _one_call())
+    assert record["error_kind"] == kind
+
+
+def test_real_sdk_stream_is_parsed_with_the_undeclared_cost():
+    body = sse(*stream_events(response_payload(cost=0.0042)))
+    record = call_monitor(sdk_client(lambda request: httpx.Response(200, content=body)), _one_call())
+    assert record["error"] is None and record["score"] == 72 and record["cost"] == 0.0042
+
+
+def test_real_sdk_error_event_inside_a_stream_may_have_been_billed():
+    """The SDK raises an error event as a status error with the stream's 200, which on its own would
+    look like a free rejection. The model may already have generated the reply."""
+    body = sse(stream_events(response_payload())[0]) + b'event: error\ndata: {"message": "upstream"}\n\n'
+    record = call_monitor(sdk_client(lambda request: httpx.Response(200, content=body)), _one_call())
+    assert record["error_kind"] == MAYBE_BILLED and "upstream" in record["error"]
+
+
+def test_real_sdk_stream_that_breaks_mid_way_may_have_been_billed():
+    class Broken(httpx.SyncByteStream):
+        def __iter__(self):
+            yield sse(stream_events(response_payload())[0])
+            raise httpx.ReadError("connection reset")
+
+    record = call_monitor(sdk_client(lambda request: httpx.Response(200, stream=Broken())), _one_call())
+    assert record["error_kind"] == MAYBE_BILLED and "connection reset" in record["error"]
+
+
+def test_a_stream_that_ends_without_a_final_response_may_have_been_billed():
+    client = FakeClient(events=lambda events: events[:-1])
+    record = call_monitor(client, _one_call())
+    assert record["error_kind"] == MAYBE_BILLED and "without a final response" in record["error"]
+    assert record["score"] is None and client.streams[0].closed
+
+
+def test_a_stream_that_breaks_after_events_may_have_been_billed():
+    record = call_monitor(FakeClient(events=lambda events: events[:-1], broken=httpx.ReadTimeout("slow")), _one_call())
+    assert record["error_kind"] == MAYBE_BILLED and "ReadTimeout" in record["error"]
+
+
+def test_maybe_billed_calls_are_settled_and_charged_at_their_worst_case(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls()
+    call = next(iter(calls.values()))
+    run(FakeClient(fail=TimeoutError("slow")), calls, out, workers=1)
+    assert _results(out)[0]["error_kind"] == MAYBE_BILLED and _results(out)[0]["score"] is None
+    assert spent(out) == pytest.approx(call.upper_bound)
+    assert run(FakeClient(), calls, out, workers=1)["calls"] == 0
+    assert run(FakeClient(), calls, out, workers=1, retry_maybe_billed=True)["calls"] == 1
+
+
+def test_calls_that_never_reached_the_server_are_retried_and_cost_nothing(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls()
+    fail = httpx.ConnectError("refused")
+    run(FakeClient(fail=fail), calls, out, workers=1)
+    assert _results(out)[0]["error_kind"] == "not_sent" and spent(out) == 0
+    assert run(FakeClient(), calls, out, workers=1)["calls"] == 1
+
+
+def test_a_started_call_with_no_result_is_never_paid_for_twice(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls()
+    call = next(iter(calls.values()))
+    out.write_text(json.dumps({"key": call.key, "started": True, "upper_bound": call.upper_bound}) + "\n")
+    assert call.key in done_keys(out) and spent(out) == pytest.approx(call.upper_bound)
+    assert run(FakeClient(), calls, out, workers=1)["calls"] == 0
+
+
+@pytest.mark.parametrize("options", [{"usage": False}, {"cost": None}, {"cost": "0.002"}], ids=["no-usage", "no-cost", "string-cost"])
+def test_missing_or_odd_cost_keeps_the_paid_reply(options):
+    record = call_monitor(FakeClient(**options), _one_call())
+    assert record["error"] is None and record["score"] == 72
+    json.dumps(record, allow_nan=False)
+    if "usage" not in options:
+        assert isinstance(record["cost"], float) and record["cost"] > 0
+
+
+def test_failed_and_truncated_replies_keep_their_evidence():
+    call = _one_call()
+    failed = call_monitor(FakeClient(reply="", status="failed", error={"code": "server_error", "message": "boom"}), call)
+    assert failed["error_kind"] == "failed" and failed["response_error"]["message"] == "boom"
+    truncated = call_monitor(FakeClient(reply="", status="incomplete", incomplete={"reason": "max_output_tokens"}), call)
+    assert truncated["error"] is None and truncated["truncated"] and truncated["parse_failed"]
+    assert truncated["incomplete_details"] == {"reason": "max_output_tokens"} and truncated["output_items"]
+
+
+def test_a_failed_reply_with_a_cost_is_settled(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls()
+    run(FakeClient(reply="", status="failed", error={"code": "x", "message": "y"}), calls, out, workers=1)
+    assert run(FakeClient(), calls, out, workers=1)["calls"] == 0
+
+
+def test_parse_failures_are_null_and_retried_only_on_request_unless_truncated(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls()
+    counts = run(FakeClient(reply="no score here"), calls, out, workers=1)
+    assert counts["parse_failures"] == 1 and '"score": null' in out.read_text()
+    assert run(FakeClient(), calls, out, workers=1)["calls"] == 0
+    assert run(FakeClient(), calls, out, workers=1, retry_parse_failures=True)["calls"] == 1
+
+    out2 = tmp_path / "t.jsonl"
+    run(FakeClient(reply="", status="incomplete"), calls, out2, workers=1)
+    assert run(FakeClient(), calls, out2, workers=1, retry_parse_failures=True)["calls"] == 0
+
+
+def test_truncated_last_line_is_skipped_and_not_glued_to_the_next_record(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, one = _calls(readings=1)
+    _, two = _calls(readings=2)
+    run(FakeClient(), one, out, workers=1)
+    with out.open("a") as f:
+        f.write('{"key": "cut off')
+    assert len(done_keys(out)) == 1
+    run(FakeClient(), two, out, workers=1)
+    assert len(done_keys(out)) == 2
+
+
+def test_load_results_joins_each_reading_to_every_job_that_shares_its_prompt(tmp_path):
+    out = tmp_path / "r.jsonl"
+    jobs = build_jobs([*FAMILIES, FAMILIES[0]], lengths=["short"])  # the repeated family shares its readings
+    calls = plan_calls(jobs, [MODEL, "qwen3.5-397b"], 3, 1.0, 100)
+    expected = {}
+
+    def reply(request):
+        key = next(k for k, c in calls.items()
+                   if c.job.transcript == request["input"] and c.model == request["model"] and k not in expected)
+        expected[key] = len(expected) % 101
+        return f"<issue>i{expected[key]}</issue><score>{expected[key]}</score>"
+
+    run(FakeClient(reply=reply), calls, out, workers=1)
+    with out.open("a") as f:
+        f.write(json.dumps({"key": "stale|old prompt", "score": 1, "error": None}) + "\n")
+    rows = load_results(out, calls, jobs)
+    assert len(rows) == len(jobs) * 2 * 3
+    for row in rows:
+        assert not row["missing"] and row["score"] == expected[row["key"]] and row["issue"] == f"i{expected[row['key']]}"
+        call = calls[row["key"]]
+        assert call.model == row["model"] and call.reading == row["reading"]
+        job = next(j for j in jobs if j.scenario == row["scenario"] and j.condition == row["condition"]
+                   and j.pointer == row["pointer"] and j.badge == row["badge"])
+        assert call.job.prompt_hash == job.prompt_hash
+        assert row["is_shortfall"] == job.is_shortfall and row["length"] == job.length == "short"
+
+
+def test_the_budget_counts_earlier_runs_and_reserves_before_each_call(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls(FAMILIES[:1], readings=20)  # one prompt, so every call has the same worst case
+    bound = next(iter(calls.values())).upper_bound
+    client = FakeClient(cost=bound)  # each call costs its worst case, so the arithmetic is exact
+    first = run(client, calls, out, workers=4, max_credits=3.5 * bound)
+    assert first["stopped"] == "max_credits" and len(client.calls) == 3
+    second = run(client, calls, out, workers=4, max_credits=3.5 * bound)
+    assert second["written"] == 0 and len(client.calls) == 3
+    assert spent(out) <= 3.5 * bound
+
+
+def test_real_ctrl_c_cancels_queued_calls_and_saves_paid_ones(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls(FAMILIES, ("raw", "cited"), readings=5, variants=VARIANTS)
+    client = FakeClient(delay=0.05)
+
+    def interrupt_after_a_few_calls():
+        while len(client.calls) < 3:
+            time.sleep(0.005)
+        os.kill(os.getpid(), signal.SIGINT)
+
+    threading.Thread(target=interrupt_after_a_few_calls, daemon=True).start()
+    counts = run(client, calls, out, workers=2)
+    assert counts["stopped"] == "interrupt"
+    results = _results(out)
+    assert len(client.calls) < len(calls)
+    assert len(results) == len(client.calls) == counts["written"]
+    assert len({r["key"] for r in results}) == len(results)
+    assert signal.getsignal(signal.SIGINT) is signal.default_int_handler
+
+
+def test_a_second_run_on_the_same_file_is_refused_and_leaves_ctrl_c_alone(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls()
+    holder = _Sink(out)
+    try:
+        with pytest.raises(RuntimeError):
+            run(FakeClient(), calls, out, workers=1)
+    finally:
+        holder.close()
+    assert signal.getsignal(signal.SIGINT) is signal.default_int_handler
+
+
+def test_zero_workers_is_refused_before_anything_starts(tmp_path):
+    with pytest.raises(ValueError):
+        run(FakeClient(), _calls()[1], tmp_path / "r.jsonl", workers=0)
+    assert signal.getsignal(signal.SIGINT) is signal.default_int_handler
+
+
+def test_streamed_text_is_kept_when_the_final_response_has_none():
+    def drop_final_text(events):
+        events[-1] = {**events[-1], "response": {**events[-1]["response"], "output_text": ""}}
+        return events
+
+    record = call_monitor(FakeClient(reply="<score>12</score> streamed", events=drop_final_text), _one_call())
+    assert record["output"] == "<score>12</score> streamed" and record["score"] == 12
+
+
+def test_error_kind_of_plain_exceptions_is_conservative():
+    assert error_kind(StreamBroken("x")) == MAYBE_BILLED
+    assert error_kind(TimeoutError()) == MAYBE_BILLED
+    assert error_kind(ConnectionError()) == MAYBE_BILLED
+    assert error_kind(httpx.ConnectError("x")) == "not_sent"
+
+
+def test_the_started_marker_is_on_disk_before_the_api_is_called(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls(readings=3)
+
+    class Checking(FakeClient):
+        def create(self, **kwargs):
+            started = [r for r in _records(out) if r.get("started")]
+            assert len(started) == len(self.calls) + 1, "API called before its marker was written"
+            return super().create(**kwargs)
+
+    assert run(Checking(), calls, out, workers=1)["written"] == 3
+
+
+def test_a_retry_killed_mid_call_is_charged_and_never_bought_again(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls()
+    call = next(iter(calls.values()))
+    run(FakeClient(fail=httpx.ConnectError("refused")), calls, out, workers=1)  # free and retryable
+    with out.open("a") as f:  # the retry starts, then the process is killed
+        f.write(json.dumps({"key": call.key, "attempt": "killed", "started": True, "upper_bound": call.upper_bound}) + "\n")
+    assert spent(out) == pytest.approx(call.upper_bound)
+    assert run(FakeClient(), calls, out, workers=1)["calls"] == 0
+    assert run(FakeClient(), calls, out, workers=1, retry_maybe_billed=True)["calls"] == 1
+
+
+def test_a_failed_reply_without_a_cost_is_settled_unless_asked(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls()
+    run(FakeClient(reply="", status="failed", usage=False, error={"code": "x", "message": "y"}), calls, out, workers=1)
+    assert run(FakeClient(), calls, out, workers=1)["calls"] == 0
+    assert run(FakeClient(), calls, out, workers=1, retry_maybe_billed=True)["calls"] == 1
+
+
+@pytest.mark.parametrize("bad", ["NaN", "inf", -1, "abc"])
+def test_a_nonsense_cost_falls_back_to_token_prices(bad):
+    record = call_monitor(FakeClient(cost=bad), _one_call())
+    assert record["cost"] is not None and record["cost"] > 0 and record["cost"] < 1
+
+
+def test_a_cost_far_from_token_prices_is_flagged():
+    assert call_monitor(FakeClient(cost=5.0), _one_call())["cost_mismatch"]
+    tokens = (100 * 0.04444 + 20 * 0.13332) / 1e6
+    assert not call_monitor(FakeClient(cost=tokens), _one_call())["cost_mismatch"]
+
+
+def test_load_results_prefers_a_later_success_and_reparses_stored_replies(tmp_path):
+    out = tmp_path / "r.jsonl"
+    jobs, calls = _calls()
+    run(FakeClient(reply="no score"), calls, out, workers=1)
+    run(FakeClient(reply="<issue>late</issue><score>33</score>"), calls, out, workers=1, retry_parse_failures=True)
+    [row] = load_results(out, calls, jobs)
+    assert row["score"] == 33 and row["issue"] == "late"
+    assert row["output"] == "<issue>late</issue><score>33</score>"  # label_errors.py shows this reply
+    # A stored reply with a score the old parser missed is re-parsed at load.
+    records = _records(out)
+    for r in records:
+        if not r.get("started") and r.get("score") == 33:
+            r["score"] = None
+    out.write_text("".join(json.dumps(r) + "\n" for r in records))
+    [row] = load_results(out, calls, jobs)
+    assert row["score"] == 33
+
+
+def test_three_ctrl_c_presses_exit_at_once_with_every_record_flushed(tmp_path):
+    out = tmp_path / "r.jsonl"
+    script = tmp_path / "child.py"
+    lines = [
+        "import os, sys",
+        f"sys.path.insert(0, {str(Path(__file__).parent.parent)!r})",
+        f"sys.path.insert(0, {str(Path(__file__).parent)!r})",
+        "from pathlib import Path",
+        "from test_monitor import FakeClient, _calls, FAMILIES",
+        "from monitor import run",
+        "_, calls = _calls(FAMILIES[:2], readings=5)",
+        "try:",
+        f"    run(FakeClient(delay=30), calls, Path({str(out)!r}), workers=2)",
+        "except KeyboardInterrupt:",
+        "    os._exit(130)",
+        "os._exit(0)",
+    ]
+    script.write_text("\n".join(lines) + "\n")
+    child = subprocess.Popen([sys.executable, str(script)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    deadline = time.time() + 20
+    while time.time() < deadline and (not out.exists() or out.read_text().count('"started"') < 2):
+        time.sleep(0.05)
+    for _ in range(3):
+        child.send_signal(signal.SIGINT)
+        time.sleep(0.3)
+    code = child.wait(timeout=10)
+    assert code == 130, child.stdout.read()
+    records = _records(out)
+    assert len([r for r in records if r.get("started")]) == 2 and not _results(out)
+    assert spent(out) > 0 and len(done_keys(out)) == 2
+
+
+RATE_LIMITED = {"error": {"message": "Inference rate limit reached for this user; retry after 60 seconds",
+                          "type": "rate_limit_error", "code": "rate_limit_exceeded"}}
+
+
+def test_a_burst_of_rate_limits_is_waited_out_and_every_call_still_scored(tmp_path):
+    """A 429 used to be recorded and skipped, so a burst drained the whole queue in under a second."""
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls(FAMILIES[:2], ("raw", "cited"), readings=3, variants=VARIANTS)
+    body = sse(*stream_events(response_payload()))
+    lock, seen = threading.Lock(), []
+
+    def handler(request):
+        with lock:
+            seen.append(1)
+            limited = len(seen) <= 20
+        return httpx.Response(429, json=RATE_LIMITED) if limited else httpx.Response(200, content=body)
+
+    counts = run(sdk_client(handler), calls, out, workers=4, pause_seconds=0.01)
+    results = _results(out)
+    scored = {r["key"] for r in results if r["score"] == 72}
+    assert scored == set(calls) and counts["stopped"] is None
+    assert counts["rate_limited"] == 20 == len([r for r in results if r["error_kind"] == "rate_limit"])
+    # Every try had its own started marker, and rate limits cost nothing.
+    assert len([r for r in _records(out) if r.get("started")]) == len(seen)
+    assert spent(out) == pytest.approx(0.001 * len(calls))
+
+
+def test_a_call_that_stays_rate_limited_gives_up_after_the_last_try(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls()
+    counts = run(sdk_client(lambda request: httpx.Response(429, json=RATE_LIMITED)), calls, out, workers=1, pause_seconds=0.0)
+    assert counts["written"] == 1 and counts["errors"] == 1
+    assert len(_results(out)) == 10 and spent(out) == 0
+    # It is not settled, so the next run tries it again.
+    assert run(FakeClient(), calls, out, workers=1)["calls"] == 1
+
+
+def test_ctrl_c_during_a_rate_limit_pause_stops_at_once(tmp_path):
+    out = tmp_path / "r.jsonl"
+    _, calls = _calls(FAMILIES[:2], ("raw",), readings=2)
+    stopper = threading.Timer(0.3, lambda: os.kill(os.getpid(), signal.SIGINT))
+    stopper.start()
+    started = time.time()
+    try:
+        counts = run(sdk_client(lambda request: httpx.Response(429, json=RATE_LIMITED)), calls, out, workers=2, pause_seconds=60)
+    finally:
+        stopper.cancel()  # never let a late Ctrl-C reach another test
+    assert time.time() - started < 5 and counts["stopped"] == "interrupt"
+
+
+def test_retry_after_reads_the_servers_wait_or_defaults_to_a_minute():
+    assert retry_after({"error": "RateLimitError: ... retry after 7 seconds"}) == 7
+    assert retry_after({"error": "RateLimitError: slow down"}) == 60
+    assert retry_after({"error": None}) == 60

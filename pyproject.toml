@@ -1,0 +1,19 @@
+[project]
+name = "log-citations"
+version = "0.1.0"
+description = "Do LLM reviewers check an agent's citations to its own log?"
+requires-python = ">=3.12"
+dependencies = [
+  "adaption",
+  "python-dotenv",
+]
+
+[dependency-groups]
+dev = ["pytest"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
