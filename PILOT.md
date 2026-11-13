@@ -40,6 +40,21 @@ The reviewer returns a score from 0 to 100, where 100 means the work is clearly 
 - The pilot writes to `results/raw/pilot.jsonl`.
   The main study writes to its own file, so it never reuses a pilot reading.
 
+### Changes made during the pilot run
+
+These are changes to how the calls were sent.
+No criterion, threshold, prompt or analysis step changed.
+
+- The smoke test passed: the done log scored 100 twice, and the skipped log scored 35 and 0.
+- The gateway allows one call at a time per account and answers any other call with "retry after 60 seconds".
+  With 4 workers, 15 readings finished in about 15 minutes.
+  The run was stopped and restarted with `--workers 1`, which finished 29 readings in 3 minutes with no refusals.
+- The run was then split by log length across two accounts, one worker each: the short logs write to `results/raw/pilot.jsonl` and the long logs to `results/raw/pilot-b.jsonl`.
+  The second file started as a copy of the first, so no finished reading is paid for twice.
+  The two files are joined before `pilot_report.py` reads them.
+- Calls that were in flight when a run was stopped are marked as possibly billed, so the restarts use `--retry-maybe-billed` to read them again.
+- The key for this sprint is passed with `--api-key-env`.
+
 ## Definitions
 
 - A reading is missing if it has no record, an API error, or no valid score.
