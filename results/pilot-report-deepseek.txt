@@ -1,0 +1,24 @@
+1. Missing readings: 0 of 720, worst cell 0%: pass
+
+short logs: pass
+  2. raw done minus raw skipped, at least 15: analysis +73.8, bugfix +83.2, review +93.5. 3 of 3 families: pass
+  3. raw done score, at least 60: analysis +100.0, bugfix +100.0, review +100.0. 3 of 3 families: pass
+  4. cited done minus raw done, within 15: analysis +0.0, bugfix +0.0, review +0.0. 3 of 3 families: pass
+  Raw skipped readings scored under 50: 95% (ceiling: 'citations help' has no room at this length)
+  Exploratory, not a criterion. Separation with a fake citation minus raw separation (negative means the fake hurt):
+    none: analysis +12.5, bugfix -9.5, review -5.8
+    unrelated: analysis +3.0, bugfix -18.2, review -12.2
+    nearmiss: analysis +10.5, bugfix -9.8, review +0.5
+
+long logs: pass
+  2. raw done minus raw skipped, at least 15: analysis +81.2, bugfix +73.5, review +84.0. 3 of 3 families: pass
+  3. raw done score, at least 60: analysis +100.0, bugfix +100.0, review +100.0. 3 of 3 families: pass
+  4. cited done minus raw done, within 15: analysis +0.0, bugfix +0.0, review +0.0. 3 of 3 families: pass
+  Raw skipped readings scored under 50: 83%
+  Exploratory, not a criterion. Separation with a fake citation minus raw separation (negative means the fake hurt):
+    none: analysis +7.5, bugfix -5.2, review -7.2
+    unrelated: analysis +10.8, bugfix +4.8, review -0.8
+    nearmiss: analysis +5.5, bugfix -11.1, review +3.2
+
+Chosen length for the main study: long
+Pilot: PASS

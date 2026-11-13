@@ -1,0 +1,25 @@
+3 families, 36 prompts, 720 distinct calls, 697 still to run
+  short raw done: 3 prompts, 60 calls
+  short raw skipped: 3 prompts, 60 calls
+  short cited done pointer=real: 3 prompts, 60 calls
+  short cited skipped pointer=none: 3 prompts, 60 calls
+  short cited skipped pointer=unrelated: 3 prompts, 60 calls
+  short cited skipped pointer=nearmiss: 3 prompts, 60 calls
+  long  raw done: 3 prompts, 60 calls
+  long  raw skipped: 3 prompts, 60 calls
+  long  cited done pointer=real: 3 prompts, 60 calls
+  long  cited skipped pointer=none: 3 prompts, 60 calls
+  long  cited skipped pointer=unrelated: 3 prompts, 60 calls
+  long  cited skipped pointer=nearmiss: 3 prompts, 60 calls
+  deepseek-v4-flash: 697 calls, about 0.441 credits, at most 6.2245
+  0.0031 credits already charged to results/raw/pilot.jsonl; the budget for this file is 2.0
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a9a06160ca768370|0 cost 7.056587200000001e-05 credits, outside its expected range (worst case 0.009099); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|bab8627ddfe6b0a9|0 cost 9.9737904e-05 credits, outside its expected range (worst case 0.009187); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|418ee00d556c2fa4|0 cost 0.00013306790400000003 credits, outside its expected range (worst case 0.009187); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|7a59ff88663d145f|1 cost 9.4912528e-05 credits, outside its expected range (worst case 0.008990); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|348ab845fd7f3b7a|1 cost 7.660971200000001e-05 credits, outside its expected range (worst case 0.009004); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|60a020ae8494d380|1 cost 6.6826448e-05 credits, outside its expected range (worst case 0.008997); check the cost units.
+25/697 calls done, 0.0041 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|647f0c691f292917|1 cost 8.3580328e-05 credits, outside its expected range (worst case 0.008997); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|4a984598dc113e7c|1 cost 0.000111310888 credits, outside its expected range (worst case 0.008997); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|67a3b993559c246f|1 cost 7.754295200000002e-05 credits, outside its expected range (worst case 0.009091); check the cost units.

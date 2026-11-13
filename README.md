@@ -8,7 +8,8 @@ This project measures whether an LLM reviewer still tells finished work from unf
 It is an entry for Track 2, Trust Infrastructure, of the Apart Research AI x Epistemics sprint, November 13 to 15, 2026.
 
 Status: pilot scaffold, plus a set of families built from real agent runs.
-The pilot is running, and no result is reported yet.
+The pilot passed its four criteria on deepseek-v4-flash, and `results/pilot-report-deepseek.txt` has the scores.
+The main run has not started.
 
 ## What is here
 
