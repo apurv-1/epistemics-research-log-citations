@@ -1,0 +1,124 @@
+11 families, 110 prompts, 2200 distinct calls, 2200 still to run
+  full  raw done: 11 prompts, 220 calls
+  full  raw skipped: 11 prompts, 220 calls
+  full  cited done pointer=real: 11 prompts, 220 calls
+  full  cited skipped pointer=none: 11 prompts, 220 calls
+  full  cited skipped pointer=unrelated: 11 prompts, 220 calls
+  full  cited skipped pointer=nearmiss: 11 prompts, 220 calls
+  full  cited done pointer=real badge: 11 prompts, 220 calls
+  full  cited skipped pointer=none badge: 11 prompts, 220 calls
+  full  cited skipped pointer=unrelated badge: 11 prompts, 220 calls
+  full  cited skipped pointer=nearmiss badge: 11 prompts, 220 calls
+  gemma-4-31b-it: 2200 calls, about 3.5624 credits, at most 50.1536
+  0.0000 credits already charged to results/raw/main-gemma-4-31b-it.jsonl; the budget for this file is 5.0
+25/2200 calls done, 0.0854 credits
+50/2200 calls done, 0.0912 credits
+75/2200 calls done, 0.0969 credits
+100/2200 calls done, 0.1015 credits
+11 families, 66 prompts, 1320 distinct calls, 1254 still to run
+  full  raw done: 11 prompts, 220 calls
+  full  raw skipped: 11 prompts, 220 calls
+  full  cited done pointer=real: 11 prompts, 220 calls
+  full  cited skipped pointer=none: 11 prompts, 220 calls
+  full  cited skipped pointer=unrelated: 11 prompts, 220 calls
+  full  cited skipped pointer=nearmiss: 11 prompts, 220 calls
+  gemma-4-31b-it: 1254 calls, about 2.032 credits, at most 28.5932
+  0.1959 credits already charged to results/raw/main-gemma-4-31b-it.jsonl; the budget for this file is 5.0
+25/1254 calls done, 0.0572 credits
+50/1254 calls done, 0.0620 credits
+75/1254 calls done, 0.2110 credits
+100/1254 calls done, 0.2164 credits
+125/1254 calls done, 0.2213 credits
+150/1254 calls done, 0.3255 credits
+175/1254 calls done, 0.3303 credits
+200/1254 calls done, 0.3374 credits
+225/1254 calls done, 0.3456 credits
+250/1254 calls done, 0.3503 credits
+275/1254 calls done, 0.3826 credits
+300/1254 calls done, 0.3874 credits
+325/1254 calls done, 0.3928 credits
+350/1254 calls done, 0.4019 credits
+375/1254 calls done, 0.4068 credits
+400/1254 calls done, 0.4140 credits
+425/1254 calls done, 0.4211 credits
+450/1254 calls done, 0.4258 credits
+475/1254 calls done, 0.4346 credits
+500/1254 calls done, 0.4391 credits
+525/1254 calls done, 0.4448 credits
+550/1254 calls done, 0.4540 credits
+575/1254 calls done, 0.4589 credits
+600/1254 calls done, 0.4664 credits
+625/1254 calls done, 0.4729 credits
+650/1254 calls done, 0.4777 credits
+675/1254 calls done, 0.5098 credits
+700/1254 calls done, 0.5145 credits
+725/1254 calls done, 0.5205 credits
+750/1254 calls done, 0.5515 credits
+775/1254 calls done, 0.5567 credits
+800/1254 calls done, 0.5643 credits
+825/1254 calls done, 0.5702 credits
+850/1254 calls done, 0.5751 credits
+875/1254 calls done, 0.6294 credits
+900/1254 calls done, 0.6338 credits
+925/1254 calls done, 0.6405 credits
+950/1254 calls done, 0.6485 credits
+975/1254 calls done, 0.6534 credits
+1000/1254 calls done, 0.6617 credits
+1025/1254 calls done, 0.6667 credits
+1050/1254 calls done, 0.6718 credits
+1075/1254 calls done, 0.7040 credits
+1100/1254 calls done, 0.7087 credits
+1125/1254 calls done, 0.7157 credits
+1150/1254 calls done, 0.7229 credits
+1175/1254 calls done, 0.7276 credits
+1200/1254 calls done, 0.7366 credits
+1225/1254 calls done, 0.7411 credits
+1250/1254 calls done, 0.7467 credits
+Finished 1254 of 1254 calls, 0.7483 credits: 18 API errors, 0 replies without a valid score, 0 rate limits waited out.
+11 families, 110 prompts, 2200 distinct calls, 840 still to run
+  full  raw done: 11 prompts, 220 calls
+  full  raw skipped: 11 prompts, 220 calls
+  full  cited done pointer=real: 11 prompts, 220 calls
+  full  cited skipped pointer=none: 11 prompts, 220 calls
+  full  cited skipped pointer=unrelated: 11 prompts, 220 calls
+  full  cited skipped pointer=nearmiss: 11 prompts, 220 calls
+  full  cited done pointer=real badge: 11 prompts, 220 calls
+  full  cited skipped pointer=none badge: 11 prompts, 220 calls
+  full  cited skipped pointer=unrelated badge: 11 prompts, 220 calls
+  full  cited skipped pointer=nearmiss badge: 11 prompts, 220 calls
+  gemma-4-31b-it: 840 calls, about 1.3593 credits, at most 19.146
+  0.9442 credits already charged to results/raw/main-gemma-4-31b-it.jsonl; the budget for this file is 5.0
+25/840 calls done, 0.0096 credits
+50/840 calls done, 0.0159 credits
+75/840 calls done, 0.0223 credits
+100/840 calls done, 0.0531 credits
+125/840 calls done, 0.0802 credits
+150/840 calls done, 0.0884 credits
+175/840 calls done, 0.0930 credits
+200/840 calls done, 0.1007 credits
+225/840 calls done, 0.1066 credits
+250/840 calls done, 0.1127 credits
+275/840 calls done, 0.1201 credits
+300/840 calls done, 0.1253 credits
+325/840 calls done, 0.1328 credits
+350/840 calls done, 0.1375 credits
+375/840 calls done, 0.1672 credits
+400/840 calls done, 0.1727 credits
+425/840 calls done, 0.1792 credits
+450/840 calls done, 0.1865 credits
+475/840 calls done, 0.1919 credits
+500/840 calls done, 0.2226 credits
+525/840 calls done, 0.2274 credits
+550/840 calls done, 0.2349 credits
+575/840 calls done, 0.2400 credits
+600/840 calls done, 0.2465 credits
+625/840 calls done, 0.2763 credits
+650/840 calls done, 0.2818 credits
+675/840 calls done, 0.3333 credits
+700/840 calls done, 0.3381 credits
+725/840 calls done, 0.3910 credits
+750/840 calls done, 0.3957 credits
+775/840 calls done, 0.4026 credits
+800/840 calls done, 0.4336 credits
+825/840 calls done, 0.4392 credits
+Finished 840 of 840 calls, 0.4430 credits: 10 API errors, 0 replies without a valid score, 0 rate limits waited out.

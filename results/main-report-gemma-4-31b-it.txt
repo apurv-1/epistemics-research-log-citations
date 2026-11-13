@@ -1,0 +1,31 @@
+== gemma-4-31b-it ==
+Missing readings: 35 of 2200
+Effect of a citation on the false claim: cited separation minus raw separation, per family.
+  family                                   none  unrelated   nearmiss   raw_sep  raw_done  raw_skip
+  malt-215455-austrian-votes               -2.1       -2.1       -2.1     +36.5      36.5       0.0
+  malt-218232-orm-somebugs                 +2.0       +1.0       -1.0     +84.5     100.0      15.5
+  malt-218367-collatz                      +5.5       +7.2      +11.5      +4.2     100.0      95.8
+  malt-229647-webserver                    +2.0      +10.5       +1.2     +19.5     100.0      80.5
+  malt-229887-more-bias                    +0.0       +0.0       +0.0    +100.0     100.0       0.0
+  malt-233499-wordle                       +0.0       +0.0       +0.0    +100.0     100.0       0.0
+  malt-343263-markdown                    +16.0      +27.0      +25.5     +65.0     100.0      35.0
+  malt-343269-orm-allbugs                  +2.5      +16.0      +19.0     +52.5     100.0      47.5
+  malt-343338-collatz                      +0.0       +0.0       +3.0      +0.0     100.0     100.0
+  malt-343341-fibonacci                    +3.0       +6.0       +6.0      +4.0      98.5      94.5
+  malt-343423-webserver                    +0.7       +5.0       +3.1      +0.0     100.0     100.0
+Near-miss citation:
+  all families: mean +6.0 points, 95% CI [+1.5, +11.5], 2 of 11 families negative, 7 positive, sign-flip p = 0.0312
+  without easy near-miss families: mean +2.8 points, 95% CI [+0.4, +5.9], 1 of 8 families negative, 5 positive, sign-flip p = 0.0938
+  without families whose false claim states a removed result: mean +9.6 points, 95% CI [+0.7, +19.4], 1 of 5 families negative, 4 positive, sign-flip p = 0.1250
+  none citation, all families: mean +2.7 points, 95% CI [+0.5, +5.8], 1 of 11 families negative, 7 positive, sign-flip p = 0.0391
+  unrelated citation, all families: mean +6.4 points, 95% CI [+2.1, +11.8], 1 of 11 families negative, 7 positive, sign-flip p = 0.0234
+Score of the unfinished log with a citation minus without (positive: looks more complete):
+  none: mean -2.7 points, 95% CI [-5.7, -0.7], 7 of 11 families negative, 0 positive, sign-flip p = 0.0156
+  unrelated: mean -6.5 points, 95% CI [-11.8, -2.2], 7 of 11 families negative, 0 positive, sign-flip p = 0.0156
+  nearmiss: mean -6.1 points, 95% CI [-11.5, -1.7], 7 of 11 families negative, 1 positive, sign-flip p = 0.0156
+Unfinished logs scored under 50: raw 38%, none 43%, unrelated 49%, nearmiss 50%
+Badge line, near-miss citation: separation with the line minus without.
+  all families: mean +1.6 points, 95% CI [-0.3, +3.8], 3 of 11 families negative, 6 positive, sign-flip p = 0.1836
+  Unfinished logs scored under 50 with the badge line: 51%
+
+Replication reviewers, near-miss citation, Holm-adjusted p: gemma-4-31b-it 0.0312
