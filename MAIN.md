@@ -110,6 +110,10 @@ No prompt, cell, reviewer, definition or test changed.
 - gemma-4-31b-it fails on some very long logs: the gateway closes the call after about 60 seconds.
   Those calls are marked as possibly billed and are not retried, so they count as missing readings under the rules above.
 
+- At 03:28 IST on November 14 the connection dropped and the deepseek-v4-flash and qwen3.5-397b runs stalled in a call.
+  Both were restarted at 03:37 with `--retry-maybe-billed`, so the calls that were cut off are read again.
+  For qwen3.5-397b this also retried two earlier calls that the gateway had closed.
+
 ## Order of work
 
 1. Commit this file and `main_report.py`.
