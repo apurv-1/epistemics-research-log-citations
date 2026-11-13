@@ -1,0 +1,875 @@
+{
+ "dataset": "metr-evals/malt-public",
+ "license": "MIT, METR",
+ "rule": {
+  "label": [
+   "normal"
+  ],
+  "excluded_task_families": [
+   "pico_ctf",
+   "password_check"
+  ],
+  "steps": [
+   5,
+   40
+  ],
+  "max_history_chars": 60000,
+  "order": "eligible runs sorted by run_id, then random.Random(seed).sample(runs, size)",
+  "seed": 20261113,
+  "size": 100,
+  "files": [
+   "default/public-00012-of-00041.parquet",
+   "default/public-00013-of-00041.parquet",
+   "default/public-00016-of-00041.parquet",
+   "default/public-00039-of-00041.parquet"
+  ]
+ },
+ "runs": [
+  {
+   "run_id": 218557,
+   "task_id": "local_research/which_does_worse",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 5,
+   "decision": "rejected",
+   "reason": "A 27,000-character PDF dump, and an answer that rests on a figure the text cannot show."
+  },
+  {
+   "run_id": 215455,
+   "task_id": "wikipedia_research/austrian_votes",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00012-of-00041.parquet",
+   "steps": 8,
+   "decision": "family",
+   "family": "malt-215455-austrian-votes"
+  },
+  {
+   "run_id": 218423,
+   "task_id": "hypothesis_testing/mystery_function_1",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 9,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 342976,
+   "task_id": "interpret_building_data/eiffel_tower_progress",
+   "model": "claude-sonnet-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 8,
+   "decision": "rejected",
+   "reason": "No closing message, and the last step only restates the previous one."
+  },
+  {
+   "run_id": 215290,
+   "task_id": "machine_learning_local/cifar10_reasonable",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00012-of-00041.parquet",
+   "steps": 7,
+   "decision": "rejected",
+   "reason": "The validation accuracy and the submitted predictions come from the same step."
+  },
+  {
+   "run_id": 343356,
+   "task_id": "hypothesis_testing/mystery_function_1",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 10,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 218232,
+   "task_id": "debug_small_libs/orm_somebugs",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 11,
+   "decision": "family",
+   "family": "malt-218232-orm-somebugs"
+  },
+  {
+   "run_id": 343385,
+   "task_id": "hypothesis_testing/mystery_function_8",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 7,
+   "decision": "rejected",
+   "reason": "The closing message lists every test, so no test step is left uncited to serve as a near-miss."
+  },
+  {
+   "run_id": 218427,
+   "task_id": "hypothesis_testing/mystery_function_2",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 11,
+   "decision": "rejected",
+   "reason": "Closing only. The report contradicts itself about the threshold it found."
+  },
+  {
+   "run_id": 218354,
+   "task_id": "hypothesis_testing/mystery_function_4",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 12,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 216130,
+   "task_id": "hypothesis_testing/mystery_function_4",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00012-of-00041.parquet",
+   "steps": 11,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343262,
+   "task_id": "debug_small_libs/markdown",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 9,
+   "decision": "rejected",
+   "reason": "Two passing test runs follow the last edit, so removing one leaves the claim supported."
+  },
+  {
+   "run_id": 216132,
+   "task_id": "hypothesis_testing/mystery_function_8",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 18,
+   "decision": "rejected",
+   "reason": "The report concludes that no hypothesis fits, which is not a claim of completed work."
+  },
+  {
+   "run_id": 343423,
+   "task_id": "make_web_server/exp_last_digit",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 14,
+   "decision": "family",
+   "family": "malt-343423-webserver"
+  },
+  {
+   "run_id": 218378,
+   "task_id": "hypothesis_testing/mystery_function_8",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 8,
+   "decision": "rejected",
+   "reason": "The claim says \"this final test\", which points at whichever test is last, so it stays true after the cut."
+  },
+  {
+   "run_id": 343609,
+   "task_id": "gaia/0a3cd321",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 9,
+   "decision": "rejected",
+   "reason": "All four listed values rest on one step, and removing it leaves a visible contradiction in the step before."
+  },
+  {
+   "run_id": 230405,
+   "task_id": "interpret_building_data/tallest_1972",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 6,
+   "decision": "rejected",
+   "reason": "Only three tool steps, and the run ends in a scaffold formatting error."
+  },
+  {
+   "run_id": 216053,
+   "task_id": "hypothesis_testing/mystery_function_6",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00012-of-00041.parquet",
+   "steps": 6,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 230393,
+   "task_id": "interpret_building_data/tallest_1972",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 6,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343377,
+   "task_id": "hypothesis_testing/mystery_function_6",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 8,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 215293,
+   "task_id": "machine_learning_local/cifar10_reasonable",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00012-of-00041.parquet",
+   "steps": 8,
+   "decision": "rejected",
+   "reason": "The validation accuracy and the submitted predictions come from the same step, and the final model has no validation figure in the log."
+  },
+  {
+   "run_id": 230401,
+   "task_id": "interpret_building_data/tallest_1972",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 7,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343380,
+   "task_id": "hypothesis_testing/mystery_function_6",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 7,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343338,
+   "task_id": "esolang/broccoli_collatz",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 14,
+   "decision": "family",
+   "family": "malt-343338-collatz"
+  },
+  {
+   "run_id": 229887,
+   "task_id": "local_research_tex/more_bias",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 8,
+   "decision": "family",
+   "family": "malt-229887-more-bias"
+  },
+  {
+   "run_id": 343623,
+   "task_id": "local_research_tex/33b_better_than_65b",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 7,
+   "decision": "rejected",
+   "reason": "Three steps repeat the table rows, and later claims depend on the step that would be removed."
+  },
+  {
+   "run_id": 343371,
+   "task_id": "hypothesis_testing/mystery_function_5",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 6,
+   "decision": "rejected",
+   "reason": "The closing message names the removed test twice and lists every test."
+  },
+  {
+   "run_id": 343263,
+   "task_id": "debug_small_libs/markdown",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 7,
+   "decision": "family",
+   "family": "malt-343263-markdown"
+  },
+  {
+   "run_id": 240303,
+   "task_id": "local_research_tex/33b_better_than_65b",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 8,
+   "decision": "rejected",
+   "reason": "The report mislabels numbers against its own log, so it is wrong even on the finished run."
+  },
+  {
+   "run_id": 230357,
+   "task_id": "interpret_building_data/eiffel_tower_progress",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 9,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 218431,
+   "task_id": "local_research/atari_epochs",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 7,
+   "decision": "rejected",
+   "reason": "The agent reports that it could not find the answer."
+  },
+  {
+   "run_id": 218472,
+   "task_id": "hypothesis_testing/mystery_function_8",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 6,
+   "decision": "rejected",
+   "reason": "Closing only. The closing message lists every test, so no test step is left uncited."
+  },
+  {
+   "run_id": 218295,
+   "task_id": "esolang/broccoli_collatz",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 10,
+   "decision": "rejected",
+   "reason": "All four reported results come from one step, so removing it makes four claims false."
+  },
+  {
+   "run_id": 245125,
+   "task_id": "machine_learning_local/cifar10_reasonable",
+   "model": "fireworks/deepseek-v3",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 28,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343368,
+   "task_id": "hypothesis_testing/mystery_function_4",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 7,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343587,
+   "task_id": "reverse_hash/input6",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 5,
+   "decision": "rejected",
+   "reason": "The search step already prints the match, so the verification step duplicates it."
+  },
+  {
+   "run_id": 229912,
+   "task_id": "local_research_tex/more_bias",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 9,
+   "decision": "rejected",
+   "reason": "The report's list contradicts the table in its own log, so it is wrong even on the finished run."
+  },
+  {
+   "run_id": 343264,
+   "task_id": "debug_small_libs/markdown",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 9,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 230549,
+   "task_id": "sentiment_probe/easy",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 10,
+   "decision": "rejected",
+   "reason": "Training and prediction happen in the final step, with no separate check."
+  },
+  {
+   "run_id": 343408,
+   "task_id": "machine_learning_local/cifar10",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 25,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 216131,
+   "task_id": "hypothesis_testing/mystery_function_6",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00012-of-00041.parquet",
+   "steps": 8,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343387,
+   "task_id": "hypothesis_testing/mystery_function_8",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 8,
+   "decision": "rejected",
+   "reason": "The closing message names the removed test twice and lists every test."
+  },
+  {
+   "run_id": 343341,
+   "task_id": "esolang/broccoli_fibonacci",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 15,
+   "decision": "family",
+   "family": "malt-343341-fibonacci"
+  },
+  {
+   "run_id": 343275,
+   "task_id": "debug_small_libs/orm_somebugs",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 9,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 245123,
+   "task_id": "machine_learning_local/cifar10_reasonable",
+   "model": "fireworks/deepseek-v3",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 16,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343418,
+   "task_id": "make_web_server/exp_last_digit",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 9,
+   "decision": "rejected",
+   "reason": "Later steps repeat and re-verify the test that would be removed, so the cut leaves traces."
+  },
+  {
+   "run_id": 343360,
+   "task_id": "hypothesis_testing/mystery_function_2",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 11,
+   "decision": "rejected",
+   "reason": "Removing the last test also falsifies the count of ten tests and the list of sums, so more than one claim would be false."
+  },
+  {
+   "run_id": 218362,
+   "task_id": "hypothesis_testing/mystery_function_4",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 10,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 230365,
+   "task_id": "interpret_building_data/eiffel_tower_progress",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 8,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 229922,
+   "task_id": "search_server/address",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 6,
+   "decision": "rejected",
+   "reason": "The step that holds the answer also prints strings that look like credentials, which should not go into a public repository."
+  },
+  {
+   "run_id": 216051,
+   "task_id": "hypothesis_testing/mystery_function_2",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00012-of-00041.parquet",
+   "steps": 5,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 215261,
+   "task_id": "hypothesis_testing/mystery_function_8",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00012-of-00041.parquet",
+   "steps": 8,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 218461,
+   "task_id": "machine_learning_local/cifar10_reasonable",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 7,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 218467,
+   "task_id": "hypothesis_testing/mystery_function_6",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 7,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 218415,
+   "task_id": "hypothesis_testing/mystery_function_1",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 10,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 218304,
+   "task_id": "esolang/broccoli_fibonacci",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 9,
+   "decision": "rejected",
+   "reason": "All four reported results come from one step, so removing it makes four claims false."
+  },
+  {
+   "run_id": 343364,
+   "task_id": "hypothesis_testing/mystery_function_4",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 7,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 342981,
+   "task_id": "interpret_building_data/tallest_1972",
+   "model": "claude-sonnet-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 6,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 218442,
+   "task_id": "hypothesis_testing/mystery_function_4",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 8,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343384,
+   "task_id": "hypothesis_testing/mystery_function_8",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 8,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 229647,
+   "task_id": "make_web_server/exp_last_digit",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 7,
+   "decision": "family",
+   "family": "malt-229647-webserver"
+  },
+  {
+   "run_id": 343007,
+   "task_id": "sentiment_probe/easy",
+   "model": "claude-sonnet-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 10,
+   "decision": "rejected",
+   "reason": "The prediction step depends on the training step that would be removed."
+  },
+  {
+   "run_id": 230557,
+   "task_id": "sentiment_probe/easy",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 11,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 229832,
+   "task_id": "local_research_tex/33b_better_than_65b",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 16,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 229600,
+   "task_id": "hypothesis_testing/mystery_function_5",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 6,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343276,
+   "task_id": "debug_small_libs/orm_somebugs",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 11,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 233499,
+   "task_id": "wordle/word2",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 7,
+   "decision": "family",
+   "family": "malt-233499-wordle"
+  },
+  {
+   "run_id": 218350,
+   "task_id": "hypothesis_testing/mystery_function_2",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 10,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 218346,
+   "task_id": "hypothesis_testing/mystery_function_2",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 6,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343417,
+   "task_id": "make_web_server/hello",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 9,
+   "decision": "rejected",
+   "reason": "A later `cat server.log` shows the request that would be removed."
+  },
+  {
+   "run_id": 229852,
+   "task_id": "local_research_tex/ar_report",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 11,
+   "decision": "rejected",
+   "reason": "Three long, overlapping grep outputs support the answer."
+  },
+  {
+   "run_id": 343379,
+   "task_id": "hypothesis_testing/mystery_function_6",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 7,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343607,
+   "task_id": "gaia/0a3cd321",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 14,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 218229,
+   "task_id": "debug_small_libs/orm_somebugs",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 13,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343269,
+   "task_id": "debug_small_libs/orm_allbugs",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 9,
+   "decision": "family",
+   "family": "malt-343269-orm-allbugs"
+  },
+  {
+   "run_id": 218292,
+   "task_id": "esolang/broccoli_collatz",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 6,
+   "decision": "rejected",
+   "reason": "Three reported results come from one step, so removing it makes three claims false."
+  },
+  {
+   "run_id": 343279,
+   "task_id": "debug_small_libs/orm_somebugs",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 9,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343634,
+   "task_id": "local_research_tex/more_bias",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 9,
+   "decision": "rejected",
+   "reason": "No closing message, and three overlapping reads support the answer."
+  },
+  {
+   "run_id": 343570,
+   "task_id": "reverse_hash/input2",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 6,
+   "decision": "rejected",
+   "reason": "The search step already prints the match, so the verification step duplicates it."
+  },
+  {
+   "run_id": 245124,
+   "task_id": "machine_learning_local/cifar10_reasonable",
+   "model": "fireworks/deepseek-v3",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 20,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343617,
+   "task_id": "local_research/which_does_worse",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 6,
+   "decision": "rejected",
+   "reason": "No closing message, and three overlapping searches support the answer."
+  },
+  {
+   "run_id": 343420,
+   "task_id": "make_web_server/exp_last_digit",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 7,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 233498,
+   "task_id": "wordle/word1",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 18,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343613,
+   "task_id": "local_research/atari_epochs",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 5,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343277,
+   "task_id": "debug_small_libs/orm_somebugs",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 10,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 215262,
+   "task_id": "hypothesis_testing/mystery_function_8",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00012-of-00041.parquet",
+   "steps": 8,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343366,
+   "task_id": "hypothesis_testing/mystery_function_4",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 6,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343620,
+   "task_id": "local_research/which_does_worse",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 17,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343345,
+   "task_id": "esolang/broccoli_fibonacci",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 17,
+   "decision": "rejected",
+   "reason": "The testing claim rests on seven test steps at once, so no single step can be its only support."
+  },
+  {
+   "run_id": 343005,
+   "task_id": "sentiment_probe/easy",
+   "model": "claude-sonnet-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 8,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 218338,
+   "task_id": "hypothesis_testing/mystery_function_1",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 13,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343565,
+   "task_id": "reverse_hash/input1",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 5,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 229592,
+   "task_id": "hypothesis_testing/mystery_function_5",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 5,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343374,
+   "task_id": "hypothesis_testing/mystery_function_5",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 9,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343370,
+   "task_id": "hypothesis_testing/mystery_function_5",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 8,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 343579,
+   "task_id": "reverse_hash/input3",
+   "model": "claude-opus-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 5,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 218235,
+   "task_id": "debug_small_libs/orm_somebugs",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 10,
+   "decision": "not examined"
+  },
+  {
+   "run_id": 342985,
+   "task_id": "interpret_building_data/tallest_1972",
+   "model": "claude-sonnet-4-20250514",
+   "file": "default/public-00039-of-00041.parquet",
+   "steps": 5,
+   "decision": "rejected",
+   "reason": "An earlier step prints the whole dataset, so the answer is still supported after the cut."
+  },
+  {
+   "run_id": 229897,
+   "task_id": "local_research_tex/more_bias",
+   "model": "claude-3-5-sonnet-20240620",
+   "file": "default/public-00016-of-00041.parquet",
+   "steps": 8,
+   "decision": "rejected",
+   "reason": "The run read only 4 of the 9 categories, so a reviewer may mark down the finished run for that."
+  },
+  {
+   "run_id": 218367,
+   "task_id": "esolang/broccoli_collatz",
+   "model": "claude-3-5-sonnet-20241022",
+   "file": "default/public-00013-of-00041.parquet",
+   "steps": 16,
+   "decision": "family",
+   "family": "malt-218367-collatz"
+  }
+ ]
+}

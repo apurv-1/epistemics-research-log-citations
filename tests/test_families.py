@@ -132,6 +132,7 @@ def test_the_validator_rejects_a_broken_family(name):
 def test_no_file_contains_an_em_dash():
     em_dash = chr(0x2014)
     paths = [*PROJECT_DIR.glob("*.py"), *PROJECT_DIR.glob("*.md"), *PROJECT_DIR.glob("data/families/*.toml"),
-             *PROJECT_DIR.glob("tests/*.py")]
+             *PROJECT_DIR.glob("data/families_malt/*"), *PROJECT_DIR.glob("data/*.json"),
+             *PROJECT_DIR.glob("scripts/*.py"), *PROJECT_DIR.glob("tests/*.py")]
     assert paths
     assert [str(p) for p in paths if em_dash in p.read_text()] == []

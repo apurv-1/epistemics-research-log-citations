@@ -57,7 +57,7 @@ def pointer_ids(family: Family, claim: Claim, variant: str, pointer: str) -> tup
 
 def _report(family: Family, citations: Sequence[str]) -> str:
     lines = [f"- {claim.text}{citation}" for claim, citation in zip(family.claims, citations)]
-    return "\n".join([family.intro, *lines])
+    return "\n".join([*([family.intro] if family.intro else []), *lines])
 
 
 def _page(family: Family, steps: Sequence[Step], citation_notes: Sequence[str], report: str) -> str:

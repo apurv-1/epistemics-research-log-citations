@@ -14,6 +14,14 @@ A family is one small agent task, stored as data/families/<id>.toml.
   in every log, and no claim cites either, so a fake citation changes one pointer and nothing else.
 
 `validate` enforces all of this, so a family that loads is a valid twin pair.
+
+There are two sets of families.
+
+- `pilot`, in data/families: three hand-built families, each with a short and a long log.
+- `malt`, in data/families_malt: families built from real agent runs in METR's MALT dataset by
+  scripts/build_malt_families.py. A real run has one length, `full`, and no filler steps. Its
+  report is the agent's own closing words where they exist (`report_source = "agent"`), and the
+  file's `source` table names the run it came from.
 """
 
 import tomllib
@@ -21,8 +29,12 @@ from dataclasses import dataclass
 from pathlib import Path
 
 FAMILIES_DIR = Path(__file__).parent / "data" / "families"
+MALT_FAMILIES_DIR = Path(__file__).parent / "data" / "families_malt"
+SETS = {"pilot": FAMILIES_DIR, "malt": MALT_FAMILIES_DIR}
 VARIANTS = ("done", "skipped")
-LENGTHS = ("short", "long")
+LENGTHS = ("short", "long")  # the hand-built families
+FULL = "full"  # a real run has one length
+REPORT_SOURCES = ("agent", "written")
 
 
 @dataclass(frozen=True)
@@ -51,6 +63,13 @@ class Family:
     claims: tuple[Claim, ...]
     nearmiss: str
     unrelated: str
+    set: str = "pilot"
+    report_source: str = "written"
+    source: tuple[tuple[str, object], ...] = ()  # where a real run came from, as sorted items
+
+    @property
+    def lengths(self) -> tuple[str, ...]:
+        return (FULL,) if self.set == "malt" else LENGTHS
 
     @property
     def critical(self) -> Step:
@@ -62,8 +81,8 @@ class Family:
 
     def log(self, variant: str, length: str) -> tuple[Step, ...]:
         """The steps a reviewer is shown, in order."""
-        if variant not in VARIANTS or length not in LENGTHS:
-            raise ValueError(f"unknown variant or length: {variant!r}, {length!r}")
+        if variant not in VARIANTS or length not in self.lengths:
+            raise ValueError(f"unknown variant or length for {self.id}: {variant!r}, {length!r}")
         return tuple(
             s for s in self.steps
             if not (length == "short" and s.filler) and not (variant == "skipped" and s.critical)
@@ -78,8 +97,19 @@ def validate(family: Family) -> None:
     def fail(message: str):
         raise FamilyError(f"{family.id}: {message}")
 
-    if not family.id or not family.task or not family.intro:
-        fail("id, task and report intro are required")
+    if family.set not in SETS:
+        fail(f"unknown set {family.set!r}")
+    if family.report_source not in REPORT_SOURCES:
+        fail(f"report_source must be one of {REPORT_SOURCES}")
+    if not family.id or not family.task:
+        fail("id and task are required")
+    if family.set == "pilot" and not family.intro:
+        fail("a hand-built report needs an intro")
+    if family.set == "malt":
+        if any(step.filler for step in family.steps):
+            fail("a real run has no filler steps")
+        if not dict(family.source).get("run_id"):
+            fail("a real run must name its source run_id")
     ids = [s.id for s in family.steps]
     if len(set(ids)) != len(ids):
         fail("step ids must be unique")
@@ -150,6 +180,9 @@ def load_family(path: Path) -> Family:
         ),
         nearmiss=report["nearmiss"],
         unrelated=report["unrelated"],
+        set=data.get("set", "pilot"),
+        report_source=data.get("report_source", "written"),
+        source=tuple(sorted(data.get("source", {}).items())),
     )
     if family.id != path.stem:
         raise FamilyError(f"{path.name}: id {family.id!r} does not match the file name")
@@ -159,3 +192,9 @@ def load_family(path: Path) -> Family:
 
 def load_all(directory: Path = FAMILIES_DIR) -> list[Family]:
     return [load_family(path) for path in sorted(directory.glob("*.toml"))]
+
+
+def load_set(name: str) -> list[Family]:
+    """The families of one set, or of every set for "all"."""
+    names = list(SETS) if name == "all" else [name]
+    return [family for set_name in names for family in load_all(SETS[set_name])]

@@ -13,6 +13,7 @@ handling and reply parsing. What changed for this study:
   whose `is_attack` field is renamed `is_shortfall`, with the matching fields in the saved
   record and in `load_results`;
 - `build_jobs`, and the command-line options and dry-run summary in `main`.
+- the `--set` option and the `full` length, for the families built from real MALT runs.
 
 Nothing is sent to the API without --run. Results are appended to a JSONL file as they arrive,
 and a rerun skips readings already in that file, so an interrupted run resumes without paying twice.
@@ -52,7 +53,7 @@ from pathlib import Path
 
 import httpx
 
-from families import LENGTHS, VARIANTS, Family, load_all
+from families import FULL, LENGTHS, SETS, VARIANTS, Family, load_set
 from render import CONDITIONS, POINTERS, REAL, cited, raw
 
 PROJECT_DIR = Path(__file__).parent
@@ -109,7 +110,7 @@ class Job:
     family: str
     variant: str  # done or skipped
     is_shortfall: bool  # True on the skipped log, where one claim in the report is false
-    length: str  # short or long
+    length: str  # short or long for a hand-built family, full for a real run
     condition: str  # raw or cited
     pointer: str  # "" for raw; "real" on the done log; none, unrelated or nearmiss on the skipped log
     badge: bool  # the "all citations resolve" line, for the later badge arm
@@ -155,7 +156,7 @@ def build_jobs(
     families: Iterable[Family],
     conditions: Iterable[str] = CONDITIONS,
     pointers: Iterable[str] = POINTERS,
-    lengths: Iterable[str] = LENGTHS,
+    lengths: Iterable[str] = (*LENGTHS, FULL),
     badges: Iterable[bool] = (False,),
 ) -> list[Job]:
     """One job per page a reviewer must read.
@@ -174,6 +175,8 @@ def build_jobs(
 
     for family in families:
         for length in lengths:
+            if length not in family.lengths:
+                continue
             for condition in conditions:
                 if condition == "raw":
                     for variant in VARIANTS:
@@ -692,14 +695,17 @@ def _positive_int(text: str) -> int:
 
 
 def main() -> None:
-    all_families = load_all()
+    all_families = load_set("all")
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--models", nargs="+", default=["deepseek-v4-flash"], choices=sorted(PRICES))
     parser.add_argument("--conditions", nargs="+", default=list(CONDITIONS), choices=CONDITIONS)
     parser.add_argument("--pointers", nargs="+", default=list(POINTERS), choices=POINTERS,
                         help="Pointer levels for the false claim on the skipped log, in the cited condition.")
-    parser.add_argument("--lengths", nargs="+", default=list(LENGTHS), choices=LENGTHS)
-    parser.add_argument("--families", nargs="+", choices=[f.id for f in all_families], help="Limit to these families, for a pilot.")
+    parser.add_argument("--set", default="pilot", choices=[*SETS, "all"],
+                        help="pilot: the hand-built families. malt: the families built from real MALT runs.")
+    parser.add_argument("--lengths", nargs="+", default=[*LENGTHS, FULL], choices=[*LENGTHS, FULL],
+                        help="Hand-built families have short and long logs; a real run has only full.")
+    parser.add_argument("--families", nargs="+", choices=[f.id for f in all_families], help="Limit to these families, within the chosen set.")
     parser.add_argument("--badge", choices=["off", "on", "both"], default="off",
                         help="Add the true 'all citations resolve' line to cited reports. Off until the badge arm is run.")
     parser.add_argument("--readings", type=_positive_int, default=20)
@@ -716,7 +722,10 @@ def main() -> None:
     args = parser.parse_args()
 
     options = {"off": (False,), "on": (True,), "both": (False, True)}
-    families = [f for f in all_families if not args.families or f.id in args.families]
+    families = [f for f in all_families
+                if (args.set == "all" or f.set == args.set) and (not args.families or f.id in args.families)]
+    if not families:
+        parser.error("no family matches --set and --families")
     jobs = build_jobs(families, args.conditions, args.pointers, args.lengths, options[args.badge])
     calls = plan_calls(jobs, args.models, args.readings, args.temperature, args.max_output_tokens)
     finished = done_keys(args.out, args.retry_parse_failures, args.retry_maybe_billed)
