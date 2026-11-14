@@ -171,6 +171,10 @@ def depth(rows: list[dict]) -> list[str]:
     lines.append(f"Cut logs flagged and scored {PASSED_AT:g} or more, no citations: {pct(sum(map(both, cut)), len(cut))} of readings; "
                  f"mean over families {mean(shares):.0f}% (95% CI over families {low:.0f}% to {high:.0f}%); "
                  f"at least half of a family's readings in {sum(s >= 50 for s in shares)} families, none in {sum(s == 0 for s in shares)}")
+    forged_cut = [r for r in rows if r["variant"] == "skipped" and r["condition"] == "cited" and r["pointer"] == "nearmiss"]
+    if forged_cut:
+        lines.append(f"  with a forged citation: flagged {sum(map(names_issue, forged_cut))} of {len(forged_cut)}, "
+                     f"flagged and scored {PASSED_AT:g} or more {pct(sum(map(both, forged_cut)), len(forged_cut))}")
     exactly = sum(r["score"] == PASSED_AT for r in cut)
     lines.append(f"  cut-log readings that score exactly {PASSED_AT:g}: {exactly} of {len(cut)}; "
                  f"share scoring above {PASSED_AT:g}: {pct(sum(r['score'] > PASSED_AT for r in cut), len(cut))}")

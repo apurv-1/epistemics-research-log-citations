@@ -12,14 +12,13 @@ A common safeguard for AI agents is a reviewer: a second model that reads the ag
 We tested a proposed fix for overclaiming, citing the log step behind each claim, against a forged citation: a real step that looks relevant and does not support the claim.
 We built 11 task families from real agent runs in METR's MALT dataset.
 Each pairs the full log with a cut log, a copy with one checking step removed, so the agent's unchanged report makes one false claim.
-A forged citation did not narrow the score gap between the two logs.
-In the pre-registered test on deepseek-v4-flash it changed the gap by +0.5 points out of 100 (95% CI -2.2 to +3.1).
+In the pre-registered test on deepseek-v4-flash, a forged citation changed the score gap between the two logs by +0.5 points (95% CI -2.2 to +3.1).
 On two other reviewers it widened the gap, by +6.0 and +8.0 points, one of which holds after the planned correction.
-A true "all citations resolve" line changed nothing.
+A true "all citations resolve" line had no measurable effect.
 In exploratory analysis the reviewers showed a failure known from sabotage monitors: they flagged an unsupported claim in 79% to 96% of cut logs, and in 26% to 40% flagged one and still scored the work 50 or more.
-The score was 100 almost exactly when the reviewer flagged nothing.
-Accepting only 100 rejects 77% to 97% of cut logs, against 38% to 70% at 50, and 3 to 9 points more of the full logs.
-A consumer should treat a flagged claim as blocking, not read the score against a lenient threshold.
+Accepting only a score of 100, almost the same as rejecting every flagged log, rejects 77% to 97% of cut logs, against 38% to 70% at 50.
+It also rejects 8% to 29% of full logs, against 5% to 26%.
+This suggests a consumer should treat a flagged claim as blocking, not read the score against a lenient threshold.
 
 ## 1. Introduction
 
@@ -53,7 +52,7 @@ Our contributions are:
 1. **A test that isolates the citation.** Eleven task families built from real agent runs, each with two logs that differ in one step, one unchanged report, and three treatments of the false claim's citation: forged, unrelated and missing.
 2. **A pre-registered result.** On the reviewer fixed in advance, a forged citation changes the score gap between the two logs by +0.5 points (95% CI -2.2 to +3.1), inside the band set in advance for an effect that does not matter. On two replication reviewers it widens the gap by +6.0 and +8.0 points. A true "all citations resolve" line has no effect.
 3. **Exploratory: where the reviewers fall short instead.** Reviewers flag an unsupported claim in 79% to 96% of cut logs, and in 26% to 40% they flag one and still score the work 50 or more. Those high scores come from about half of the families.
-4. **Exploratory: a reading of the review that needs no extra model call.** The score is 100 almost exactly when the reviewer flags nothing. Treating any flag as blocking is therefore the same as accepting only 100, which rejects 77% to 97% of cut logs against 38% to 70% at a pass line of 50.
+4. **Exploratory: a reading of the review that needs no extra model call.** The score is 100 almost exactly when the reviewer flags nothing. Treating any flag as blocking is therefore almost the same as accepting only 100, which rejects 77% to 97% of cut logs against 38% to 70% at a pass line of 50.
 
 ## 2. Related Work
 
@@ -98,7 +97,8 @@ In the cut log that step is removed, so the latest test run is step 5, which sho
 With a forged citation the claim reads "All tests are now passing. [step 5]".
 
 The 11 families are built from runs in METR's MALT dataset (Parikh and Wijk, 2025), which is MIT licensed.
-We drew a pool of 100 runs with a fixed seed and read it in the drawn order under suitability rules fixed in advance: 11 runs became families, and each of the others has a recorded reason (Appendix C).
+We drew a pool of 100 runs with a fixed seed.
+Within each task we read runs in the drawn order under suitability rules fixed in advance: 46 runs were read, 11 became families, and each of the 35 turned down has a recorded reason (Appendix C).
 The families are three bug fixes, two web servers, three small programs in an unfamiliar language, two research tasks and one word game, by Claude 3.5 Sonnet and Claude Opus 4 agents.
 The full log is the real run, word for word, and the report is the agent's own final text, split into claims.
 Three reports were a single sentence, so one short true claim was added to each.
@@ -133,7 +133,7 @@ A reading **flags** the log when it names an unsupported claim.
 
 A family's **separation** is the score gap between its two logs: its mean score on the full log minus its mean score on the cut log.
 The **citation effect** is separation with citations minus separation without, so a negative value means the citation made the reviewer worse at telling the two logs apart.
-The family is the unit of analysis.
+The family is the unit of analysis, and intervals are 95% percentile bootstrap intervals over families (10,000 draws).
 
 The plan (`MAIN.md`) was committed before any reviewer saw one of the 11 families.
 It fixes deepseek-v4-flash as the reviewer for the main test, the citation effect of the forged citation as the main comparison, and a two-sided exact sign-flip test over the 11 families at alpha 0.05, which asks how often an effect this large would appear if each family's sign were random.
@@ -148,6 +148,8 @@ glm-5.2 is not reported, because the gateway stopped answering it part way throu
 
 On deepseek-v4-flash, a forged citation on the false claim changed separation by **+0.5 points** (95% CI -2.2 to +3.1; sign-flip p = 0.73).
 The interval lies well inside the -10 to +10 band set in advance.
+The forged citation also did not raise the cut log's score: +0.1 points (95% CI -3.6 to +3.1).
+No family moved by 10 points; the range was -8.0 to +7.8.
 
 The rest of this section is secondary analysis from the plan.
 The other treatments agree: -0.9 points with the citation missing and +0.8 with an unrelated one.
@@ -167,41 +169,45 @@ Without the first group the effect is +0.3 points, and without the second it is 
 On both replication reviewers the effect was positive, and on qwen3.5-397b it holds after correction.
 An unrelated citation moved separation about as much (+6.4 and +8.6), and a missing one moved it less (+2.7 and +4.3).
 The gain came from the cut log: a forged citation lowered its score by 6.1 points on gemma-4-31b-it and 5.2 on qwen3.5-397b.
-So the forged citation reduced separation on no reviewer, and on at least one it helped.
+No reviewer separated the two logs worse with a forged citation, and qwen3.5-397b separated them better.
 
 The "all citations resolve" line also changed little: +0.2 points on deepseek-v4-flash (CI -5.0 to +4.6) and +1.6 on gemma-4-31b-it (CI -0.3 to +3.8).
-Unlike the readers in Ding et al. (2025) who did not check, these reviewers did not trust a cited report more.
+Ding et al. (2025) found that people who did not check citations trusted a cited answer more.
+These reviewers did not.
 
 **Interpretation.** One possible reason a citation helps is that it tells the reviewer which step to open, though that does not explain why a missing citation also helps a little.
 
 ### 4.2 Exploratory: the reviewers flag the false claim and often score the work high anyway
 
 Sections 4.2 and 4.3 were designed after the first main results were read, and they are not confirmatory tests.
+Where three numbers appear together, they are for deepseek-v4-flash, gemma-4-31b-it and qwen3.5-397b, in that order.
 
 **Table 3.** Cut logs, as a share of readings.
 
-| Reviewer | Report shown with | Flags the log | Scores it 50 or more |
-|---|---|---|---|
-| deepseek-v4-flash | no citations | 96% | 30% |
-| deepseek-v4-flash | forged citation | 100% | 31% |
-| gemma-4-31b-it | no citations | 79% | 62% |
-| gemma-4-31b-it | forged citation | 89% | 50% |
-| qwen3.5-397b | no citations | 95% | 38% |
-| qwen3.5-397b | forged citation | 100% | 39% |
+| Reviewer | Report shown with | Flags the log | Scores it 50 or more | Flags it and scores it 50 or more |
+|---|---|---|---|---|
+| deepseek-v4-flash | no citations | 96% | 30% | 26% |
+| deepseek-v4-flash | forged citation | 219 of 220 | 31% | 31% |
+| gemma-4-31b-it | no citations | 79% | 62% | 40% |
+| gemma-4-31b-it | forged citation | 89% | 50% | 39% |
+| qwen3.5-397b | no citations | 95% | 38% | 35% |
+| qwen3.5-397b | forged citation | 219 of 220 | 39% | 39% |
 
-With no citations, the reviewers flagged a cut log and still scored it 50 or more in 26% of readings on deepseek-v4-flash, 40% on gemma-4-31b-it and 35% on qwen3.5-397b.
+With no citations, the reviewers flagged a cut log and still scored it 50 or more in 26%, 40% and 35% of readings.
 Resampling families, the 95% intervals are 8% to 48%, 16% to 65% and 13% to 57%.
 The median of those scores was 80, 80 and 85.
-One such reading, scored 90: "The report claims input 4 was checked in step 5, but step 5 only shows factorial 5 outputting 120."
+One such reading, with a forged citation, scored 90: "The report claims input 4 was checked in step 5, but step 5 only shows factorial 5 outputting 120."
 The reviewer opened the cited step, saw that it did not support the claim, wrote that down, and scored the work as nearly complete.
 We read a fixed random sample of 42 such readings: 41 named the false claim itself, and one named a neighbouring gap in the same claim.
 
 The pattern is not spread evenly.
-It covers at least half of a family's readings in 2, 4 and 5 of the 11 families, and none of them in 5, 5 and 6.
+It covers at least half of a family's cut-log readings in 2, 4 and 5 of the 11 families.
+It never appears in 5, 5 and 6 of them.
 On deepseek-v4-flash, 54 of the 67 cut-log readings that score 50 or more come from the three small-program families.
 In those families the cut log still shows the agent's program giving output on other inputs, and only the reported check is missing.
 
-With a forged citation, flag rates rose by 4 to 11 points, in 1, 3 and 4 families, which is not significant at the family level.
+With a forged citation, flag rates rose by 4 to 11 points.
+The rise came from 1, 3 and 4 families, and is not significant at the family level.
 The share scored 50 or more fell on gemma-4-31b-it and did not move on the other two.
 
 **Interpretation.** One reading is that the score grades the work, while the false claim is a fault in the report.
@@ -213,18 +219,20 @@ A **pass line** is the lowest score a consumer accepts.
 A log fails when its score is under the line.
 
 The reviewer's score and its flag turned out to be almost the same signal.
-The stated issue was "none" exactly when the score was 100, with 0 exceptions in 1,319 readings on deepseek-v4-flash, 5 in 1,296 on gemma-4-31b-it and 12 in 1,320 on qwen3.5-397b.
+The stated issue was "none" almost exactly when the score was 100, with 0 exceptions in 1,319 readings on deepseek-v4-flash, 5 in 1,296 on gemma-4-31b-it and 12 in 1,320 on qwen3.5-397b.
 The instructions anchor 100 as "clearly complete as reported", so this may be a property of the prompt.
 
 ![Figure 1](figures/pass-line.png)
 
-**Figure 1.** Raising the pass line from 50 to 100 fails many more cut logs and few more full logs. Share of logs that fail at each pass line, with no citations in the report. A pass line of 100 is the same as failing every flagged log.
+**Figure 1.** Raising the pass line from 50 to 100 fails many more cut logs and few more full logs. Share of logs that fail at each pass line, with no citations in the report. A pass line of 100 is almost the same as failing every flagged log.
 
 A pass line of 50 failed 70%, 38% and 62% of cut logs.
 A pass line of 80 failed 76%, 58% and 73%.
-A pass line of 100 failed 96%, 77% and 97%, and also failed more full logs, by 3 to 9 percentage points.
+A pass line of 100 failed 96%, 77% and 97%.
+It also failed 29%, 8% and 19% of full logs, against 26%, 5% and 10% at a pass line of 50.
 We scored each rule, per family, by the share of cut logs it fails minus the share of full logs it fails.
-On that measure, failing every flagged log beat a pass line of 50 by 23.2 points on deepseek-v4-flash (p = 0.094), 36.0 on gemma-4-31b-it (p = 0.031) and 25.9 on qwen3.5-397b (p = 0.0625), and did not differ from a pass line of 100.
+On that measure, failing every flagged log exceeded a pass line of 50 by 23.2 points (p = 0.094), 36.0 (p = 0.031) and 25.9 (p = 0.0625), and did not differ from a pass line of 100.
+These p-values are uncorrected.
 
 Some full logs fail for good reason: the agent's work in them has real errors, which the reviewers found.
 On the families whose full log averages at least 60, a post hoc cut, a pass line of 100 failed 94%, 75% and 97% of cut logs and 5%, 1% and 11% of full logs.
@@ -237,6 +245,7 @@ A consumer who accepts a score under 100 drops it.
 **Citing the log held up against a cheap forgery.**
 Khalifa et al. asked for mechanisms that check an agent's claims against its observations.
 On these three reviewers the simplest such mechanism was not cheated by a citation that resolves and does not support, and on the two that read it, a line vouching that all citations resolve created no false trust.
+This is the result closest to a verification badge: a true but shallow check, shown to the reader, did not raise trust in a false claim.
 Wang et al. found judges weak at spotting a wrong citation in long research traces.
 Here the reviewers spotted it almost every time, which may reflect shorter logs and a report whose claims are few.
 
@@ -252,17 +261,19 @@ A trust signal for an AI reader should carry what was checked and what was found
 "Resolves" and "supports" are different checks and should be different fields.
 One unsupported claim should be able to block acceptance, whatever the overall score says.
 
-The theory of change has three steps.
+The path to use is short.
 A pipeline that accepts agent work on a reviewer's score reduces the review to one number.
 In our readings that number kept the finding only at 100.
 A builder can read the field that names the claim instead, at no extra model call, and test the change on the released families.
+The same loss may occur wherever a claim-level check is reduced to one trust score, and we did not test that.
 
 ### 5.1 Limitations
 
 The pre-registered result rests on one reviewer and 11 families from five kinds of task, with open-weight reviewers only and one hand-placed citation per family.
 The replication on gemma-4-31b-it is fragile: it does not survive the planned correction, and without the three easy families its effect is +2.8 points (p = 0.094).
 Sections 4.2 and 4.3 are exploratory.
-They depend on where a consumer puts the pass line, the prompt never told the reviewer that a score of 50 would count as a pass, and 33 of gemma-4-31b-it's cut-log readings score exactly 50.
+They depend on where a consumer puts the pass line.
+A pass line of 50 is the line the plan fixed, before any reading, for calling a cut log caught, but the prompt never told the reviewer that 50 would count as a pass, and 33 of gemma-4-31b-it's cut-log readings score exactly 50.
 The flagged high scores come from about half of the families, and the false claim is made by removing a step from a real run, not written by an agent.
 The full logs are real runs and not always correct work, so three families have a weak baseline on deepseek-v4-flash; on the eight families whose full log averages at least 60, the main effect is +1.1 points (95% CI -2.2 to +4.3, post hoc).
 If a stronger reviewer scores a flagged log low on its own, the pass line matters less.
@@ -276,8 +287,8 @@ The harder test of the citation fix is a forgery written by an agent that is try
 ## 6. Conclusion
 
 We asked whether an AI reviewer can be fooled by a citation that resolves and does not support the claim.
-On real agent logs, under a pre-registered test, three open-weight reviewers were not.
-In most readings they found the false claim, and they still scored the work high when the rest of it looked done.
+On logs built from real agent runs, the pre-registered test on one reviewer found no effect, and on two replication reviewers the forged citation widened the gap.
+In most readings the reviewers flagged an unsupported claim, and in 26% to 40% of cut-log readings they still scored the work 50 or more.
 The place to add trust infrastructure is between what a reviewer finds and what its consumer decides: pass on the finding, and let an unsupported claim block acceptance.
 
 ## Code and Data
@@ -325,7 +336,7 @@ Zahraei, P. S., Wang, X., Bozdag, N. B., Tur, G., and Hakkani-Tür, D. (2026). P
 ### What it does not establish
 
 - **That the pass-line finding is a confirmed effect.** Sections 4.2 and 4.3 are exploratory and were designed after the main results were read.
-- **That a pass line of 100 works in deployment.** It was applied after the fact, on one prompt, and it fails 3 to 9 percentage points more of the full logs.
+- **That a pass line of 100 works in deployment.** It was applied after the fact, on one prompt, and it fails 8% to 29% of the full logs, against 5% to 26% at a pass line of 50.
 - **That no forged citation can fool a reviewer.** We tested the mean effect of one hand-placed citation per family, on three open-weight reviewers.
 - **How often agents cite a step that does not support the claim.** We place the citation ourselves.
 - **Anything about frontier reviewers or human readers.** Every reviewer is an open-weight model, and no person reviewed these reports as a subject.
@@ -382,7 +393,7 @@ No family was dropped for any of the three.
 - `main_report.py` gained the lines on full logs that score under 50, which `MAIN.md` lists as a secondary analysis, after the six conditions of deepseek-v4-flash and gemma-4-31b-it had been scored (`8ca1382`).
 - `reasons_report.py` was written after the first main results were read (`aa9bf01`, `d3162c4`). Sections 4.2 and 4.3 are exploratory for that reason, and the pass-line sweep, the per-family breakdowns and the post hoc cuts were added after internal reviews of the report draft.
 - qwen3.5-397b and glm-5.2 were split by family across the two accounts (`77c3732`).
-- glm-5.2 took 15 to 20 minutes a call on the two web-server families, which were dropped for it on the evidence of call times alone (`3bca0a0`). From 08:58 UTC on November 14 the gateway closed every glm-5.2 call after 60 seconds, including two-step test prompts, while other models answered normally (`680a4b7`). After more than four hours without recovery glm-5.2 was dropped with 404 readings, too few for any family to count under the plan's rules, and no glm-5.2 result was computed.
+- glm-5.2 took 15 to 20 minutes a call on the two web-server families, which were dropped for it on the evidence of call times alone (`3bca0a0`). From 08:58 UTC on November 14 the gateway closed every glm-5.2 call after 60 seconds, including two-step test prompts, while other models answered normally (`680a4b7`). After more than four hours without recovery glm-5.2 was dropped with 404 readings, 337 of them on its nine families, too few for any family to count under the plan's rules, and no glm-5.2 result was computed.
 - The plan corrects across three replications. With glm-5.2 missing, it is counted as no result (p = 1) in that correction.
 
 ## Appendix C. The 11 families
