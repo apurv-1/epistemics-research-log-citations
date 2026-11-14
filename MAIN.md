@@ -124,6 +124,10 @@ No prompt, cell, reviewer, definition or test changed.
   The decision was made from call times, before any glm-5.2 score was computed.
   glm-5.2 is therefore reported on 9 families and is labelled incomplete, as the stopping rule above requires.
 
+- From about 14:28 IST on November 14 the gateway closed every glm-5.2 call after 60 seconds, including two-step test prompts, while deepseek-v4-flash answered normally on the same gateway.
+  The glm-5.2 run was paused at 14:36 with 337 of 1,080 readings on its nine families, to be resumed if the service recovers.
+  Calls that failed in that window are marked as possibly billed and will be read again on resume.
+
 ## Order of work
 
 1. Commit this file and `main_report.py`.

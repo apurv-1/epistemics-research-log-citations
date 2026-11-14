@@ -1,0 +1,97 @@
+11 families, 66 prompts, 1320 distinct calls, 1320 still to run
+  full  raw done: 11 prompts, 220 calls
+  full  raw skipped: 11 prompts, 220 calls
+  full  cited done pointer=real: 11 prompts, 220 calls
+  full  cited skipped pointer=none: 11 prompts, 220 calls
+  full  cited skipped pointer=unrelated: 11 prompts, 220 calls
+  full  cited skipped pointer=nearmiss: 11 prompts, 220 calls
+  glm-5.2: 1320 calls, about 28.579 credits, at most 393.1
+  0.0000 credits already charged to results/raw/main-glm-5.2.jsonl; the budget for this file is 60.0
+Warning: reading glm-5.2|t=1.0|max=64000|d0a4828839953acf|0 cost 0.004596 credits, outside its expected range (worst case 0.312158); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|b195f44b2516eba5|0 cost 0.00476948 credits, outside its expected range (worst case 0.312170); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|74c94a173f9c906f|0 cost 0.0036866399999999997 credits, outside its expected range (worst case 0.318945); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|e5680c4a34a902bf|0 cost 0.003852 credits, outside its expected range (worst case 0.318307); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|40fbe4d739c27cb7|0 cost 0.0043184 credits, outside its expected range (worst case 0.318307); check the cost units.
+25/1320 calls done, 0.6007 credits
+Warning: reading glm-5.2|t=1.0|max=64000|208b0e38b4348e6d|0 cost 0.00250008 credits, outside its expected range (worst case 0.296649); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|79525c4c0a792537|0 cost 0.00291164 credits, outside its expected range (worst case 0.304673); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|292d177b7b9452d5|0 cost 0.00275036 credits, outside its expected range (worst case 0.303489); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|254c6873481037e9|0 cost 0.00249076 credits, outside its expected range (worst case 0.303489); check the cost units.
+50/1320 calls done, 0.8497 credits
+6 families, 36 prompts, 720 distinct calls, 684 still to run
+  full  raw done: 6 prompts, 120 calls
+  full  raw skipped: 6 prompts, 120 calls
+  full  cited done pointer=real: 6 prompts, 120 calls
+  full  cited skipped pointer=none: 6 prompts, 120 calls
+  full  cited skipped pointer=unrelated: 6 prompts, 120 calls
+  full  cited skipped pointer=nearmiss: 6 prompts, 120 calls
+  glm-5.2: 684 calls, about 15.1089 credits, at most 204.8962
+  1.2320 credits already charged to results/raw/main-glm-5.2.jsonl; the budget for this file is 60.0
+Warning: reading glm-5.2|t=1.0|max=64000|495d40a04b92cecc|1 cost 0.00446784 credits, outside its expected range (worst case 0.311987); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|d0a4828839953acf|1 cost 0.00506168 credits, outside its expected range (worst case 0.312158); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|2a3aef52d651ce40|1 cost 0.00467268 credits, outside its expected range (worst case 0.312170); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|e87c3dd2e529bf27|1 cost 0.00405668 credits, outside its expected range (worst case 0.318735); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|4b899c06c0418d54|1 cost 0.006994040000000001 credits, outside its expected range (worst case 0.318098); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|74c94a173f9c906f|1 cost 0.00413472 credits, outside its expected range (worst case 0.318945); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|2a7a0711833569ea|1 cost 0.00369724 credits, outside its expected range (worst case 0.318294); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|40fbe4d739c27cb7|1 cost 0.00496264 credits, outside its expected range (worst case 0.318307); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|125353ac71cb5a3c|1 cost 0.00150596 credits, outside its expected range (worst case 0.290626); check the cost units.
+25/684 calls done, 0.4243 credits
+Warning: reading glm-5.2|t=1.0|max=64000|495d40a04b92cecc|2 cost 0.005097040000000001 credits, outside its expected range (worst case 0.311987); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|6f9f649f81526be1|2 cost 0.00960712 credits, outside its expected range (worst case 0.333750); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|d0a4828839953acf|2 cost 0.00410688 credits, outside its expected range (worst case 0.312158); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|b195f44b2516eba5|2 cost 0.00411388 credits, outside its expected range (worst case 0.312170); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|2a3aef52d651ce40|2 cost 0.005315080000000001 credits, outside its expected range (worst case 0.312170); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|e87c3dd2e529bf27|2 cost 0.00359028 credits, outside its expected range (worst case 0.318735); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|74c94a173f9c906f|2 cost 0.0036243200000000003 credits, outside its expected range (worst case 0.318945); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|2a7a0711833569ea|2 cost 0.00375444 credits, outside its expected range (worst case 0.318294); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|e5680c4a34a902bf|2 cost 0.00397704 credits, outside its expected range (worst case 0.318307); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|40fbe4d739c27cb7|2 cost 0.00373944 credits, outside its expected range (worst case 0.318307); check the cost units.
+50/684 calls done, 0.7088 credits
+Warning: reading glm-5.2|t=1.0|max=64000|495d40a04b92cecc|3 cost 0.0037550400000000003 credits, outside its expected range (worst case 0.311987); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|6f9f649f81526be1|3 cost 0.0060211200000000005 credits, outside its expected range (worst case 0.333750); check the cost units.
+75/684 calls done, 1.1549 credits
+Warning: reading glm-5.2|t=1.0|max=64000|d0a4828839953acf|3 cost 0.00498248 credits, outside its expected range (worst case 0.312158); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|b195f44b2516eba5|3 cost 0.00511708 credits, outside its expected range (worst case 0.312170); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|e87c3dd2e529bf27|3 cost 0.00398188 credits, outside its expected range (worst case 0.318735); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|4b899c06c0418d54|3 cost 0.0046796400000000005 credits, outside its expected range (worst case 0.318098); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|74c94a173f9c906f|3 cost 0.00301712 credits, outside its expected range (worst case 0.318945); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|2a7a0711833569ea|3 cost 0.0037588400000000003 credits, outside its expected range (worst case 0.318294); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|e5680c4a34a902bf|3 cost 0.00637504 credits, outside its expected range (worst case 0.318307); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|40fbe4d739c27cb7|3 cost 0.00381864 credits, outside its expected range (worst case 0.318307); check the cost units.
+100/684 calls done, 1.5916 credits
+Warning: reading glm-5.2|t=1.0|max=64000|828daa5caa2cdfe4|4 cost 0.00546868 credits, outside its expected range (worst case 0.333567); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|495d40a04b92cecc|4 cost 0.0051366400000000005 credits, outside its expected range (worst case 0.311987); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|6f9f649f81526be1|4 cost 0.007090320000000001 credits, outside its expected range (worst case 0.333750); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|b195f44b2516eba5|4 cost 0.00526228 credits, outside its expected range (worst case 0.312170); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|e87c3dd2e529bf27|4 cost 0.00377948 credits, outside its expected range (worst case 0.318735); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|4b899c06c0418d54|4 cost 0.00421764 credits, outside its expected range (worst case 0.318098); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|74c94a173f9c906f|4 cost 0.00396752 credits, outside its expected range (worst case 0.318945); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|e5680c4a34a902bf|4 cost 0.00477344 credits, outside its expected range (worst case 0.318307); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|40fbe4d739c27cb7|4 cost 0.00429824 credits, outside its expected range (worst case 0.318307); check the cost units.
+125/684 calls done, 1.8407 credits
+Warning: reading glm-5.2|t=1.0|max=64000|828daa5caa2cdfe4|5 cost 0.00675348 credits, outside its expected range (worst case 0.333567); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|495d40a04b92cecc|5 cost 0.00525984 credits, outside its expected range (worst case 0.311987); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|d0a4828839953acf|5 cost 0.00432688 credits, outside its expected range (worst case 0.312158); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|b195f44b2516eba5|5 cost 0.00465068 credits, outside its expected range (worst case 0.312170); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|2a3aef52d651ce40|5 cost 0.0049410800000000005 credits, outside its expected range (worst case 0.312170); check the cost units.
+150/684 calls done, 2.4844 credits
+Warning: reading glm-5.2|t=1.0|max=64000|e87c3dd2e529bf27|5 cost 0.00312828 credits, outside its expected range (worst case 0.318735); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|74c94a173f9c906f|5 cost 0.00326352 credits, outside its expected range (worst case 0.318945); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|2a7a0711833569ea|5 cost 0.0035520400000000002 credits, outside its expected range (worst case 0.318294); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|e5680c4a34a902bf|5 cost 0.00396384 credits, outside its expected range (worst case 0.318307); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|40fbe4d739c27cb7|5 cost 0.00493184 credits, outside its expected range (worst case 0.318307); check the cost units.
+175/684 calls done, 3.1558 credits
+Warning: reading glm-5.2|t=1.0|max=64000|828daa5caa2cdfe4|6 cost 0.0077082800000000005 credits, outside its expected range (worst case 0.333567); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|495d40a04b92cecc|6 cost 0.00325784 credits, outside its expected range (worst case 0.311987); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|6f9f649f81526be1|6 cost 0.00511912 credits, outside its expected range (worst case 0.333750); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|d0a4828839953acf|6 cost 0.0038648800000000002 credits, outside its expected range (worst case 0.312158); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|b195f44b2516eba5|6 cost 0.00453628 credits, outside its expected range (worst case 0.312170); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|2a3aef52d651ce40|6 cost 0.00498068 credits, outside its expected range (worst case 0.312170); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|e87c3dd2e529bf27|6 cost 0.0031766800000000003 credits, outside its expected range (worst case 0.318735); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|4b899c06c0418d54|6 cost 0.00601284 credits, outside its expected range (worst case 0.318098); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|74c94a173f9c906f|6 cost 0.0036551200000000004 credits, outside its expected range (worst case 0.318945); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|2a7a0711833569ea|6 cost 0.00418124 credits, outside its expected range (worst case 0.318294); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|e5680c4a34a902bf|6 cost 0.00502424 credits, outside its expected range (worst case 0.318307); check the cost units.
+Warning: reading glm-5.2|t=1.0|max=64000|40fbe4d739c27cb7|6 cost 0.00360744 credits, outside its expected range (worst case 0.318307); check the cost units.
+200/684 calls done, 3.8797 credits
