@@ -112,3 +112,11 @@ All are labelled secondary in the report.
 2. Run the confirmatory reviewer's score readings first, then its verdict readings, then gemma-4-31b-it, then the real-log verdict readings, then qwen3.5-397b.
 3. Run `dilution_report.py` on a reviewer only when its file is finished, except to count missing readings.
 4. Any change after this commit is listed here under a new heading, with its reason, and in the report's appendix.
+
+## Changes during the run
+
+- **Verdict parser.** The first verdict readings showed a reply that closed each claim tag before its verdict tag: `<claim n="1">text</claim><evidence>...</evidence><verdict>SHOWN</verdict>`.
+  The parser read that as no valid answer.
+  It now takes a claim's verdict to be any verdict tag between that claim's opening tag and the next claim's, which reads both layouts the same way.
+  The rules for a valid answer are unchanged: every claim number once, exactly one verdict each, from the three allowed words.
+  The change was made after 13 verdict readings, from the layout of one reply and before any verdict result was computed. Stored replies are parsed again when they are read, so no reading was repeated.

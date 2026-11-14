@@ -1,0 +1,34 @@
+== deepseek-v4-flash: score instructions ==
+Missing readings: 0 of 1600; templates: 8
+Primary comparison:
+  penalty at 15 other claims minus penalty at 1 (negative: the penalty shrank): mean +3.2 points, 95% CI [+1.6, +4.7], 7 of 8 templates up, 1 down, sign-flip p = 0.0234
+Does detection hold?
+  cut-log flag rate at 15 other claims minus at 1: mean +0.0 points, 95% CI [+0.0, +0.0], 0 of 8 templates up, 0 down, sign-flip p = 1.0000
+  cut-log score among flagged readings, 15 minus 1: mean -3.2 points, 95% CI [-4.7, -1.7], 1 of 8 templates up, 7 down, sign-flip p = 0.0234
+Length control (the claims of dose 1, a log as long as dose 15):
+  penalty, padded minus dose 1: mean -0.6 points, 95% CI [-3.2, +1.2], 4 of 8 templates up, 4 down, sign-flip p = 0.8594
+  penalty, dose 15 minus padded: mean +3.8 points, 95% CI [+2.3, +5.4], 8 of 8 templates up, 0 down, sign-flip p = 0.0078
+  templates whose cut-log score never falls as the dose rises: 0 of 8
+Means over templates, by condition:                     k01     k03     k07     k15     pad
+  penalty: full-log score minus cut-log score          91.8    93.2    94.2    95.0    91.2
+  cut log: mean score                                   8.2     6.8     5.8     4.9     8.8
+  cut log: flagged, %                                 100.0   100.0   100.0   100.0   100.0
+  cut log: mean score when flagged                      8.2     6.8     5.8     4.9     8.8
+  cut log: fails a pass line of 50, %                  99.4   100.0   100.0   100.0   100.0
+  cut log: fails a pass line of 80, %                 100.0   100.0   100.0   100.0   100.0
+  cut log: fails a pass line of 100, %                100.0   100.0   100.0   100.0   100.0
+  full log: mean score                                100.0   100.0   100.0    99.9   100.0
+  full log: flagged, %                                  0.0     0.0     0.0     0.6     0.0
+  full log: fails a pass line of 50, %                  0.0     0.0     0.0     0.0     0.0
+  full log: fails a pass line of 80, %                  0.0     0.0     0.0     0.0     0.0
+  full log: fails a pass line of 100, %                 0.0     0.0     0.0     0.6     0.0
+Cut-log mean score per template:                        k01     k03     k07     k15     pad
+  data                                                  3.0     3.5     5.0     4.0    11.5
+  docs                                                  7.2     3.8     5.5     5.0     6.2
+  endpoint                                              7.5    19.2     4.5     3.2     8.5
+  feature                                               6.0     3.0     0.0     2.8     4.0
+  frontend                                              7.8     5.2     7.2     2.0     6.8
+  infra                                                 9.8     1.5     8.0     4.8    10.8
+  migration                                             7.0     8.0     4.8     6.0     8.0
+  model                                                17.2    10.5    11.5    11.8    14.8
+

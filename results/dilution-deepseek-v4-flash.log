@@ -1,0 +1,135 @@
+20 families, 40 prompts, 800 distinct calls, 800 still to run
+  full  raw done: 20 prompts, 400 calls
+  full  raw skipped: 20 prompts, 400 calls
+  deepseek-v4-flash: 800 calls, about 0.4589 credits, at most 6.9551
+  0.0000 credits already charged to results/raw/dilution-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+25/800 calls done, 0.0030 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a8f91627aa2f77e7|1 cost 4.153928e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+50/800 calls done, 0.0052 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|fd42642e194bffc5|1 cost 4.3761279999999996e-05 credits, outside its expected range (worst case 0.008726); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|d4bcb8252a58ae59|1 cost 5.9455064e-05 credits, outside its expected range (worst case 0.008764); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|43a3f9947ca2b2d7|1 cost 5.1005000000000004e-05 credits, outside its expected range (worst case 0.008729); check the cost units.
+75/800 calls done, 0.0160 credits
+100/800 calls done, 0.0189 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|2 cost 5.242708e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|b042bc7d238687b6|2 cost 4.2688256e-05 credits, outside its expected range (worst case 0.008689); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|e276190330bde878|2 cost 6.2521424e-05 credits, outside its expected range (worst case 0.008763); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|405094c59ba9de03|2 cost 5.4426880000000004e-05 credits, outside its expected range (worst case 0.008755); check the cost units.
+125/800 calls done, 0.0207 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a11e1648d3b37a64|3 cost 5.0116200000000006e-05 credits, outside its expected range (worst case 0.008752); check the cost units.
+150/800 calls done, 0.0233 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|c9feace83d7ae6d4|3 cost 2.4283632e-05 credits, outside its expected range (worst case 0.008647); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|405094c59ba9de03|3 cost 5.242708e-05 credits, outside its expected range (worst case 0.008755); check the cost units.
+175/800 calls done, 0.0256 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|fd42642e194bffc5|4 cost 4.229476e-05 credits, outside its expected range (worst case 0.008726); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|4 cost 3.5628760000000004e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|b042bc7d238687b6|4 cost 4.0688456e-05 credits, outside its expected range (worst case 0.008689); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|11a5a671b3fc5d9c|4 cost 3.83396e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+200/800 calls done, 0.0279 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a8f91627aa2f77e7|5 cost 5.127164e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a8772e377d28f8d3|5 cost 4.2377176e-05 credits, outside its expected range (worst case 0.008687); check the cost units.
+225/800 calls done, 0.0307 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|d4bcb8252a58ae59|5 cost 6.3054704e-05 credits, outside its expected range (worst case 0.008764); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|5 cost 4.0428280000000006e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|c9feace83d7ae6d4|5 cost 2.3350392e-05 credits, outside its expected range (worst case 0.008647); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|405094c59ba9de03|5 cost 5.18938e-05 credits, outside its expected range (worst case 0.008755); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|11a5a671b3fc5d9c|5 cost 4.9405159999999996e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|dce9baf8b683f4c7|6 cost 5.4649080000000004e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+250/800 calls done, 0.0327 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|d4bcb8252a58ae59|6 cost 4.6389704000000005e-05 credits, outside its expected range (worst case 0.008764); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|c9feace83d7ae6d4|6 cost 2.8149912000000002e-05 credits, outside its expected range (worst case 0.008647); check the cost units.
+275/800 calls done, 0.0438 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|405094c59ba9de03|6 cost 5.482684e-05 credits, outside its expected range (worst case 0.008755); check the cost units.
+300/800 calls done, 0.0462 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|d4bcb8252a58ae59|7 cost 3.0124664e-05 credits, outside its expected range (worst case 0.008764); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|7 cost 4.762756000000001e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|11a5a671b3fc5d9c|7 cost 5.007176e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+325/800 calls done, 0.0483 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|955f9adf7b4e7196|8 cost 4.1488376e-05 credits, outside its expected range (worst case 0.008711); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|035a90f2eaec4571|8 cost 5.327144e-05 credits, outside its expected range (worst case 0.008759); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|d4bcb8252a58ae59|8 cost 3.7723904000000004e-05 credits, outside its expected range (worst case 0.008764); check the cost units.
+350/800 calls done, 0.0508 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a8f91627aa2f77e7|9 cost 5.380472e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+375/800 calls done, 0.0529 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|735441d4661daa3e|9 cost 4.3221536e-05 credits, outside its expected range (worst case 0.008698); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|9 cost 4.936072e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|c9feace83d7ae6d4|9 cost 2.9749752e-05 credits, outside its expected range (worst case 0.008647); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|b042bc7d238687b6|9 cost 3.0956096e-05 credits, outside its expected range (worst case 0.008689); check the cost units.
+400/800 calls done, 0.0552 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a8f91627aa2f77e7|10 cost 5.473796e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+425/800 calls done, 0.0583 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a11e1648d3b37a64|10 cost 5.091612e-05 credits, outside its expected range (worst case 0.008752); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|10 cost 4.082824e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|b042bc7d238687b6|10 cost 3.9888536e-05 credits, outside its expected range (worst case 0.008689); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|405094c59ba9de03|10 cost 5.242708e-05 credits, outside its expected range (worst case 0.008755); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|11a5a671b3fc5d9c|10 cost 4.087268e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+450/800 calls done, 0.0600 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|d4bcb8252a58ae59|11 cost 6.4387904e-05 credits, outside its expected range (worst case 0.008764); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a11e1648d3b37a64|11 cost 4.318356e-05 credits, outside its expected range (worst case 0.008752); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|11 cost 4.576108e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+475/800 calls done, 0.0623 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|b042bc7d238687b6|11 cost 4.2288296e-05 credits, outside its expected range (worst case 0.008689); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a8f91627aa2f77e7|12 cost 5.1005000000000004e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|035a90f2eaec4571|12 cost 5.4604640000000005e-05 credits, outside its expected range (worst case 0.008759); check the cost units.
+500/800 calls done, 0.0648 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|d4bcb8252a58ae59|12 cost 6.2788064e-05 credits, outside its expected range (worst case 0.008764); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|11a5a671b3fc5d9c|12 cost 5.353808e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+525/800 calls done, 0.0668 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a8772e377d28f8d3|13 cost 3.6244456e-05 credits, outside its expected range (worst case 0.008687); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|035a90f2eaec4571|13 cost 4.2872480000000005e-05 credits, outside its expected range (worst case 0.008759); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|379a98a5e43ca80d|13 cost 4.45612e-05 credits, outside its expected range (worst case 0.008734); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|13 cost 4.922740000000001e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+550/800 calls done, 0.0694 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|2539d6fc1b8d6f7a|13 cost 5.4426880000000004e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+575/800 calls done, 0.0715 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|fd42642e194bffc5|14 cost 5.349364e-05 credits, outside its expected range (worst case 0.008726); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|d4bcb8252a58ae59|14 cost 6.4387904e-05 credits, outside its expected range (worst case 0.008764); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|14 cost 5.042728e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|b042bc7d238687b6|14 cost 4.0555136e-05 credits, outside its expected range (worst case 0.008689); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|405094c59ba9de03|14 cost 5.096056e-05 credits, outside its expected range (worst case 0.008755); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|11a5a671b3fc5d9c|14 cost 5.273816e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|2539d6fc1b8d6f7a|14 cost 4.509448e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+600/800 calls done, 0.0736 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a8f91627aa2f77e7|15 cost 4.980512e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a8772e377d28f8d3|15 cost 3.7311016000000006e-05 credits, outside its expected range (worst case 0.008687); check the cost units.
+625/800 calls done, 0.0765 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|d4bcb8252a58ae59|15 cost 4.0790264e-05 credits, outside its expected range (worst case 0.008764); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|15 cost 4.562776e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|b042bc7d238687b6|15 cost 4.3888136e-05 credits, outside its expected range (worst case 0.008689); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|405094c59ba9de03|15 cost 5.349364e-05 credits, outside its expected range (worst case 0.008755); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|2539d6fc1b8d6f7a|15 cost 4.4294560000000005e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a8f91627aa2f77e7|16 cost 4.727204e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+650/800 calls done, 0.0784 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|035a90f2eaec4571|16 cost 5.2204880000000004e-05 credits, outside its expected range (worst case 0.008759); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|379a98a5e43ca80d|16 cost 5.229376e-05 credits, outside its expected range (worst case 0.008734); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a11e1648d3b37a64|16 cost 5.184936e-05 credits, outside its expected range (worst case 0.008752); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|16 cost 5.096056e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+675/800 calls done, 0.0811 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|11a5a671b3fc5d9c|16 cost 3.074036e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|fd42642e194bffc5|17 cost 3.5095479999999995e-05 credits, outside its expected range (worst case 0.008726); check the cost units.
+700/800 calls done, 0.0835 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|17 cost 4.682764000000001e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|c9feace83d7ae6d4|17 cost 2.4950231999999998e-05 credits, outside its expected range (worst case 0.008647); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|b042bc7d238687b6|17 cost 3.9221936e-05 credits, outside its expected range (worst case 0.008689); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|e276190330bde878|17 cost 6.0121664e-05 credits, outside its expected range (worst case 0.008763); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|405094c59ba9de03|17 cost 4.642768e-05 credits, outside its expected range (worst case 0.008755); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|11a5a671b3fc5d9c|17 cost 4.660544e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|2539d6fc1b8d6f7a|17 cost 4.629436e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+725/800 calls done, 0.0851 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|a8f91627aa2f77e7|18 cost 4.540556e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|209a46fda57bbf81|18 cost 3.7495239999999996e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+750/800 calls done, 0.0888 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|11a5a671b3fc5d9c|18 cost 4.953848e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+775/800 calls done, 0.0908 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|c9feace83d7ae6d4|19 cost 2.4283632e-05 credits, outside its expected range (worst case 0.008647); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|b042bc7d238687b6|19 cost 3.4822376e-05 credits, outside its expected range (worst case 0.008689); check the cost units.
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|2539d6fc1b8d6f7a|19 cost 5.336032e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+800/800 calls done, 0.0933 credits
+Finished 800 of 800 calls, 0.0933 credits: 2 API errors, 0 replies without a valid score, 3 rate limits waited out.
+Warning: 90 replies cost more than expected, so the budget may not be reliable.
+20 families, 40 prompts, 800 distinct calls, 2 still to run
+  full  raw done: 20 prompts, 400 calls
+  full  raw skipped: 20 prompts, 400 calls
+  deepseek-v4-flash: 2 calls, about 0.0011 credits, at most 0.0173
+  0.0933 credits already charged to results/raw/dilution-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+Finished 2 of 2 calls, 0.0001 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
