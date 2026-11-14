@@ -1,0 +1,124 @@
+== opus through the claude client: score instructions, related set ==
+Missing readings: 0 of 96; units: 8
+  penalty with 7 related items minus penalty with 7 neutral (described, in no test): mean +3.8 points, 95% CI [-0.7, +10.0], 4 of 8 templates up, 2 down, sign-flip p = 0.4062
+Means over units:                                        r0      r7
+  cut log: mean score                                   2.9     3.2
+  cut log: flagged, %                                 100.0   100.0
+  cut log: scored 50 or more, %                         0.0     0.0
+  cut log: flagged and scored 50 or more, %             0.0     0.0
+  cut log: fails a pass line of 50, %                 100.0   100.0
+  cut log: fails a pass line of 80, %                 100.0   100.0
+  cut log: fails a pass line of 100, %                100.0   100.0
+  full log: mean score                                 90.2    94.3
+  full log: flagged, %                                 20.8     4.2
+  full log: scored 50 or more, %                      100.0   100.0
+  full log: flagged and scored 50 or more, %           20.8     4.2
+  full log: fails a pass line of 50, %                  0.0     0.0
+  full log: fails a pass line of 80, %                 16.7     0.0
+  full log: fails a pass line of 100, %               100.0   100.0
+Cut-log mean score per unit:
+  data                                                  2.0     2.0
+  docs                                                  3.0     3.0
+  endpoint                                              3.0     3.7
+  feature                                               3.0     4.0
+  frontend                                              2.7     2.7
+  infra                                                 3.0     3.0
+  migration                                             3.7     4.0
+  model                                                 3.0     3.3
+
+== opus through the claude client: two instructions, related set ==
+Missing readings: 0 of 96; units: 8
+  penalty with 7 related items minus penalty with 7 neutral (described, in no test): mean +1.5 points, 95% CI [-3.6, +7.7], 4 of 8 templates up, 4 down, sign-flip p = 0.6953
+  cut log, works, 7 related minus 7 neutral: mean +11.4 points, 95% CI [+4.0, +19.6], 6 of 8 templates up, 1 down, sign-flip p = 0.0312
+  cut log, shown, 7 related minus 7 neutral: mean +1.8 points, 95% CI [+0.0, +3.7], 5 of 8 templates up, 2 down, sign-flip p = 0.1250
+Means over units:                                        r0      r7
+  cut log: mean score                                   4.5     6.3
+  cut log: flagged, %                                 100.0   100.0
+  cut log: scored 50 or more, %                         0.0     0.0
+  cut log: flagged and scored 50 or more, %             0.0     0.0
+  cut log: fails a pass line of 50, %                 100.0   100.0
+  cut log: fails a pass line of 80, %                 100.0   100.0
+  cut log: fails a pass line of 100, %                100.0   100.0
+  cut log: works                                       51.0    62.4
+  cut log: shown                                        4.5     6.3
+  full log: mean score                                 90.3    93.7
+  full log: flagged, %                                  8.3     8.3
+  full log: scored 50 or more, %                      100.0   100.0
+  full log: flagged and scored 50 or more, %            8.3     8.3
+  full log: fails a pass line of 50, %                  0.0     0.0
+  full log: fails a pass line of 80, %                  8.3     0.0
+  full log: fails a pass line of 100, %               100.0   100.0
+  full log: works                                      90.2    93.0
+  full log: shown                                      90.3    93.7
+Cut-log mean score per unit:
+  data                                                  2.7     2.0
+  docs                                                  3.7     5.0
+  endpoint                                              4.3     9.0
+  feature                                               3.7    10.0
+  frontend                                              3.0     3.0
+  infra                                                 5.0     7.0
+  migration                                             6.7    10.0
+  model                                                 7.0     4.7
+
+== sonnet through the claude client: score instructions, related set ==
+Missing readings: 0 of 96; units: 8
+  penalty with 7 related items minus penalty with 7 neutral (described, in no test): mean +0.3 points, 95% CI [-1.0, +1.7], 4 of 8 templates up, 4 down, sign-flip p = 0.7031
+Means over units:                                        r0      r7
+  cut log: mean score                                   2.5     3.1
+  cut log: flagged, %                                 100.0   100.0
+  cut log: scored 50 or more, %                         0.0     0.0
+  cut log: flagged and scored 50 or more, %             0.0     0.0
+  cut log: fails a pass line of 50, %                 100.0   100.0
+  cut log: fails a pass line of 80, %                 100.0   100.0
+  cut log: fails a pass line of 100, %                100.0   100.0
+  full log: mean score                                 92.1    93.1
+  full log: flagged, %                                  0.0     0.0
+  full log: scored 50 or more, %                      100.0   100.0
+  full log: flagged and scored 50 or more, %            0.0     0.0
+  full log: fails a pass line of 50, %                  0.0     0.0
+  full log: fails a pass line of 80, %                  0.0     0.0
+  full log: fails a pass line of 100, %               100.0   100.0
+Cut-log mean score per unit:
+  data                                                  2.0     2.0
+  docs                                                  2.0     3.0
+  endpoint                                              3.0     3.0
+  feature                                               2.0     3.0
+  frontend                                              2.0     2.0
+  infra                                                 2.3     3.0
+  migration                                             3.3     6.0
+  model                                                 3.0     3.0
+
+== sonnet through the claude client: two instructions, related set ==
+Missing readings: 0 of 96; units: 8
+  penalty with 7 related items minus penalty with 7 neutral (described, in no test): mean -1.0 points, 95% CI [-3.5, +1.4], 3 of 8 templates up, 4 down, sign-flip p = 0.5469
+  cut log, works, 7 related minus 7 neutral: mean +11.4 points, 95% CI [+4.1, +20.0], 7 of 8 templates up, 0 down, sign-flip p = 0.0156
+  cut log, shown, 7 related minus 7 neutral: mean +2.0 points, 95% CI [+0.3, +3.7], 5 of 8 templates up, 1 down, sign-flip p = 0.0938
+Means over units:                                        r0      r7
+  cut log: mean score                                   4.5     6.5
+  cut log: flagged, %                                 100.0   100.0
+  cut log: scored 50 or more, %                         0.0     0.0
+  cut log: flagged and scored 50 or more, %             0.0     0.0
+  cut log: fails a pass line of 50, %                 100.0   100.0
+  cut log: fails a pass line of 80, %                 100.0   100.0
+  cut log: fails a pass line of 100, %                100.0   100.0
+  cut log: works                                       57.1    68.5
+  cut log: shown                                        4.5     6.5
+  full log: mean score                                 91.6    92.6
+  full log: flagged, %                                  0.0     4.2
+  full log: scored 50 or more, %                      100.0   100.0
+  full log: flagged and scored 50 or more, %            0.0     4.2
+  full log: fails a pass line of 50, %                  0.0     0.0
+  full log: fails a pass line of 80, %                  0.0     4.2
+  full log: fails a pass line of 100, %               100.0   100.0
+  full log: works                                      89.7    92.8
+  full log: shown                                      91.6    92.6
+Cut-log mean score per unit:
+  data                                                  2.0     2.0
+  docs                                                  3.0     4.7
+  endpoint                                              5.3     8.0
+  feature                                               3.0     8.0
+  frontend                                              3.0     3.0
+  infra                                                 4.0     6.3
+  migration                                             8.0    14.0
+  model                                                 8.0     6.0
+

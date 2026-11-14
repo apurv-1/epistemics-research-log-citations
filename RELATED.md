@@ -134,3 +134,7 @@ All are labelled secondary in the report.
     These models are from the same family as the agents whose runs the main study used and as the model that built the constructed tasks.
   - **Order and cuts.** Claude Sonnet 5.5 first, then Claude Opus 5.5, each in the order above.
     If the account's usage limit stops a run, what finished is reported and labelled incomplete.
+- **Runs stopped and restarted.** All runs were stopped at 23:06 IST on November 14 and started again at 23:32, for a reason unrelated to any result.
+  Readings that already had a valid answer were kept and not repeated.
+  Two of Claude Sonnet 5.5's readings on full real logs had been blocked by the model's safety filter with no answer, and the restart read them again, this time with an answer.
+  The blocked attempts stay in the results file as errors.
