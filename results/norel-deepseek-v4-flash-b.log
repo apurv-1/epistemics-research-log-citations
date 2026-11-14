@@ -1,0 +1,28 @@
+2 families, 4 prompts, 80 distinct calls, 80 still to run
+  full  raw done: 2 prompts, 40 calls
+  full  raw skipped: 2 prompts, 40 calls
+  deepseek-v4-flash: 80 calls, about 0.0454 credits, at most 0.6934
+  0.0000 credits already charged to results/raw/norel-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+25/80 calls done, 0.0147 credits
+50/80 calls done, 0.1580 credits
+75/80 calls done, 0.3747 credits
+Finished 80 of 80 calls, 0.4180 credits: 46 API errors, 0 replies without a valid score, 0 rate limits waited out.
+2 families, 4 prompts, 80 distinct calls, 46 still to run
+  full  raw done: 2 prompts, 40 calls
+  full  raw skipped: 2 prompts, 40 calls
+  deepseek-v4-flash: 46 calls, about 0.0261 credits, at most 0.3987
+  0.4180 credits already charged to results/raw/norel-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+25/46 calls done, 0.2167 credits
+Finished 46 of 46 calls, 0.3987 credits: 46 API errors, 0 replies without a valid score, 0 rate limits waited out.
+2 families, 4 prompts, 80 distinct calls, 0 still to run
+  full  raw done: 2 prompts, 40 calls
+  full  raw skipped: 2 prompts, 40 calls
+  0.8167 credits already charged to results/raw/norel-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+2 families, 4 prompts, 80 distinct calls, 46 still to run
+  full  raw done: 2 prompts, 40 calls
+  full  raw skipped: 2 prompts, 40 calls
+  deepseek-v4-flash: 46 calls, about 0.0261 credits, at most 0.3987
+  0.8167 credits already charged to results/raw/norel-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+25/46 calls done, 0.0189 credits
+Finished 46 of 46 calls, 0.0300 credits: 0 API errors, 1 replies without a valid score, 0 rate limits waited out.

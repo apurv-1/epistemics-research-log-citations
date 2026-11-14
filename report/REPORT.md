@@ -12,8 +12,8 @@ AI agents report on their own work, and often a second model, the reviewer, deci
 We pair a full agent log with a cut log missing one check step, so the unchanged report makes exactly one false claim.
 On 11 pairs from real agent runs in METR's MALT dataset, a citation to a relevant-looking step that does not show the claim did not fool three open-weight reviewers on average (pre-registered; deepseek-v4-flash +0.5 points, 95% CI -2.2 to +3.1).
 Instead, the reviewers name an unsupported claim and still score 26% to 40% of cut logs 50 or more, almost only where the cut log still shows related evidence, such as passing runs on other inputs.
-On eight constructed tasks stating their requirement, related evidence did not soften the penalty (pre-registered, -4.4 points, 95% CI -11.1 to +0.6).
-When the requirement was only implied, it shrank the penalty by 17.3 more points, and the reviewer flagged every cut log yet passed 64% of them (secondary).
+On eight constructed tasks stating their requirement, related evidence did not soften the penalty (pre-registered, -4.8 points, 95% CI -11.5 to +0.4).
+When the requirement was only implied, it shrank the penalty by 18.0 more points, and the reviewer flagged every cut log yet passed 65% of them (secondary).
 Asked how fully the log shows the report, deepseek-v4-flash rated cut logs with related evidence 66 of 100, against 6 elsewhere.
 Failing every flagged log, instead of using a pass line of 50, separated cut from full logs by 23 to 36 points more on the open-weight reviewers, but worse on Claude Sonnet 5.5 and Opus 5.5, which flag many full logs.
 Trust infrastructure should state the requirement, carry the reviewer's claim-level finding as its own field, and calibrate the gate per reviewer.
@@ -37,9 +37,9 @@ Every test holds a task, a log and an agent's report fixed and removes one check
 We label each result as pre-registered, exploratory, or descriptive (frontier readings in no test).
 
 1. **Pre-registered: citations held up.** On 11 real-log pairs, a forged citation did not fool three open-weight reviewers on average, and a true "all citations resolve" line created no false trust (Section 4).
-2. **Exploratory: flagged, then passed.** Open-weight reviewers name an unsupported claim in 77% to 96% of cut logs but score 26% to 40% of them 50 or more anyway. The failure sits almost entirely in families whose cut log still shows related evidence (Section 5).
+2. **Exploratory: flagged, then passed.** Open-weight reviewers name an unsupported claim in 77% to 96% of cut logs but score 26% to 40% of them 50 or more anyway. The failure sits almost entirely in families whose cut log still shows related evidence, and in a planned test, removing that evidence from three real logs cut flagged-and-passed from 45% to 100% of cut logs down to 0% to 15% (Section 5).
 3. **Exploratory, with a planned real-log test: the gate matters.** Failing every flagged log recovers most of what the score drops on open-weight reviewers, and hurts on frontier reviewers (Section 5).
-4. **Pre-registered: when it happens.** On constructed tasks, more neutral work around the false claim does not soften the penalty (Section 6), and neither does related evidence while the task states its requirement. When the requirement is only implied, related evidence does soften it, and the reviewer flags every cut log and passes 64% of them (secondary, Section 7).
+4. **Pre-registered: when it happens.** On constructed tasks, more neutral work around the false claim does not soften the penalty (Section 6), and neither does related evidence while the task states its requirement. When the requirement is only implied, related evidence does soften it, and the reviewer flags every cut log and passes 65% of them (secondary, Section 7).
 5. **Descriptive: frontier reviewers.** Claude Sonnet 5.5 and Claude Opus 5.5 flagged-and-passed 3% and 0% of real cut logs. Asked for two numbers, they raised their belief that the work succeeded when nearby checks passed and still rated the claim as unshown (Sections 5 and 7).
 
 ## 2. Related Work
@@ -127,7 +127,13 @@ Figure 1 shows the same trade-off as the pass line moves.
 In five families the cut log still shows **related evidence**: real, passing checks that suggest the removed check would also pass, such as the agent's program giving correct output on other inputs, or the server answering a shorter request.
 In those five families deepseek-v4-flash flagged and passed 57% of cut logs, against 1% in the other six; qwen3.5-397b 76% against 0%; gemma-4-31b-it 49% against 32%.
 The one family where Claude Sonnet 5.5 passed a cut log is of this kind: two of its three readings flagged nothing and scored 93, and the third named the missing input-4 run and still scored 92.
-{{NOREL_RESULT}}
+**Removing the related evidence (planned, described).**
+Before any reading, `RELATED.md` fixed a direct test on real logs.
+In the three families with the highest cut-log scores, we removed the steps that show the agent's program working on other inputs, and the report claims that rested only on those steps; the false claim and every other word of the agent's text stayed.
+On deepseek-v4-flash, 19 or 20 readings per prompt, flagged-and-passed fell from 80%, 45% and 100% of cut logs to 0%, 5% and 15%, and the cut-log score fell from 69 to 84 down to 11 to 28.
+The full-log score fell too, by 16 to 36 points, because these full logs also lost evidence, so the penalty rose by 23 to 52 points rather than by the whole drop.
+With related evidence gone, the reviewer that had named the missing run and passed the work now named it and failed the work.
+This comparison is described per family, as the plan fixed, and is not a significance test.
 
 **Two numbers instead of one.**
 We asked deepseek-v4-flash for the two numbers on the same 11 families, 10 readings per prompt, under a comparison fixed in `RELATED.md` before any reading (218 of 220 readings).
@@ -167,15 +173,15 @@ A second set of instructions keeps everything else and replaces the score with t
 The primary comparison was the penalty with 7 related minus with 7 neutral on deepseek-v4-flash, predicted negative.
 
 Under a stated requirement, related evidence did not make the reviewer pass the cut log.
-With 7 related items the cut log scored 10.2, against 5.8 with 7 neutral, and the penalty changed by -4.4 points (95% CI -11.1 to +0.6, p = 0.21, 4 tasks up and 4 down).
+With 7 related items the cut log scored 10.6, against 5.8 with 7 neutral, and the penalty changed by -4.8 points (95% CI -11.5 to +0.4, p = 0.20, 3 tasks up and 5 down).
 The interval reaches just past -10, so a small effect is not ruled out, but no meaningful effect was found.
-Lookalikes moved the penalty by the same -4.4 points, and the reviewer flagged 99% to 100% of cut logs in every condition with a stated requirement.
-With 1 and 3 related items the cut log scored 11.7 and 10.4, so there was no dose curve either.
+Lookalikes moved the penalty by about the same, -4.6 points, and the reviewer flagged 99% to 100% of cut logs in every condition with a stated requirement.
+With 1 and 3 related items the cut log scored 11.6 and 10.3, so there was no dose curve either.
 
 Removing the sentence that states the requirement changed the picture (secondary).
-With 7 neutral items and an implied requirement, the penalty fell by 30.5 points against the stated version (95% CI -37.2 to -22.8, all 8 tasks down, p = 0.0078).
-Related evidence then shrank it by a further 17.3 points (95% CI -27.7 to -5.8, 6 of 8 tasks down, p = 0.039).
-In that condition the reviewer still flagged every cut log, and it scored 64% of them 50 or more, against 41% with neutral items and 3% with a stated requirement.
+With 7 neutral items and an implied requirement, the penalty fell by 30.2 points against the stated version (95% CI -36.8 to -23.1, all 8 tasks down, p = 0.0078).
+Related evidence then shrank it by a further 18.0 points (95% CI -27.7 to -7.2, 6 of 8 tasks down, p = 0.031).
+In that condition the reviewer still flagged every cut log, and it scored 65% of them 50 or more, against 41% with neutral items and 3% with a stated requirement.
 That is the real-log pattern, flagged and then passed, at a rate close to the 57% seen in the real-log families with related evidence.
 Full logs scored 100 in every condition, so the flag gate still separated every cut log from every full log.
 We read this as related evidence causing flagged-then-passed when the reviewer has to infer what finishing the task requires, and a stated requirement preventing it.
@@ -184,7 +190,7 @@ We read this as related evidence causing flagged-then-passed when the reviewer h
 
 | Reviewer | Score, 7 neutral | Score, 7 related | Flagged | works, neutral → related | shown, neutral → related |
 |---|---|---|---|---|---|
-| deepseek-v4-flash | 5.8 | 10.2 | 100% | {{DS_WORKS}} | {{DS_SHOWN}} |
+| deepseek-v4-flash | 5.8 | 10.6 | 100% | {{DS_WORKS}} | {{DS_SHOWN}} |
 | Claude Sonnet 5.5 | 2.5 | 3.1 | 100% | 57 → 69 | 4.5 → 6.5 |
 | Claude Opus 5.5 | 2.9 | 3.2 | 100% | 51 → 62 | 4.5 → 6.3 |
 
@@ -269,7 +275,7 @@ Zahraei, P. S., Wang, X., Bozdag, N. B., Tur, G., and Hakkani-Tür, D. (2026). P
 - On deepseek-v4-flash, across 11 families built from real agent runs, a forged citation on a false claim changes the penalty by less than a few points on average. On qwen3.5-397b it increases the penalty, and on gemma-4-31b-it the increase does not survive the planned correction.
 - A true line saying that all citations resolve does not change the penalty on the two reviewers that read it.
 - On deepseek-v4-flash and eight constructed tasks that it already fails, more neutral real work around a false claim does not soften the penalty for it.
-- On deepseek-v4-flash and the same eight tasks, related evidence does not meaningfully soften the penalty while the task states its requirement, though an effect just over 10 points is not excluded. When the requirement is only implied, related evidence does soften it, in a secondary analysis on 8 tasks with p = 0.039 and no correction for the other secondary analyses.
+- On deepseek-v4-flash and the same eight tasks, related evidence does not meaningfully soften the penalty while the task states its requirement, though an effect just over 10 points is not excluded. When the requirement is only implied, related evidence does soften it, in a secondary analysis on 8 tasks with p = 0.031 and no correction for the other secondary analyses.
 
 ### What they do not establish
 
@@ -330,7 +336,7 @@ The reduced replication on qwen3.5-397b was dropped to make room for Study 3, as
 {{APPX_B_REPLICATIONS}}
 
 **Study 3.** 8 tasks, 6 new conditions, 2 logs and 20 readings is 1,920 score readings per reviewer, with `r0` reused from Study 2.
-deepseek-v4-flash finished 1,821 of 1,920 new score readings; the 99 missing are spread over every condition, 7 to 10 per cell, and every task met the half rule.
+deepseek-v4-flash finished 1,919 of 1,920 new score readings, after a provider outage on November 15 was waited out and the failed calls were retried; every task met the half rule.
 {{APPX_B_STUDY3_MORE}}
 All runs were stopped for 26 minutes on November 14 for a reason unrelated to any result and resumed without repeating finished readings.
 
