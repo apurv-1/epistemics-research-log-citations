@@ -119,6 +119,11 @@ No prompt, cell, reviewer, definition or test changed.
   Each second stream writes to a file ending in `-b`, which starts as a copy of the first file so that no finished reading is paid for twice, and the two files are joined before `main_report.py` reads them.
   A call that was in flight at a restart counts as missing unless a final pass reads it again.
 
+- At 14:27 IST on November 14 the two web-server families, `malt-229647-webserver` and `malt-343423-webserver`, were dropped for glm-5.2 only.
+  On those families glm-5.2 took 15 to 20 minutes a call or was cut off by the gateway after 60 seconds, so finishing them would have taken days.
+  The decision was made from call times, before any glm-5.2 score was computed.
+  glm-5.2 is therefore reported on 9 families and is labelled incomplete, as the stopping rule above requires.
+
 ## Order of work
 
 1. Commit this file and `main_report.py`.
