@@ -47,9 +47,11 @@ MALT_FAMILIES_DIR = Path(__file__).parent / "data" / "families_malt"
 DILUTION_FAMILIES_DIR = Path(__file__).parent / "data" / "families_dilution"
 RELATED_FAMILIES_DIR = Path(__file__).parent / "data" / "families_related"
 MALT_NOREL_FAMILIES_DIR = Path(__file__).parent / "data" / "families_malt_norel"
+MALT_STATED_FAMILIES_DIR = Path(__file__).parent / "data" / "families_malt_stated"
 SETS = {"pilot": FAMILIES_DIR, "malt": MALT_FAMILIES_DIR, "dilution": DILUTION_FAMILIES_DIR,
-        "related": RELATED_FAMILIES_DIR, "malt_norel": MALT_NOREL_FAMILIES_DIR}
-REAL_SETS = ("malt", "malt_norel")  # sets whose logs are real runs
+        "related": RELATED_FAMILIES_DIR, "malt_norel": MALT_NOREL_FAMILIES_DIR,
+        "malt_stated": MALT_STATED_FAMILIES_DIR}
+REAL_SETS = ("malt", "malt_norel", "malt_stated")  # sets whose logs are real runs
 DILUTION_ID = re.compile(r"dil-[a-z]+-(k01|k03|k07|k15|pad)")
 RELATED_ID = re.compile(r"rel-[a-z]+-(r1|r3|r7|look|imp0|imp7)")
 RELATED_CLAIMS = 8  # 7 other claims and the acceptance claim
