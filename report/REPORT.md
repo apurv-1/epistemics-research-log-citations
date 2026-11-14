@@ -13,7 +13,7 @@ We pair a full agent log with a cut log missing one check step, so the agent's u
 On 11 pairs built from real agent runs in METR's MALT dataset, a citation to a real step that looks relevant but does not show the claim did not fool three open-weight reviewers on average (pre-registered effect on deepseek-v4-flash +0.5 points, 95% CI -2.2 to +3.1).
 Exploratory analysis found a different failure: the reviewers name an unsupported claim and still score 26% to 40% of cut logs 50 or more.
 This happens almost only where the cut log still shows related evidence, such as the agent's program working on other inputs: there, deepseek-v4-flash flagged and passed 57% of cut logs, against 1% elsewhere.
-{{ABSTRACT_CAUSAL}}
+On eight constructed tasks that state their requirement, putting related evidence around the false claim did not soften the penalty (pre-registered, -4.4 points, 95% CI -11.1 to +0.6); when the requirement was only implied, it shrank the penalty by 17.3 more points, and the reviewer flagged every cut log yet passed 64% of them (secondary).
 Failing every flagged log instead of reading the score at 50 raised the gap between cut-log and full-log failure rates by 23 to 36 points on the open-weight reviewers, but lowered it for Claude Sonnet 5.5 and Opus 5.5, which rarely pass a flagged cut log yet flag many full logs.
 {{ABSTRACT_SHOWN}}
 Trust infrastructure for agent reports should carry the reviewer's claim-level finding as its own field and choose the gate per reviewer on labelled pairs like ours.
@@ -39,7 +39,7 @@ We label each result as pre-registered, exploratory, or descriptive (frontier re
 1. **Pre-registered: citations held up.** On 11 real-log pairs, a forged citation did not fool three open-weight reviewers on average, and a true "all citations resolve" line created no false trust (Section 4).
 2. **Exploratory: flagged, then passed.** Open-weight reviewers name an unsupported claim in 77% to 96% of cut logs but score 26% to 40% of them 50 or more anyway. The failure sits almost entirely in families whose cut log still shows related evidence (Section 5).
 3. **Exploratory, with a planned real-log test: the gate matters.** Failing every flagged log recovers most of what the score drops on open-weight reviewers, and hurts on frontier reviewers (Section 5).
-4. **Pre-registered: what does not cause it.** On constructed tasks, more neutral work around the false claim does not soften the penalty (Section 6). {{CONTRIB_STUDY3}}
+4. **Pre-registered: when it happens.** On constructed tasks, more neutral work around the false claim does not soften the penalty (Section 6), and neither does related evidence while the task states its requirement. When the requirement is only implied, related evidence does soften it, and the reviewer flags every cut log and passes 64% of them (secondary, Section 7).
 5. **Descriptive: frontier reviewers.** Claude Sonnet 5.5 and Claude Opus 5.5 flagged-and-passed 3% and 0% of real cut logs. Asked for two numbers, they raised their belief that the work succeeded when nearby checks passed and still rated the claim as unshown (Sections 5 and 7).
 
 ## 2. Related Work
@@ -160,13 +160,25 @@ The 7-neutral condition reuses Study 2's dose-7 readings, which were collected a
 A second set of instructions keeps everything else and replaces the score with two numbers: **works**, how likely the requirement is in fact met whatever the report says, and **shown**, how fully the log shows what the report says.
 The primary comparison was the penalty with 7 related minus with 7 neutral on deepseek-v4-flash, predicted negative.
 
-{{STUDY3_RESULT}}
+Under a stated requirement, related evidence did not make the reviewer pass the cut log.
+With 7 related items the cut log scored 10.2, against 5.8 with 7 neutral, and the penalty changed by -4.4 points (95% CI -11.1 to +0.6, p = 0.21, 4 tasks up and 4 down).
+The interval reaches just past -10, so a small effect is not ruled out, but no meaningful effect was found.
+Lookalikes moved the penalty by the same -4.4 points, and the reviewer flagged 99% to 100% of cut logs in every condition with a stated requirement.
+With 1 and 3 related items the cut log scored 11.7 and 10.4, so there was no dose curve either.
+
+Removing the sentence that states the requirement changed the picture (secondary).
+With 7 neutral items and an implied requirement, the penalty fell by 30.5 points against the stated version (95% CI -37.2 to -22.8, all 8 tasks down, p = 0.0078).
+Related evidence then shrank it by a further 17.3 points (95% CI -27.7 to -5.8, 6 of 8 tasks down, p = 0.039).
+In that condition the reviewer still flagged every cut log, and it scored 64% of them 50 or more, against 41% with neutral items and 3% with a stated requirement.
+That is the real-log pattern, flagged and then passed, at a rate close to the 57% seen in the real-log families with related evidence.
+Full logs scored 100 in every condition, so the flag gate still separated every cut log from every full log.
+We read this as related evidence causing flagged-then-passed when the reviewer has to infer what finishing the task requires, and a stated requirement preventing it.
 
 **Table 3.** Study 3, cut logs, means over the 8 tasks. Score instructions, then the two numbers. Claude rows are descriptive, 3 readings per prompt.
 
 | Reviewer | Score, 7 neutral | Score, 7 related | Flagged | works, neutral → related | shown, neutral → related |
 |---|---|---|---|---|---|
-{{STUDY3_TABLE_DEEPSEEK}}
+| deepseek-v4-flash | 5.8 | 10.2 | 100% | {{DS_WORKS}} | {{DS_SHOWN}} |
 | Claude Sonnet 5.5 | 2.5 | 3.1 | 100% | 57 → 69 | 4.5 → 6.5 |
 | Claude Opus 5.5 | 2.9 | 3.2 | 100% | 51 → 62 | 4.5 → 6.3 |
 
@@ -182,7 +194,11 @@ The weak point is downstream of the citation: open-weight reviewers found the fa
 **What the reviewer is scoring.**
 A reviewer that sees related evidence has a fair reason to believe the work probably succeeded.
 The consumer of a report needs a different fact: whether the report's claims are shown.
-{{DISCUSSION_CAUSE}}
+Study 3 shows when the two come apart.
+While the task stated its requirement, the open-weight reviewer kept the score low whatever surrounded the false claim.
+When it had to infer the requirement, it still named the missing check, and then scored the work as if it was judging whether the work probably succeeded.
+A consumer cannot see which of the two questions a single score answers.
+{{DISCUSSION_TWO}}
 
 **A design rule for trust infrastructure.**
 A trust signal for an AI consumer should carry, per claim, whether it resolves, whether the log shows it, and what the reviewer found, as separate fields from any judgement of the work.
@@ -199,7 +215,7 @@ Appendix A gives the full list and the dual-use assessment, and Appendix B lists
 ## 9. Conclusion
 
 A citation that resolves and does not support its claim did not fool the reviewers we tested.
-What failed was the path from finding to decision: weaker reviewers named the false claim and still scored the work as passing, almost only when related evidence suggested the work was fine{{CONCLUSION_CAUSE}}.
+What failed was the path from finding to decision: weaker reviewers named the false claim and still scored the work as passing, almost only when related evidence suggested the work was fine, and on constructed tasks the same happened once the task stopped stating what finishing required.
 Frontier reviewers kept the finding in the score, but flagged many full logs.
 Trust infrastructure should carry the claim-level finding as its own field and calibrate the gate to the reviewer, so that what a reviewer finds reaches the decision.
 
@@ -244,7 +260,7 @@ Zahraei, P. S., Wang, X., Bozdag, N. B., Tur, G., and Hakkani-Tür, D. (2026). P
 - On deepseek-v4-flash, across 11 families built from real agent runs, a forged citation on a false claim changes the penalty by less than a few points on average. On qwen3.5-397b it increases the penalty, and on gemma-4-31b-it the increase does not survive the planned correction.
 - A true line saying that all citations resolve does not change the penalty on the two reviewers that read it.
 - On deepseek-v4-flash and eight constructed tasks that it already fails, more neutral real work around a false claim does not soften the penalty for it.
-{{APPX_STUDY3}}
+- On deepseek-v4-flash and the same eight tasks, related evidence does not meaningfully soften the penalty while the task states its requirement, though an effect just over 10 points is not excluded. When the requirement is only implied, related evidence does soften it, in a secondary analysis on 8 tasks with p = 0.039 and no correction for the other secondary analyses.
 
 ### What they do not establish
 
@@ -305,7 +321,8 @@ The reduced replication on qwen3.5-397b was dropped to make room for Study 3, as
 {{APPX_B_REPLICATIONS}}
 
 **Study 3.** 8 tasks, 6 new conditions, 2 logs and 20 readings is 1,920 score readings per reviewer, with `r0` reused from Study 2.
-{{APPX_B_STUDY3}}
+deepseek-v4-flash finished 1,821 of 1,920 new score readings; the 99 missing are spread over every condition, 7 to 10 per cell, and every task met the half rule.
+{{APPX_B_STUDY3_MORE}}
 All runs were stopped for 26 minutes on November 14 for a reason unrelated to any result and resumed without repeating finished readings.
 
 **Claude reviewers.** 258 readings per model, through the `claude` client with every tool, MCP server and settings file off.
