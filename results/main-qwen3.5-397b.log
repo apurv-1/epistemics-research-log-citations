@@ -1,0 +1,82 @@
+11 families, 66 prompts, 1320 distinct calls, 1320 still to run
+  full  raw done: 11 prompts, 220 calls
+  full  raw skipped: 11 prompts, 220 calls
+  full  cited done pointer=real: 11 prompts, 220 calls
+  full  cited skipped pointer=none: 11 prompts, 220 calls
+  full  cited skipped pointer=unrelated: 11 prompts, 220 calls
+  full  cited skipped pointer=nearmiss: 11 prompts, 220 calls
+  qwen3.5-397b: 1320 calls, about 20.5806 credits, at most 304.0824
+  0.0000 credits already charged to results/raw/main-qwen3.5-397b.jsonl; the budget for this file is 60.0
+25/1320 calls done, 0.3503 credits
+50/1320 calls done, 0.5172 credits
+75/1320 calls done, 0.8381 credits
+100/1320 calls done, 1.1432 credits
+125/1320 calls done, 1.8217 credits
+150/1320 calls done, 2.0584 credits
+175/1320 calls done, 2.2615 credits
+11 families, 66 prompts, 1320 distinct calls, 1139 still to run
+  full  raw done: 11 prompts, 220 calls
+  full  raw skipped: 11 prompts, 220 calls
+  full  cited done pointer=real: 11 prompts, 220 calls
+  full  cited skipped pointer=none: 11 prompts, 220 calls
+  full  cited skipped pointer=unrelated: 11 prompts, 220 calls
+  full  cited skipped pointer=nearmiss: 11 prompts, 220 calls
+  qwen3.5-397b: 1139 calls, about 17.7514 credits, at most 262.3576
+  2.7821 credits already charged to results/raw/main-qwen3.5-397b.jsonl; the budget for this file is 60.0
+25/1139 calls done, 0.2646 credits
+50/1139 calls done, 0.5414 credits
+75/1139 calls done, 0.7361 credits
+100/1139 calls done, 1.0633 credits
+125/1139 calls done, 1.4738 credits
+150/1139 calls done, 1.7667 credits
+175/1139 calls done, 2.0822 credits
+200/1139 calls done, 2.2431 credits
+225/1139 calls done, 2.5560 credits
+250/1139 calls done, 2.8355 credits
+275/1139 calls done, 3.0839 credits
+300/1139 calls done, 3.3321 credits
+325/1139 calls done, 3.5229 credits
+350/1139 calls done, 3.8412 credits
+375/1139 calls done, 4.1459 credits
+400/1139 calls done, 4.2865 credits
+425/1139 calls done, 4.6222 credits
+450/1139 calls done, 4.9017 credits
+475/1139 calls done, 5.1506 credits
+500/1139 calls done, 5.4719 credits
+525/1139 calls done, 5.6887 credits
+550/1139 calls done, 5.9757 credits
+575/1139 calls done, 6.2949 credits
+600/1139 calls done, 6.4988 credits
+625/1139 calls done, 6.7527 credits
+650/1139 calls done, 6.9892 credits
+675/1139 calls done, 7.2533 credits
+700/1139 calls done, 7.5430 credits
+725/1139 calls done, 7.7265 credits
+750/1139 calls done, 8.0791 credits
+775/1139 calls done, 8.3710 credits
+800/1139 calls done, 8.5755 credits
+825/1139 calls done, 8.8481 credits
+6 families, 36 prompts, 720 distinct calls, 158 still to run
+  full  raw done: 6 prompts, 120 calls
+  full  raw skipped: 6 prompts, 120 calls
+  full  cited done pointer=real: 6 prompts, 120 calls
+  full  cited skipped pointer=none: 6 prompts, 120 calls
+  full  cited skipped pointer=unrelated: 6 prompts, 120 calls
+  full  cited skipped pointer=nearmiss: 6 prompts, 120 calls
+  qwen3.5-397b: 158 calls, about 2.4759 credits, at most 36.4476
+  11.9592 credits already charged to results/raw/main-qwen3.5-397b.jsonl; the budget for this file is 60.0
+25/158 calls done, 0.2296 credits
+50/158 calls done, 0.4869 credits
+75/158 calls done, 0.8551 credits
+100/158 calls done, 1.0765 credits
+6 families, 36 prompts, 720 distinct calls, 46 still to run
+  full  raw done: 6 prompts, 120 calls
+  full  raw skipped: 6 prompts, 120 calls
+  full  cited done pointer=real: 6 prompts, 120 calls
+  full  cited skipped pointer=none: 6 prompts, 120 calls
+  full  cited skipped pointer=unrelated: 6 prompts, 120 calls
+  full  cited skipped pointer=nearmiss: 6 prompts, 120 calls
+  qwen3.5-397b: 46 calls, about 0.7138 credits, at most 10.5832
+  13.4590 credits already charged to results/raw/main-qwen3.5-397b.jsonl; the budget for this file is 60.0
+25/46 calls done, 0.2821 credits
+Finished 46 of 46 calls, 0.5512 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.

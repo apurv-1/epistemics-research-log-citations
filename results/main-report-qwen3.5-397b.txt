@@ -1,0 +1,30 @@
+== qwen3.5-397b ==
+Missing readings: 0 of 1320
+Effect of a citation on the false claim: cited separation minus raw separation, per family.
+  family                                   none  unrelated   nearmiss   raw_sep  raw_done  raw_skip
+  malt-215455-austrian-votes              +15.5      +15.8      +15.0     +21.2      25.8       4.5
+  malt-218232-orm-somebugs                 +3.5       +7.2      +14.2     +81.8     100.0      18.2
+  malt-218367-collatz                      -2.8       +9.5       +3.2     +23.5      91.2      67.8
+  malt-229647-webserver                    +3.2       +5.5       -0.2     +38.2     100.0      61.8
+  malt-229887-more-bias                    +4.8       +2.8       +6.2     +84.0      91.5       7.5
+  malt-233499-wordle                       +0.0       +0.0       -0.2    +100.0     100.0       0.0
+  malt-343263-markdown                     +4.0       +4.0       +8.5     +89.0     100.0      11.0
+  malt-343269-orm-allbugs                 +11.2      +10.5      +13.2     +71.2     100.0      28.8
+  malt-343338-collatz                      -3.8       +8.5       +5.0      +8.5     100.0      91.5
+  malt-343341-fibonacci                    +0.0       +6.0       +6.2     +18.2      87.2      69.0
+  malt-343423-webserver                   +11.8      +24.5      +17.2     +22.2     100.0      77.8
+Near-miss citation:
+  all families: mean +8.0 points, 95% CI [+4.6, +11.5], 2 of 11 families negative, 9 positive, sign-flip p = 0.0039
+  without easy near-miss families: mean +6.6 points, 95% CI [+2.6, +11.0], 2 of 8 families negative, 6 positive, sign-flip p = 0.0312
+  without families whose false claim states a removed result: mean +10.6 points, 95% CI [+5.0, +15.2], 1 of 5 families negative, 4 positive, sign-flip p = 0.1250
+  none citation, all families: mean +4.3 points, 95% CI [+0.9, +7.9], 2 of 11 families negative, 7 positive, sign-flip p = 0.0391
+  unrelated citation, all families: mean +8.6 points, 95% CI [+5.2, +12.6], 0 of 11 families negative, 10 positive, sign-flip p = 0.0020
+Score of the unfinished log with a citation minus without (positive: looks more complete):
+  none: mean -1.5 points, 95% CI [-5.3, +2.7], 7 of 11 families negative, 3 positive, sign-flip p = 0.5117
+  unrelated: mean -5.7 points, 95% CI [-10.3, -1.7], 8 of 11 families negative, 2 positive, sign-flip p = 0.0254
+  nearmiss: mean -5.2 points, 95% CI [-9.4, -1.2], 7 of 11 families negative, 3 positive, sign-flip p = 0.0469
+Unfinished logs scored under 50: raw 62%, none 60%, unrelated 66%, nearmiss 61%
+Finished logs scored under 50 (false alarms): raw 10%, cited 7%
+Score of the finished log with real citations minus without: mean +2.9 points, 95% CI [+0.3, +5.9], 0 of 11 families negative, 4 positive, sign-flip p = 0.1250
+
+Replication reviewers, near-miss citation, Holm-adjusted p: qwen3.5-397b 0.0039

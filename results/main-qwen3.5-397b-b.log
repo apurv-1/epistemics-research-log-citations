@@ -1,0 +1,24 @@
+5 families, 30 prompts, 600 distinct calls, 150 still to run
+  full  raw done: 5 prompts, 100 calls
+  full  raw skipped: 5 prompts, 100 calls
+  full  cited done pointer=real: 5 prompts, 100 calls
+  full  cited skipped pointer=none: 5 prompts, 100 calls
+  full  cited skipped pointer=unrelated: 5 prompts, 100 calls
+  full  cited skipped pointer=nearmiss: 5 prompts, 100 calls
+  qwen3.5-397b: 150 calls, about 2.3077 credits, at most 34.4309
+  11.9592 credits already charged to results/raw/main-qwen3.5-397b-b.jsonl; the budget for this file is 60.0
+25/150 calls done, 0.2401 credits
+50/150 calls done, 0.4520 credits
+75/150 calls done, 0.6477 credits
+100/150 calls done, 0.9325 credits
+125/150 calls done, 1.2159 credits
+5 families, 30 prompts, 600 distinct calls, 17 still to run
+  full  raw done: 5 prompts, 100 calls
+  full  raw skipped: 5 prompts, 100 calls
+  full  cited done pointer=real: 5 prompts, 100 calls
+  full  cited skipped pointer=none: 5 prompts, 100 calls
+  full  cited skipped pointer=unrelated: 5 prompts, 100 calls
+  full  cited skipped pointer=nearmiss: 5 prompts, 100 calls
+  qwen3.5-397b: 17 calls, about 0.2578 credits, at most 3.8873
+  13.4429 credits already charged to results/raw/main-qwen3.5-397b-b.jsonl; the budget for this file is 60.0
+Finished 17 of 17 calls, 0.2334 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.

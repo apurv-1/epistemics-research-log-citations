@@ -18,3 +18,13 @@ Finished logs, where a match is a false positive of the keyword check:
   raw              216 readings: pattern matches 7%
   cited real       215 readings: pattern matches 7%
 
+== qwen3.5-397b ==
+Unfinished logs:
+  raw              220 readings: names the false claim 93%, passes the work 38%. Of the 84 passes: 89% name the false claim (mean score 79), 1% name something else, 10% say none.
+  cited none       220 readings: names the false claim 93%, passes the work 40%. Of the 88 passes: 89% name the false claim (mean score 78), 0% name something else, 11% say none.
+  cited unrelated  220 readings: names the false claim 98%, passes the work 34%. Of the 74 passes: 100% name the false claim (mean score 76), 0% name something else, 0% say none.
+  cited nearmiss   220 readings: names the false claim 98%, passes the work 39%. Of the 86 passes: 99% name the false claim (mean score 76), 0% name something else, 1% say none.
+Finished logs, where a match is a false positive of the keyword check:
+  raw              220 readings: pattern matches 8%
+  cited real       220 readings: pattern matches 7%
+
