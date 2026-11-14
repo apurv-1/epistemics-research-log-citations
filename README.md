@@ -7,9 +7,11 @@ On a log where the agent skipped one step, the false claim cites a real step tha
 This project measures whether an LLM reviewer still tells finished work from unfinished work, compared with reading the same report and log with no citations.
 It is an entry for Track 2, Trust Infrastructure, of the Apart Research AI x Epistemics sprint, November 13 to 15, 2026.
 
-Status: pilot scaffold, plus a set of families built from real agent runs.
-The pilot passed its four criteria on deepseek-v4-flash, and `results/pilot-report-deepseek.txt` has the scores.
-The main run has not started.
+Status: finished.
+The pilot passed its four criteria, and the main run finished on three reviewers: deepseek-v4-flash, gemma-4-31b-it and qwen3.5-397b.
+glm-5.2 could not be run, because the gateway stopped answering it.
+The report is `report/REPORT.md`, built to `report/REPORT.pdf`.
+`results/main-report-*.txt` and `results/reasons-report.txt` hold every number in it.
 
 ## What is here
 
@@ -19,6 +21,10 @@ The main run has not started.
 - `monitor.py`: asks reviewer models for a 0 to 100 score that the work is complete as reported.
 - `PILOT.md`: the pilot plan and its pass criteria, written before any reviewer call.
 - `pilot_report.py`: scores the pilot results against those criteria.
+- `MAIN.md`: the main study plan, written before any reviewer saw a real-log family, with the changes made during the run.
+- `main_report.py`: prints the pre-registered and secondary results from the raw readings.
+- `reasons_report.py`: prints the exploratory results on what reviewers flag and how they score it.
+- `scripts/make_figure.py` and `scripts/build_pdf.py`: draw the figure and build the report.
 - `data/families_malt/*.toml`: eleven families built from real agent runs in METR's MALT dataset.
 - `data/malt_pool.json`: the fixed pool of 100 MALT runs the real families were drawn from, with the decision on each run.
 - `scripts/malt_selection.py`: which runs became families, how each was cut, and why the others were turned down.
