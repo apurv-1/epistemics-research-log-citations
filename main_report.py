@@ -76,6 +76,12 @@ def skipped_shift(data: dict, family: str, pointer: str) -> float | None:
     return None if cited is None or raw is None else cited - raw
 
 
+def done_shift(data: dict, family: str) -> float | None:
+    """How much real citations move the score of the finished log. Negative: more false alarms."""
+    cited, raw = cell_mean(data, family, CITED_DONE), cell_mean(data, family, RAW_DONE)
+    return None if cited is None or raw is None else cited - raw
+
+
 def badge_effect(data: dict, family: str) -> float | None:
     """Near-miss cited separation with the badge line minus without it. Negative: the badge hurt."""
     cells = [cell_mean(data, family, CITED_DONE, True), cell_mean(data, family, cited_skipped(PRIMARY_POINTER), True),
@@ -165,6 +171,12 @@ def report_model(model: str, data: dict) -> tuple[str, float | None]:
 
     rates = [("raw", catch_rate(data, RAW_SKIPPED))] + [(p, catch_rate(data, cited_skipped(p))) for p in POINTERS]
     lines.append(f"Unfinished logs scored under {CAUGHT_BELOW:g}: " + ", ".join(f"{name} {'n/a' if r is None else format(r, '.0%')}" for name, r in rates))
+
+    alarms = [(name, catch_rate(data, cell)) for name, cell in (("raw", RAW_DONE), ("cited", CITED_DONE))]
+    lines.append(f"Finished logs scored under {CAUGHT_BELOW:g} (false alarms): "
+                 + ", ".join(f"{name} {'n/a' if r is None else format(r, '.0%')}" for name, r in alarms))
+    lines.append(_line("Score of the finished log with real citations minus without",
+                       summary({f: done_shift(data, f) for f in families})).lstrip())
 
     if model in BADGE_MODELS:
         badge = summary({f: badge_effect(data, f) for f in families})

@@ -4,7 +4,7 @@ import pytest
 
 from main_report import (
     CITED_DONE, EASY_NEARMISS, LEAKS_RESULT, RAW_DONE, RAW_SKIPPED, badge_effect, bootstrap_ci, catch_rate,
-    cited_skipped, collect, holm, report_model, separation_effect, sign_flip_p, skipped_shift, summary,
+    cited_skipped, collect, done_shift, holm, report_model, separation_effect, sign_flip_p, skipped_shift, summary,
 )
 from families import load_set
 from render import POINTERS
@@ -92,6 +92,15 @@ def test_report_runs_and_marks_the_confirmatory_reviewer():
     assert "Primary comparison" in text and p == 2 / 2 ** len(FAMILIES)
     text, _ = report_model("glm-5.2", data)
     assert "Primary comparison" not in text and "Badge line" not in text
+
+
+def test_finished_logs_report_false_alarms_and_the_shift_from_real_citations():
+    data = collect(rows_for({**base_scores(), RAW_DONE: 40.0, CITED_DONE: 70.0}))
+    assert done_shift(data, "fam0") == 30.0
+    assert catch_rate(data, RAW_DONE) == 1.0 and catch_rate(data, CITED_DONE) == 0.0
+    text, _ = report_model("glm-5.2", data)
+    assert "false alarms): raw 100%, cited 0%" in text
+    assert "finished log with real citations minus without: mean +30.0" in text
 
 
 def test_report_handles_an_empty_results_file():
