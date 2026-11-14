@@ -15,7 +15,7 @@ A family is one small agent task, stored as data/families/<id>.toml.
 
 `validate` enforces all of this, so a family that loads is a valid twin pair.
 
-There are four sets of families.
+There are five sets of families.
 
 - `pilot`, in data/families: three hand-built families, each with a short and a long log.
 - `malt`, in data/families_malt: families built from real agent runs in METR's MALT dataset by
@@ -30,6 +30,11 @@ There are four sets of families.
   scripts/build_related_families.py on the same eight tasks. Each has the acceptance check and
   exactly 7 other claims, which are neutral work, related evidence or lookalike checks, and in
   two conditions the task does not state its requirement.
+- `malt_norel`, in data/families_malt_norel: three `malt` families with their related evidence
+  removed by scripts/build_malt_norel_families.py. Related evidence is a passing run of the
+  agent's own program on an input other than the reported one. Every claim that rested only on a
+  removed step is dropped, and each file's [norel] table lists what was removed. They follow the
+  rules of a real run.
 """
 
 import re
@@ -41,8 +46,10 @@ FAMILIES_DIR = Path(__file__).parent / "data" / "families"
 MALT_FAMILIES_DIR = Path(__file__).parent / "data" / "families_malt"
 DILUTION_FAMILIES_DIR = Path(__file__).parent / "data" / "families_dilution"
 RELATED_FAMILIES_DIR = Path(__file__).parent / "data" / "families_related"
+MALT_NOREL_FAMILIES_DIR = Path(__file__).parent / "data" / "families_malt_norel"
 SETS = {"pilot": FAMILIES_DIR, "malt": MALT_FAMILIES_DIR, "dilution": DILUTION_FAMILIES_DIR,
-        "related": RELATED_FAMILIES_DIR}
+        "related": RELATED_FAMILIES_DIR, "malt_norel": MALT_NOREL_FAMILIES_DIR}
+REAL_SETS = ("malt", "malt_norel")  # sets whose logs are real runs
 DILUTION_ID = re.compile(r"dil-[a-z]+-(k01|k03|k07|k15|pad)")
 RELATED_ID = re.compile(r"rel-[a-z]+-(r1|r3|r7|look|imp0|imp7)")
 RELATED_CLAIMS = 8  # 7 other claims and the acceptance claim
@@ -131,7 +138,7 @@ def validate(family: Family) -> None:
         fail("id and task are required")
     if family.set == "pilot" and not family.intro:
         fail("a hand-built report needs an intro")
-    if family.set == "malt":
+    if family.set in REAL_SETS:
         if any(step.filler for step in family.steps):
             fail("a real run has no filler steps")
         if not dict(family.source).get("run_id"):

@@ -15,7 +15,8 @@ KEY_ENV="$1"; SFX="$2"; TEMPLATES="$3"; MALT="$4"
 cd "$(dirname "$0")/.."
 export UV_CACHE_DIR="${UV_CACHE_DIR:-${TMPDIR:-/tmp}/uv-cache}"
 
-REL=""; TWO=""; R7=""; K07=""; DIL=""
+REL=""; TWO=""; R7=""; K07=""; DIL=""; NOREL=""
+for f in $MALT; do [ -f "data/families_malt_norel/$f-norel.toml" ] && NOREL="$NOREL $f-norel"; done
 for t in $TEMPLATES; do
   for c in r1 r3 r7 look imp0 imp7; do REL="$REL rel-$t-$c"; done
   TWO="$TWO rel-$t-r7 rel-$t-look"; R7="$R7 rel-$t-r7"; K07="$K07 dil-$t-k07"
@@ -35,16 +36,18 @@ stage() {  # name model set arm readings budget families...
 
 stage related          deepseek-v4-flash related  score   20 12 $REL
 stage malt-two         deepseek-v4-flash malt     two     10 12 $MALT
+[ -n "$NOREL" ] && stage norel deepseek-v4-flash malt_norel score 20 12 $NOREL
+stage verdict-malt     deepseek-v4-flash malt     verdict 20 12 $MALT
 stage related-two      deepseek-v4-flash related  two     20 12 $TWO
 stage dilution-two     deepseek-v4-flash dilution two     20 12 $K07
 stage malt-two         gemma-4-31b-it    malt     two     10 10 $MALT
+[ -n "$NOREL" ] && stage norel qwen3.5-397b malt_norel score 10 20 $NOREL
+stage dilution-verdict deepseek-v4-flash dilution verdict 20 12 $DIL
 stage related          gemma-4-31b-it    related  score   20 10 $REL
 stage related-two      gemma-4-31b-it    related  two     20 10 $TWO
 stage dilution-two     gemma-4-31b-it    dilution two     20 10 $K07
 stage dilution         gemma-4-31b-it    dilution score   20 10 $DIL
-stage dilution-verdict deepseek-v4-flash dilution verdict 20 12 $DIL
 stage dilution-verdict gemma-4-31b-it    dilution verdict 20 10 $DIL
-stage verdict-malt     deepseek-v4-flash malt     verdict 20 12 $MALT
 stage verdict-malt     gemma-4-31b-it    malt     verdict 20 10 $MALT
 stage related-verdict  deepseek-v4-flash related  verdict 20 12 $R7
 stage related-verdict  gemma-4-31b-it    related  verdict 20 10 $R7

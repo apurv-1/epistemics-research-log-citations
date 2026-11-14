@@ -821,7 +821,8 @@ def main() -> None:
     parser.add_argument("--set", default="pilot", choices=[*SETS, "all"],
                         help="pilot: the hand-built families. malt: the families built from real MALT runs. "
                              "dilution: the constructed families with one acceptance check and k other claims. "
-                             "related: the same tasks with 7 other claims that are neutral, related or lookalike.")
+                             "related: the same tasks with 7 other claims that are neutral, related or lookalike. "
+                             "malt_norel: three malt families with the passing runs on other inputs removed.")
     parser.add_argument("--instructions", default="score", choices=ARMS,
                         help="score: one 0 to 100 score, as in every earlier run. "
                              "verdict: the claims are numbered and the reviewer gives a verdict for each. "
