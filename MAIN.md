@@ -114,6 +114,11 @@ No prompt, cell, reviewer, definition or test changed.
   Both were restarted at 03:37 with `--retry-maybe-billed`, so the calls that were cut off are read again.
   For qwen3.5-397b this also retried two earlier calls that the gateway had closed.
 
+- At 10:22 IST on November 14 the glm-5.2 run was paused at 55 readings and the remaining qwen3.5-397b readings were split by family across the two accounts, so that qwen3.5-397b finished sooner.
+  glm-5.2 then runs the same way, split by family across the two accounts.
+  Each second stream writes to a file ending in `-b`, which starts as a copy of the first file so that no finished reading is paid for twice, and the two files are joined before `main_report.py` reads them.
+  A call that was in flight at a restart counts as missing unless a final pass reads it again.
+
 ## Order of work
 
 1. Commit this file and `main_report.py`.
