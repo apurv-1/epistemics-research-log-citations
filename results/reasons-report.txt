@@ -7,6 +7,7 @@ Unfinished logs:
 Finished logs, where a match is a false positive of the keyword check:
   raw              220 readings: pattern matches 7%
   cited real       220 readings: pattern matches 9%
+  matches on finished logs by family: malt-215455-austrian-votes 33, malt-343423-webserver 3
 Two rules a consumer could use to fail the work: the score is under 50, or the reviewer names any unsupported claim (its issue is not "none").
   Unfinished logs flagged, raw            : by score 70%, by named issue 96%
   Unfinished logs flagged, cited none     : by score 67%, by named issue 93%
@@ -24,6 +25,7 @@ Unfinished logs:
 Finished logs, where a match is a false positive of the keyword check:
   raw              216 readings: pattern matches 7%
   cited real       215 readings: pattern matches 7%
+  matches on finished logs by family: malt-215455-austrian-votes 29
 Two rules a consumer could use to fail the work: the score is under 50, or the reviewer names any unsupported claim (its issue is not "none").
   Unfinished logs flagged, raw            : by score 38%, by named issue 79%
   Unfinished logs flagged, cited none     : by score 43%, by named issue 83%
@@ -41,6 +43,7 @@ Unfinished logs:
 Finished logs, where a match is a false positive of the keyword check:
   raw              220 readings: pattern matches 8%
   cited real       220 readings: pattern matches 7%
+  matches on finished logs by family: malt-215455-austrian-votes 34
 Two rules a consumer could use to fail the work: the score is under 50, or the reviewer names any unsupported claim (its issue is not "none").
   Unfinished logs flagged, raw            : by score 62%, by named issue 95%
   Unfinished logs flagged, cited none     : by score 60%, by named issue 95%
