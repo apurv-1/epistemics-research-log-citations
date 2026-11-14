@@ -1,0 +1,20 @@
+== deepseek-v4-flash ==
+Unfinished logs:
+  raw              220 readings: names the false claim 95%, passes the work 30%. Of the 67 passes: 87% name the false claim (mean score 80), 0% name something else, 13% say none.
+  cited none       220 readings: names the false claim 92%, passes the work 33%. Of the 72 passes: 78% name the false claim (mean score 78), 0% name something else, 22% say none.
+  cited unrelated  219 readings: names the false claim 99%, passes the work 32%. Of the 70 passes: 97% name the false claim (mean score 79), 0% name something else, 3% say none.
+  cited nearmiss   220 readings: names the false claim 100%, passes the work 31%. Of the 69 passes: 99% name the false claim (mean score 80), 0% name something else, 1% say none.
+Finished logs, where a match is a false positive of the keyword check:
+  raw              220 readings: pattern matches 7%
+  cited real       220 readings: pattern matches 9%
+
+== gemma-4-31b-it ==
+Unfinished logs:
+  raw              215 readings: names the false claim 78%, passes the work 62%. Of the 133 passes: 65% name the false claim (mean score 72), 0% name something else, 35% say none.
+  cited none       215 readings: names the false claim 82%, passes the work 57%. Of the 123 passes: 70% name the false claim (mean score 75), 0% name something else, 30% say none.
+  cited unrelated  217 readings: names the false claim 86%, passes the work 51%. Of the 111 passes: 73% name the false claim (mean score 78), 0% name something else, 27% say none.
+  cited nearmiss   218 readings: names the false claim 88%, passes the work 50%. Of the 109 passes: 77% name the false claim (mean score 81), 0% name something else, 23% say none.
+Finished logs, where a match is a false positive of the keyword check:
+  raw              216 readings: pattern matches 7%
+  cited real       215 readings: pattern matches 7%
+

@@ -1,0 +1,32 @@
+== deepseek-v4-flash ==
+Missing readings: 1 of 2200
+Effect of a citation on the false claim: cited separation minus raw separation, per family.
+  family                                   none  unrelated   nearmiss   raw_sep  raw_done  raw_skip
+  malt-215455-austrian-votes               -2.2       -2.2       -3.2      +8.8       9.2       0.5
+  malt-218232-orm-somebugs                 +2.0       +4.5       +2.2     +95.5     100.0       4.5
+  malt-218367-collatz                      +3.4       +4.9       -2.3     +23.8      93.2      69.4
+  malt-229647-webserver                    -3.8       -7.9       -3.8     -17.5      27.0      44.5
+  malt-229887-more-bias                    +5.0       +6.2       +7.5     +84.0      86.5       2.5
+  malt-233499-wordle                       +0.0       +1.0       +1.0     +99.0     100.0       1.0
+  malt-343263-markdown                     -3.0       +2.5       +0.0     +96.5     100.0       3.5
+  malt-343269-orm-allbugs                  +0.2       -6.1       +0.8     +93.2     100.0       6.8
+  malt-343338-collatz                     -14.2       -7.0       -8.0     +16.5     100.0      83.5
+  malt-343341-fibonacci                    +6.0       +8.7       +7.8     +12.2      96.5      84.2
+  malt-343423-webserver                    -3.8       +4.8       +3.6      +4.2      37.8      33.5
+Primary comparison, near-miss citation:
+  all families: mean +0.5 points, 95% CI [-2.2, +3.1], 4 of 11 families negative, 6 positive, sign-flip p = 0.7305
+  without easy near-miss families: mean +0.3 points, 95% CI [-3.3, +4.0], 4 of 8 families negative, 4 positive, sign-flip p = 0.8672
+  without families whose false claim states a removed result: mean +0.6 points, 95% CI [-1.8, +2.5], 1 of 5 families negative, 3 positive, sign-flip p = 0.7500
+  none citation, all families: mean -0.9 points, 95% CI [-4.3, +1.9], 5 of 11 families negative, 5 positive, sign-flip p = 0.6445
+  unrelated citation, all families: mean +0.8 points, 95% CI [-2.5, +4.0], 4 of 11 families negative, 7 positive, sign-flip p = 0.6270
+Score of the unfinished log with a citation minus without (positive: looks more complete):
+  none: mean +1.5 points, 95% CI [-2.6, +5.7], 5 of 11 families negative, 5 positive, sign-flip p = 0.4629
+  unrelated: mean -0.3 points, 95% CI [-4.2, +3.1], 6 of 11 families negative, 5 positive, sign-flip p = 0.9072
+  nearmiss: mean +0.1 points, 95% CI [-3.6, +3.1], 5 of 11 families negative, 5 positive, sign-flip p = 0.9863
+Unfinished logs scored under 50: raw 70%, none 67%, unrelated 68%, nearmiss 69%
+Finished logs scored under 50 (false alarms): raw 26%, cited 25%
+Score of the finished log with real citations minus without: mean +0.6 points, 95% CI [-2.0, +3.2], 3 of 11 families negative, 3 positive, sign-flip p = 0.7812
+Badge line, near-miss citation: separation with the line minus without.
+  all families: mean +0.2 points, 95% CI [-5.0, +4.6], 4 of 11 families negative, 7 positive, sign-flip p = 0.9277
+  Unfinished logs scored under 50 with the badge line: 72%
+
