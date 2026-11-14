@@ -15,8 +15,9 @@ KEY_ENV="$1"; SFX="$2"; TEMPLATES="$3"; MALT="$4"
 cd "$(dirname "$0")/.."
 export UV_CACHE_DIR="${UV_CACHE_DIR:-${TMPDIR:-/tmp}/uv-cache}"
 
-REL=""; TWO=""; R7=""; K07=""; DIL=""; NOREL=""
+REL=""; TWO=""; R7=""; K07=""; DIL=""; NOREL=""; STATED=""
 for f in $MALT; do [ -f "data/families_malt_norel/$f-norel.toml" ] && NOREL="$NOREL $f-norel"; done
+for f in $MALT; do [ -f "data/families_malt_stated/$f-stated.toml" ] && STATED="$STATED $f-stated"; done
 for t in $TEMPLATES; do
   for c in r1 r3 r7 look imp0 imp7; do REL="$REL rel-$t-$c"; done
   TWO="$TWO rel-$t-r7 rel-$t-look"; R7="$R7 rel-$t-r7"; K07="$K07 dil-$t-k07"
@@ -38,6 +39,7 @@ stage related          deepseek-v4-flash related  score   20 12 $REL
 stage malt-two         deepseek-v4-flash malt     two     10 12 $MALT
 [ -n "$NOREL" ] && stage norel deepseek-v4-flash malt_norel score 20 12 $NOREL
 stage verdict-malt     deepseek-v4-flash malt     verdict 20 12 $MALT
+[ -n "$STATED" ] && stage stated deepseek-v4-flash malt_stated score 20 12 $STATED
 stage related-two      deepseek-v4-flash related  two     20 12 $TWO
 stage dilution-two     deepseek-v4-flash dilution two     20 12 $K07
 stage malt-two         gemma-4-31b-it    malt     two     10 10 $MALT
