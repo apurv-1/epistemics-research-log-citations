@@ -8,15 +8,15 @@ Research conducted at the AI x Epistemics Research Sprint, November 2026 (Track 
 
 ## Abstract
 
-AI agents report on their own work, and often a second model, the reviewer, decides whether to believe the report.
-We pair a full agent log with a cut log missing one check step, so the agent's unchanged report makes exactly one false claim.
-On 11 pairs built from real agent runs in METR's MALT dataset, a citation to a real step that looks relevant but does not show the claim did not fool three open-weight reviewers on average (pre-registered effect on deepseek-v4-flash +0.5 points, 95% CI -2.2 to +3.1).
-Exploratory analysis found a different failure: the reviewers name an unsupported claim and still score 26% to 40% of cut logs 50 or more.
-This happens almost only where the cut log still shows related evidence, such as the agent's program working on other inputs: there, deepseek-v4-flash flagged and passed 57% of cut logs, against 1% elsewhere.
-On eight constructed tasks that state their requirement, putting related evidence around the false claim did not soften the penalty (pre-registered, -4.4 points, 95% CI -11.1 to +0.6); when the requirement was only implied, it shrank the penalty by 17.3 more points, and the reviewer flagged every cut log yet passed 64% of them (secondary).
-Failing every flagged log instead of reading the score at 50 raised the gap between cut-log and full-log failure rates by 23 to 36 points on the open-weight reviewers, but lowered it for Claude Sonnet 5.5 and Opus 5.5, which rarely pass a flagged cut log yet flag many full logs.
-{{ABSTRACT_SHOWN}}
-Trust infrastructure for agent reports should carry the reviewer's claim-level finding as its own field and choose the gate per reviewer on labelled pairs like ours.
+AI agents report on their own work, and often a second model, the reviewer, decides whether to believe it.
+We pair a full agent log with a cut log missing one check step, so the unchanged report makes exactly one false claim.
+On 11 pairs from real agent runs in METR's MALT dataset, a citation to a relevant-looking step that does not show the claim did not fool three open-weight reviewers on average (pre-registered; deepseek-v4-flash +0.5 points, 95% CI -2.2 to +3.1).
+Instead, the reviewers name an unsupported claim and still score 26% to 40% of cut logs 50 or more, almost only where the cut log still shows related evidence, such as passing runs on other inputs.
+On eight constructed tasks stating their requirement, related evidence did not soften the penalty (pre-registered, -4.4 points, 95% CI -11.1 to +0.6).
+When the requirement was only implied, it shrank the penalty by 17.3 more points, and the reviewer flagged every cut log yet passed 64% of them (secondary).
+Asked how fully the log shows the report, deepseek-v4-flash rated cut logs with related evidence 66 of 100, against 6 elsewhere.
+Failing every flagged log, instead of using a pass line of 50, separated cut from full logs by 23 to 36 points more on the open-weight reviewers, but worse on Claude Sonnet 5.5 and Opus 5.5, which flag many full logs.
+Trust infrastructure should state the requirement, carry the reviewer's claim-level finding as its own field, and calibrate the gate per reviewer.
 
 ## 1. Introduction
 
@@ -130,7 +130,13 @@ The one family where Claude Sonnet 5.5 passed a cut log is of this kind: two of 
 {{NOREL_RESULT}}
 
 **Two numbers instead of one.**
-{{MALT_TWO_RESULT}}
+We asked deepseek-v4-flash for the two numbers on the same 11 families, 10 readings per prompt, under a comparison fixed in `RELATED.md` before any reading (218 of 220 readings).
+Failing a log when **shown** was under 50 gave a discrimination of 60 points, against 44 for a pass line of 50 on the score.
+The difference, +16.4 points, was not significant (5 families up, 4 down, p = 0.17), and the flag gate did about as well (67 points).
+The two numbers did not keep belief and evidence apart on this reviewer.
+In the five related-evidence families it rated the cut logs 66 on **shown**, against 88 for the full logs, and 71 on **works** for both.
+In the other six families it rated the cut logs 6 on **shown**.
+So where related evidence was present, deepseek-v4-flash did more than fold a belief into its score: it judged that the log largely showed a check that was not there.
 
 ![Figure 1](figures/pass-line.png)
 
@@ -198,7 +204,10 @@ Study 3 shows when the two come apart.
 While the task stated its requirement, the open-weight reviewer kept the score low whatever surrounded the false claim.
 When it had to infer the requirement, it still named the missing check, and then scored the work as if it was judging whether the work probably succeeded.
 A consumer cannot see which of the two questions a single score answers.
-{{DISCUSSION_TWO}}
+The two-number readings separate the reviewers.
+Claude Sonnet 5.5 and Opus 5.5 raised **works** when nearby checks passed and kept **shown** near 5, so for them the two questions stay apart when asked separately.
+deepseek-v4-flash, on real logs with related evidence, rated the missing check as largely shown, so its error lies in reading the log and not only in what it puts into one score.
+A separate evidence field is therefore necessary but not sufficient: its value depends on the reviewer that fills it.
 
 **A design rule for trust infrastructure.**
 A trust signal for an AI consumer should carry, per claim, whether it resolves, whether the log shows it, and what the reviewer found, as separate fields from any judgement of the work.
