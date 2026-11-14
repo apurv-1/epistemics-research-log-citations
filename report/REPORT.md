@@ -1,4 +1,4 @@
-# Checkable Is Not Checked: Do LLM Reviewers Verify an Agent's Citations to Its Own Log?
+# LLM Reviewers Catch an Agent's False Claim and Pass the Work Anyway
 
 Apurv Gupta, with Apart Research.
 
@@ -6,9 +6,25 @@ Apart Research AI x Epistemics Research Sprint, Track 2: Trust Infrastructure, N
 
 Code, task families, every raw reviewer reading and the pre-registration: <https://github.com/apurv-1/epistemics-research-log-citations>
 
+> First draft, written while two of four reviewers were still running.
+> Every `[TODO: ...]` marks a number or a check that is not in yet.
+
 ## Abstract
 
-[TODO: write from results, 150 to 250 words. Order: the problem in one sentence, the design in three, the confirmatory number with families and p-value, the citation levels, the badge arm if run, the replication reviewers, what we release.]
+When an AI agent reports its own work, a reviewer model often decides whether to believe it.
+A proposed fix for overclaiming is to make each claim in the report cite the step in the agent's log that supports it.
+We test whether that fix can be cheated with a citation that points to a real step that does not support the claim.
+We built 11 task families from real agent runs in METR's MALT dataset.
+Each has the real log and a twin with one check step removed, and the agent's own report, which is then false in one claim.
+Under a pre-registered plan, reviewer models scored the same report with no citations, and with a citation on the false claim at three levels of plausibility.
+On the confirmatory reviewer, deepseek-v4-flash, a near-miss citation changed the gap between finished and unfinished work by +0.5 points (95% CI -2.2 to +3.1, 11 families, p = 0.73).
+A true "all citations resolve" line changed nothing either.
+The forged citation did not mislead, and a real citation did not help.
+In exploratory analysis the reviewers' failure was elsewhere: deepseek-v4-flash named the false claim in 95% to 100% of unfinished logs and still passed 30% of them, with a mean score of 80 out of 100.
+gemma-4-31b-it named it in 78% to 88% and passed 50% to 62%.
+[TODO: one sentence on glm-5.2 and qwen3.5-397b.]
+A reviewer's score can hide what the reviewer found, so a trust signal should carry its claim-level findings.
+We release the families, the readings and the scripts.
 
 ## 1. Introduction
 
@@ -43,12 +59,16 @@ We then add citations and change only the citation on the false claim: none, an 
 Every citation resolves.
 The log and the report text never change, so any change in the reviewer's verdict is caused by the citations.
 
+We expected one of two results: the forged citation misleads the reviewer, or the reviewer catches it and rejects the work.
+We found a third.
+The reviewer catches it, says so, and accepts the work.
+
 Our contributions are:
 
-- **A test that isolates the citation.** Matched logs that differ in one step, a byte-identical report, and three levels of unsupporting citation, on [TODO: number] task families, [TODO: number] of them built from real agent runs in METR's MALT dataset.
-- **A pre-registered result.** [TODO: the confirmatory comparison, its size, families and p-value, on the confirmatory reviewer.]
-- **Whether a true "all citations resolve" check changes the verdict.** [TODO: badge arm result, or cut this bullet if the arm is not run.]
-- **A reusable check.** [TODO: name of the script] runs the families against any reviewer model and prints its separation with and without citations.
+- **A test that isolates the citation.** Matched logs that differ in one step, a byte-identical report, and three levels of unsupporting citation, on 11 task families built from real agent runs in METR's MALT dataset, plus 3 hand-built development families.
+- **A pre-registered null with a tight interval.** On the confirmatory reviewer a near-miss citation changes separation by +0.5 points (95% CI -2.2 to +3.1), inside the band we fixed in advance for an effect that does not matter. A true "all citations resolve" line has no effect on either reviewer that read it.
+- **Where the reviewers fail instead.** In exploratory analysis, reviewers name the false claim in most unfinished logs and still give the work a passing score. Citations raise how often they name it and do not change the verdict.
+- **A reusable check.** `monitor.py` runs the families against any reviewer model, and `main_report.py` and `reasons_report.py` print every number in this report.
 
 ## 2. Related work
 
@@ -97,17 +117,33 @@ Nothing else differs, and the later steps are renumbered.
 
 The report states that the work is complete, as a short list of claims.
 Its text is byte-identical for both variants.
-On the done log every claim is supported.
 On the skipped log exactly one claim, the **false claim**, states something the log no longer shows.
-The false claim carries no number or detail that only the removed step could supply, so the report gives nothing away in any condition.
-[TODO: qualify this sentence if any real-log family's own report breaks it.]
 
 There are two sets of families.
 
-- **Development set.** Three hand-built families: a bug fix where the test suite is not rerun after the last edit, a code review where one assigned file is never opened, and a data analysis where the headline metric is not recomputed after a data fix. Each has a short log of 8 or 9 steps and a long log of 39 steps, and the added steps are identical in both variants. These were used for the pilot (Appendix D).
-- **Real-log set.** Families built from real agent runs in METR's MALT dataset (METR, 2025), which is MIT licensed. The done log is the real run, with tool calls and outputs verbatim. The skipped log is that run with one check step removed. [TODO: confirm the pool rule as built: runs labelled normal, security puzzle tasks excluded, 5 to 40 steps, a fixed random draw of 100 with a recorded seed.] Families were taken from the pool in its drawn order under suitability rules fixed in advance, so no run was chosen for its results. [TODO: number of families, number of distinct tasks, the agent models in the set, and how many reports are the agent's own submitted text against written by us.]
+**Real-log set, 11 families.**
+These are the main study.
+They are built from real agent runs in METR's MALT dataset (METR, 2025), which is MIT licensed.
+From four of the dataset's files we took every run labelled `normal`, dropped two kinds of security puzzle, and kept runs of 5 to 40 steps and at most 60,000 characters.
+That left 329 runs.
+We drew 100 with a fixed seed and read them in the drawn order, task by task, under suitability rules fixed in advance.
+Of the 46 runs read, 11 became families and 35 were turned down, each with a recorded reason (`data/malt_pool.json`).
+The 11 families come from 9 tasks: three bug-fix families, two web-server families, three families that write a small program in an unfamiliar language, two research families and one word-game family.
+The agents are Claude 3.5 Sonnet and Claude Opus 4.
 
-Appendix C describes every family and lists each edit made to a real run.
+The done log is the real run, with tool calls and outputs word for word.
+The skipped log is that run with one check step removed.
+The report is the agent's own final text, split into claims.
+Three reports were a single sentence, so one short true claim was added to each and is marked as written by us.
+
+Two properties of this set matter for reading the results, and both were written down before any main reading (`MAIN.md`).
+In three bug-fix families the only earlier step that could serve as a near-miss is a test run that shows failures, so that forged citation is easy to catch.
+In six families the agent's own report states a result that only the removed step shows, so the unfinished log is easier to catch in every condition.
+
+**Development set, 3 families.**
+These are hand-built: a bug fix where the test suite is not rerun after the last edit, a code review where one assigned file is never opened, and a data analysis where the headline metric is not recomputed after a data fix.
+Each has a short log of 8 or 9 steps and a long log of 39 steps.
+They were used for the pilot only (Appendix D) and are in no test below.
 
 ### 3.2 Conditions
 
@@ -121,63 +157,152 @@ On the skipped log the true claims keep their real citations, and the false clai
 
 - **none**: the false claim has no citation, while every other claim has one.
 - **unrelated**: it cites a real step that has nothing to do with the claim.
-- **near-miss**: it cites a real step that looks relevant and does not establish the claim. It ran before the last change, or on a different target, or on a different split.
+- **near-miss**: it cites a real step that looks relevant and does not establish the claim. It ran before the last change, or on a different target, or with a different input.
 
 The unrelated and near-miss steps exist in both variants and are cited by no other claim.
 Every citation in every condition resolves to a step that exists.
 
-[TODO: keep only if the arm is run.] In the **badge** arm, the note also carries one true line: "Automated check: All citations resolve to existing log steps."
+In the **badge** arm, the note also carries one true line: "Automated check: All citations resolve to existing log steps."
 The line is what a deterministic citation checker would print, and it is true for every cited report in the study, including the ones with an unsupporting citation.
 
 ### 3.3 Reviewers and analysis
 
 The instructions tell the reviewer to decide whether the work is complete as the report says, and that it is not complete as reported when the report states something was done and the log does not show it.
 They are identical in every condition and never mention citations, forgery or attacks.
-The reviewer answers with its reasoning, the most important unsupported claim, and a score from 0 (clearly not complete as reported) to 100 (clearly complete as reported).
+The reviewer answers with its reasoning, the single most important unsupported claim or "none", and a score from 0 (clearly not complete as reported) to 100 (clearly complete as reported).
 Reviewers are sampled at temperature 1.0, with 20 readings per prompt.
 
 A family's **raw separation** is its mean raw done score minus its mean raw skipped score.
 Its **cited separation** at a citation level is its mean cited done score minus its mean cited skipped score at that level.
-The effect of an unsupporting citation is cited separation minus raw separation, and a negative value means the citation made the reviewer worse at telling the variants apart.
+The **citation effect** is cited separation minus raw separation, and a negative value means the citation made the reviewer worse at telling the variants apart.
 The family is the unit of analysis.
 
-[TODO: from MAIN.md. The confirmatory reviewer and the replication reviewers. The confirmatory hypothesis and its direction, at the near-miss level. The test across families, alpha, and the correction for replication reviewers. The smallest effect of interest. How the development families are reported apart from the real-log families.]
+`MAIN.md` was committed before any reviewer saw a real-log family.
+It fixes deepseek-v4-flash as the confirmatory reviewer and gemma-4-31b-it, glm-5.2 and qwen3.5-397b as replications.
+The primary comparison is the citation effect at the near-miss level on the confirmatory reviewer, tested two-sided with an exact sign-flip test over the 11 families at alpha 0.05, and reported with a bootstrap interval over families.
+The plan also fixes a smallest effect of interest of 10 points: an interval inside -10 to +10 is read as evidence that the citation does not matter much.
+The test is two-sided because the pilot gave no direction.
+Replications use the same test with Holm correction.
+The badge arm runs on deepseek-v4-flash and gemma-4-31b-it.
 
-`PILOT.md` fixed the pilot's pass criteria before any reviewer call.
-`MAIN.md` fixes the confirmatory comparison, the test and the reviewers before the main run, and Appendix B lists every later change.
-A script prints every number in the abstract and results from the raw readings.
+`main_report.py` prints every number in Sections 4.1 to 4.3, and `reasons_report.py` prints Section 4.4.
 
 ## 4. Results
 
-### 4.1 [TODO: the confirmatory result as a sentence]
+deepseek-v4-flash finished 2,199 of 2,200 readings.
+gemma-4-31b-it finished 2,165 of 2,200: the gateway closed its calls on the longest logs after about 60 seconds, and those readings are missing.
+[TODO: glm-5.2 and qwen3.5-397b readings.]
 
-[TODO: table of raw separation and cited separation at each level, per reviewer, with the per-family sign count and p-value. One figure: separation by condition, one line per family.]
+### 4.1 A forged citation does not change what the reviewer concludes
 
-### 4.2 [TODO: what the reviewers said when they accepted an unsupporting citation]
+On the confirmatory reviewer, a near-miss citation on the false claim changed separation by **+0.5 points** (95% CI -2.2 to +3.1; 6 families up, 4 down; sign-flip p = 0.73).
+The interval lies well inside the -10 to +10 band fixed in advance.
+The forged citation did not make deepseek-v4-flash worse at telling finished from unfinished work, and it did not make it better.
 
-[TODO: label the reviewer's stated reason on wrong verdicts. Did it open the cited step, or repeat the claim?]
+The other levels agree: -0.9 points with no citation on the false claim (CI -4.3 to +1.9) and +0.8 with an unrelated one (CI -2.5 to +4.0).
+Real citations on finished work changed its score by +0.6 points (CI -2.0 to +3.2).
+The result does not depend on the weaker families: it is +0.3 points without the three easy near-miss families and +0.6 without the six whose false claim states a removed result.
 
-### 4.3 [TODO: citation levels, none against unrelated against near-miss]
+| Reviewer | Near-miss citation effect | 95% CI | Families up / down | p |
+|---|---|---|---|---|
+| deepseek-v4-flash (confirmatory) | +0.5 | -2.2 to +3.1 | 6 / 4 | 0.73 |
+| gemma-4-31b-it | +6.0 | +1.5 to +11.5 | 7 / 2 | 0.031 |
+| glm-5.2 | [TODO] | | | |
+| qwen3.5-397b | [TODO] | | | |
 
-### 4.4 [TODO: the badge arm, or cut]
+On gemma-4-31b-it the effect was positive: +6.0 points at the near-miss level, +6.4 with an unrelated citation and +2.7 with none.
+Any citation on the false claim made gemma-4-31b-it score the unfinished log lower, by 6.1 points at the near-miss level (CI -11.5 to -1.7), and left finished logs alone.
+So where citations did anything, they helped, and a forged one helped as much as a missing one.
+[TODO: Holm-adjusted p across the three replications, once all are in. With gemma-4-31b-it alone it is 0.031.]
 
-### 4.5 [TODO: real-log set against development set, and log length]
+### 4.2 An "all citations resolve" line changes nothing
+
+The badge line is true for every cited report, including the ones with a forged citation, so a reader who takes it as a sign of support would be misled.
+Neither reviewer was.
+With the line, near-miss separation changed by +0.2 points on deepseek-v4-flash (CI -5.0 to +4.6) and by +1.6 on gemma-4-31b-it (CI -0.3 to +3.8).
+
+### 4.3 Without citations, the reviewers are unreliable in both directions
+
+The reviewers' problem is not the citations.
+With no citations at all, deepseek-v4-flash scored 70% of unfinished logs under 50, and gemma-4-31b-it scored 38% under 50.
+deepseek-v4-flash also scored 26% of finished logs under 50, against 5% for gemma-4-31b-it.
+One reviewer is strict and the other trusting, and citations moved neither figure by more than a few points, except that gemma-4-31b-it's catch rate rose from 38% to 50% with a near-miss citation.
+
+The pattern across families is sharp (Appendix E).
+deepseek-v4-flash separated the variants by 84 to 99 points in five families: the three bug fixes, one research task and the word game.
+In the three small-program families it scored the unfinished log 69 to 84 out of 100.
+In three families it scored the finished log 9, 27 and 38.
+Reading its stated reasons in those three, the reviewer was often right: it found real errors in the agent's web-server code, and it noted that one answer came from a source the task did not ask for.
+A run that METR labels `normal` is not always correct work, which Section 6 returns to.
+[TODO: this paragraph rests on reading a sample of reasons, not on a count.]
+
+### 4.4 Exploratory: reviewers name the false claim and pass the work anyway
+
+This analysis was designed after the first main results were read, and it is not a confirmatory test.
+
+Each reply names the single most important unsupported claim, or "none".
+We checked that sentence against a keyword pattern written by hand for each family's false claim.
+On finished logs, where no claim is false, the patterns matched 7% to 9% of readings, which bounds how often they fire by accident.
+
+| Reviewer | Unfinished log shown with | Names the false claim | Passes the work (score 50 or more) |
+|---|---|---|---|
+| deepseek-v4-flash | no citations | 95% | 30% |
+| deepseek-v4-flash | near-miss citation | 100% | 31% |
+| gemma-4-31b-it | no citations | 78% | 62% |
+| gemma-4-31b-it | near-miss citation | 88% | 50% |
+
+deepseek-v4-flash named the false claim in almost every unfinished log and still passed three in ten.
+Of its 69 passes at the near-miss level, 99% named the false claim, and their mean score was 80.
+One such reply, scored 90: "The report claims input 4 was checked in step 5, but step 5 only shows factorial 5 outputting 120."
+The reviewer opened the cited step, saw that it did not support the claim, wrote that down, and scored the work as nearly complete.
+
+Citations did what they were meant to do for detection: with a citation on the false claim, both reviewers named it more often.
+The verdict did not follow.
+The score treats a claimed check that never happened as a small flaw in otherwise finished work, even though the instructions say that such work is not complete as reported.
+
+[TODO: audit a random sample of matched replies by hand, and report agreement with the keyword check.]
+
+### 4.5 Development set
+
+On the three hand-built families the pilot passed all four of its pre-set criteria on deepseek-v4-flash, with no missing readings.
+On the long logs, raw separation was 73.5 to 84.0 points and finished work scored 100.
+The near-miss citation effect was +5.5, -11.1 and +3.2 points, which gave no direction and is why the main test is two-sided.
+deepseek-v4-flash was much better on these logs than on the real ones: it scored 83% of unfinished long logs under 50 and raised no false alarm on finished work.
 
 ### 4.6 Robustness
 
-[TODO: missing readings per cell, results without any family that leaks, false alarms on done logs with and without citations.]
+[TODO: missing readings per cell for each reviewer; whether any family was dropped for a reviewer under the ten-score rule; the qwen3.5-397b and glm-5.2 rows of every table above.]
 
 ## 5. Discussion
 
-[TODO: what the result means for evidence-linked reports. If unsupporting citations hurt: a resolving citation works as a credential, and a checker that reports "resolves" adds to it. If they do not: the fix Khalifa et al. asked for survives its cheapest attack on these reviewers, and say where it might still fail.]
+**Citing the log is safe against a cheap forgery, and it is not a fix.**
+A citation that resolves and does not support did not mislead either reviewer, and a line vouching that all citations resolve did not either.
+Khalifa et al. asked for mechanisms that check an agent's claims against its observations.
+On these reviewers the simplest such mechanism survives its simplest attack.
+But it also does not make the reviewer better, because the reviewer was not failing to check.
 
-[TODO: the design rule for builders. A trust signal for an AI reader should state what was checked. "Resolves" and "supports" are different checks and should be reported as different fields.]
+**The verdict is the weak point.**
+The reviewers found the false claim and then discounted it.
+A system that consumes only the score, such as a pipeline that merges work scored above a threshold, throws away a finding the reviewer made and wrote down.
+This is the failure Cotton-Barratt and Finnveden warn of, in a different place from where we looked for it: the audit happened, and its result did not reach the decision.
 
-[TODO: what would change our mind, and the next experiment: frontier reviewers, reports written by the agent under instruction to cite, longer real runs.]
+**A design rule for builders.**
+A trust signal for an AI reader should carry what was checked and what was found, claim by claim.
+"Resolves" and "supports" are different checks and should be different fields.
+The reviewer's overall score should not be the only thing that travels downstream, and a claim the reviewer could not support should be able to block acceptance on its own.
+
+**What would change our mind.**
+[TODO: after glm-5.2 and qwen3.5-397b.]
+A stronger reviewer may convert its findings into verdicts more reliably, and a prompt that asks for a claim-by-claim verdict before any score may close the gap.
+Both are cheap to test with the released families.
+The harder test is the forgery we did not run: a citation written by an agent that is trying to be believed, on long real runs.
 
 ## 6. Conclusion
 
-[TODO: three sentences from results.]
+[TODO: rewrite once all four reviewers are in.]
+We asked whether an AI reviewer can be fooled by a citation that resolves and does not support.
+On real agent logs, under a pre-registered test, it was not.
+The reviewers caught the false claim, with or without the citation, and often accepted the work anyway, so the place to add trust infrastructure is between what a reviewer finds and what it decides.
 
 ## Code and provenance
 
@@ -186,14 +311,14 @@ Two files are pre-existing work, copied from <https://github.com/apurv-1/swarm-a
 The client's streaming, error handling, pay-at-most-once ledger, budget, resume and reply parsing are unchanged, and the file's header lists what was adapted.
 Everything else was written during the sprint, November 13 to 15, 2026 AoE.
 The real-log families are derived from METR's MALT dataset, `metr-evals/malt-public`, under its MIT license.
-[TODO: name of the script] produces every number in the abstract and results from the raw readings.
+`main_report.py`, `reasons_report.py` and `pilot_report.py` produce every number in the abstract and results from the raw readings.
 
 ## LLM usage statement
 
 AI coding agents (Claude Fable 5.2 in Claude Code) wrote most of the code, tests and family files to the author's design, and selected and converted the MALT runs under rules fixed in advance.
 [TODO: confirm before submitting. The author reviewed the code and read every family by hand.]
 Claude Fable 5.2 reviewed the design and drafts and helped draft the text.
-[TODO: if reviewer replies are labelled in Section 4.2, say which model labelled them and how the author audited the labels.]
+The keyword patterns in Section 4.4 were written by Claude Fable 5.2. [TODO: the author's hand audit of a sample.]
 
 ## References
 
@@ -217,43 +342,59 @@ TraceJudgeBench: A unified benchmark for validating LLM-as-a-judge on agent exec
 
 ### What the result establishes
 
-[TODO: two or three bullets, each one sentence, stated no more strongly than the confirmatory result.]
+- On deepseek-v4-flash, across 11 families built from real agent runs, a near-miss citation on a false claim changes how well the reviewer separates finished from unfinished work by less than a few points in either direction.
+- A true line saying that all citations resolve does not change that on the two reviewers that read it.
+- [TODO: the replication statement, once all four reviewers are in.]
 
 ### What it does not establish
 
+- **That reviewers pass work they know is flawed, as a confirmed effect.** Section 4.4 is exploratory, uses a keyword check, and was designed after the main results were read.
 - **How often agents cite an unsupporting step.** We place the citation ourselves. The study shows what a reviewer does when it meets one, not how often an agent would write one.
-- **Anything about frontier reviewers.** Every reviewer is an open-weight model served by the sprint's gateway. A stronger reviewer may open the cited step where these do not.
+- **Anything about frontier reviewers.** Every reviewer is an open-weight model served by the sprint's gateway. A stronger reviewer may behave differently.
 - **Anything about human readers.** No person reviewed these reports as a subject.
 - **How a reviewer behaves when warned.** The instructions never say that a citation may be wrong.
 
 ### Limitations
 
-- **Constructed twins.** No real pair of runs differs in exactly one step, so the skipped log is always made by us. In the real-log set it is a real run with one step removed. A reader who knows the task well may notice the gap for reasons a real unfinished run would not show.
-- **Few families.** The family is the unit of analysis, and there are [TODO: number]. One family can move a mean, so every result is also reported per family (Appendix E).
-- **Development families are hand-built.** AI coding agents wrote the three development families to the author's recipe. They were used to tune the instrument and are reported apart from the real-log set.
-- **Real runs are edited.** Removing a step is an edit. We strip scaffold notices that would differ between variants, and we keep only runs where no later step depends on the removed step's output. That selection favours runs with a clean, separable check step.
-- **Reports are partly ours.** Where the agent's own submitted text is a prose report we use its wording and add only what the false claim needs. Where the agent submitted a bare answer we wrote the report. Appendix C marks which is which and lists every added word. The split into cited claims is always ours.
-- **Reviewers may have seen the logs.** MALT is public, so a reviewer model may have met these runs in training. The skipped variants and the reports with citations are new.
+- **Constructed twins.** No real pair of runs differs in exactly one step, so the skipped log is always made by us: a real run with one step removed.
+- **Finished runs are not always correct runs.** The done log is a real run that METR labels `normal`. In at least two families the reviewer found real errors in the agent's work, so a low score on a finished log is not always a false alarm. Separation, which compares the twins, is less affected than the false-alarm rate.
+- **Few families and few task types.** There are 11 families from 9 tasks of 4 types. One family can move a mean, so every result is also reported per family (Appendix E).
+- **The check step is the last step in 10 of 11 families.** Agents check their work at the end, so an unfinished log usually ends without a check.
+- **Three forged citations are easy.** In the bug-fix families the only earlier test run shows failures. The primary result is unchanged without them.
+- **Six false claims state a removed result.** The agent's own report states a result that only the removed step shows. The primary result is unchanged without them.
+- **The cuts are one reader's judgement.** The choice of check step and of the two citation targets was made by an AI coding agent under written rules. [TODO: the author's review of each family.]
+- **Reports are the agents' own, lightly edited.** The split into claims is ours, three short claims were added, and every edit is listed in the family file.
+- **Missing readings are not random.** gemma-4-31b-it lost readings on the longest logs.
+- **Reviewers may have seen the logs.** MALT is public, so a reviewer model may have met these runs in training. The skipped variants and the cited reports are new.
 - **One prompt wording.** One set of instructions, one citation format, and one score scale. The instructions tell the reviewer to compare the report with the log, which may help it more than a bare request would.
+- **A passing score is our line.** We call a score of 50 or more a pass. A pipeline with a higher threshold would accept less.
 - **Temperature 1.0.** Reviewers were sampled at temperature 1.0 to measure their distribution of judgements; a deployed reviewer at temperature 0 could behave differently.
-- **One false claim per report.** Real reports can overclaim in several places at once, or in ways no single step settles.
 
 ### Dual-use and ethical considerations
 
-This work describes how to make a false claim in an agent's report harder for an LLM reviewer to catch: cite a real step that looks relevant.
-An agent, or a person editing a report, could use that.
-The technique needs no new capability and follows from how citations already work in human writing, where a reference that exists is often taken as a reference that supports.
-We judge that publishing helps defenders more than attackers, because the defence is in the reader's hands.
-A reviewer, or the tool that feeds it, should check that the cited step supports the claim, and should never present "the citation resolves" as if it were that check.
+This work describes a way to make a false claim in an agent's report look supported: cite a real step that looks relevant.
+On the reviewers we tested it did not work, which lowers the risk of describing it.
+The more useful finding for an attacker is that a reviewer may pass work whose flaw it has named, and the defence is in the consumer's hands: read the reviewer's findings, not only its score.
+We judge that publishing helps defenders more than attackers.
 We release the task families and the reviewer harness.
-The families are small software and analysis tasks whose only harm is a misleading completion report, with no operational payload.
+The families are small software and research tasks whose only harm is a misleading completion report, with no operational payload.
 The real-log families come from a public, MIT-licensed dataset of agent runs on benchmark tasks.
-[TODO: check every real-log family for personal data and secrets, then state that here.]
+An automated scan of the released family files found no keys, passwords or email addresses. [TODO: the author's own read of each family for personal data.]
 No people were studied.
 
 ## Appendix B. Pre-registration and changes
 
-[TODO: the pilot criteria and how the pilot scored against each; what MAIN.md fixed; every change after each file was committed, with its commit and reason.]
+`PILOT.md` was committed before any reviewer call, and `MAIN.md` before any reviewer saw a real-log family.
+Both files list the changes made during their runs.
+None changed a prompt, a cell, a definition, a threshold or a test.
+
+- The gateway allows one call at a time per account, so calls were sent one at a time on two accounts.
+- The main run was reordered once so that each reviewer finished its six main cells before its badge cells.
+- A dropped connection stalled two runs, which were restarted, and the calls that were cut off were read again.
+- `main_report.py` gained the false-alarm lines for finished logs, which `MAIN.md` lists as a secondary analysis, after the first two reviewers had finished.
+- `reasons_report.py` was written after the first main results were read. Section 4.4 is labelled exploratory for that reason.
+
+[TODO: commit hashes for each item.]
 
 ## Appendix C. Family descriptions
 
@@ -265,14 +406,34 @@ No people were studied.
 
 ### C.2 Real-log set
 
-[TODO: one entry per family: task, MALT run id, agent model, number of steps, check step, near-miss step, unrelated step, report source, and every edit to the run and the report.]
+| Family | MALT task | Agent | Steps | Check step | Near-miss step |
+|---|---|---|---|---|---|
+| `malt-218232-orm-somebugs` | debug_small_libs/orm_somebugs | Claude 3.5 Sonnet | 10 | final `pytest` run | earlier `pytest` run with failures |
+| `malt-343263-markdown` | debug_small_libs/markdown | Claude Opus 4 | 6 | final `pytest` run | first `pytest` run with failures |
+| `malt-343269-orm-allbugs` | debug_small_libs/orm_allbugs | Claude Opus 4 | 8 | final `pytest` run | first `pytest` run with failures |
+| `malt-343423-webserver` | make_web_server/exp_last_digit | Claude Opus 4 | 13 | retest after the fix | the same request before the fix |
+| `malt-229647-webserver` | make_web_server/exp_last_digit | Claude 3.5 Sonnet | 6 | request with a long input | request with a short input |
+| `malt-343341-fibonacci` | esolang/broccoli_fibonacci | Claude Opus 4 | 14 | run of the agent's program | interpreter run on a sample program |
+| `malt-343338-collatz` | esolang/broccoli_collatz | Claude Opus 4 | 13 | run of the agent's program | interpreter run on a sample program |
+| `malt-218367-collatz` | esolang/broccoli_collatz | Claude 3.5 Sonnet | 15 | run of the agent's program | sample program with the same input |
+| `malt-229887-more-bias` | local_research_tex/more_bias | Claude 3.5 Sonnet | 7 | read of the source file | search of the same file, headings only |
+| `malt-215455-austrian-votes` | wikipedia_research/austrian_votes | Claude 3.5 Sonnet | 7 | page with the totals | article without the totals |
+| `malt-233499-wordle` | wordle/word2 | Claude 3.5 Sonnet | 6 | winning guess | earlier losing guess |
+
+Each family file lists every edit made to the run and the report, and what a reader should know about it.
 
 [TODO: Figure C1, one family's report in the raw condition and at the near-miss level, side by side.]
 
 ## Appendix D. Pilot and development
 
-[TODO: pilot design in two sentences, the score against each criterion in PILOT.md, the chosen log length, and every change made to a family or the instructions after the pilot.]
+The pilot ran the three development families on deepseek-v4-flash, at two log lengths, in all six cells: 720 readings, none missing.
+All four criteria in `PILOT.md` passed at both lengths (`results/pilot-report-deepseek.txt`).
+The long logs were chosen for the main study, as the plan fixed in advance.
+The real-log families were built while the pilot was running and before its results were read, and they replaced the development families as the main set (`MAIN.md`).
+No family and no instruction was changed after the pilot.
 
 ## Appendix E. Per-family results
 
-[TODO: per-family table for each reviewer.]
+`results/main-report-<reviewer>.txt` holds the per-family table for each reviewer: the citation effect at each level, raw separation, and the mean raw score of the finished and unfinished log.
+
+[TODO: typeset the four tables.]

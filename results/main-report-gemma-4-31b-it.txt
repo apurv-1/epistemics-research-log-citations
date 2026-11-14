@@ -24,6 +24,8 @@ Score of the unfinished log with a citation minus without (positive: looks more 
   unrelated: mean -6.5 points, 95% CI [-11.8, -2.2], 7 of 11 families negative, 0 positive, sign-flip p = 0.0156
   nearmiss: mean -6.1 points, 95% CI [-11.5, -1.7], 7 of 11 families negative, 1 positive, sign-flip p = 0.0156
 Unfinished logs scored under 50: raw 38%, none 43%, unrelated 49%, nearmiss 50%
+Finished logs scored under 50 (false alarms): raw 5%, cited 4%
+Score of the finished log with real citations minus without: mean -0.1 points, 95% CI [-0.6, +0.4], 1 of 11 families negative, 1 positive, sign-flip p = 1.0000
 Badge line, near-miss citation: separation with the line minus without.
   all families: mean +1.6 points, 95% CI [-0.3, +3.8], 3 of 11 families negative, 6 positive, sign-flip p = 0.1836
   Unfinished logs scored under 50 with the badge line: 51%
