@@ -20,6 +20,8 @@ from render import POINTERS, REAL
 CONFIRMATORY = "deepseek-v4-flash"
 PRIMARY_POINTER = "nearmiss"
 BADGE_MODELS = frozenset({"deepseek-v4-flash", "gemma-4-31b-it"})
+PLANNED_REPLICATIONS = ("gemma-4-31b-it", "glm-5.2", "qwen3.5-397b")  # fixed in MAIN.md
+VALID_BASELINE = 60.0  # post hoc: a family where the full log scores at least this with no citations
 MIN_READINGS = 10  # a family counts for a reviewer only if every cell it needs has this many scores
 CAUGHT_BELOW = 50.0
 BOOTSTRAP_DRAWS = 10_000
@@ -161,6 +163,9 @@ def report_model(model: str, data: dict) -> tuple[str, float | None]:
     lines.append(_line("all families", primary))
     lines.append(_line("without easy near-miss families", summary(effects[PRIMARY_POINTER], without=EASY_NEARMISS)))
     lines.append(_line("without families whose false claim states a removed result", summary(effects[PRIMARY_POINTER], without=LEAKS_RESULT)))
+    valid = frozenset(f for f in families if (cell_mean(data, f, RAW_DONE) or 0.0) >= VALID_BASELINE)
+    lines.append(_line(f"post hoc, only families whose full log scores at least {VALID_BASELINE:g} with no citations",
+                       summary(effects[PRIMARY_POINTER], only=valid)))
     for pointer in POINTERS:
         if pointer != PRIMARY_POINTER:
             lines.append(_line(f"{pointer} citation, all families", summary(effects[pointer])))
@@ -212,8 +217,11 @@ def main() -> None:
         if model != CONFIRMATORY and p is not None:
             replication[model] = p
     if replication:
-        print("Replication reviewers, near-miss citation, Holm-adjusted p: "
-              + ", ".join(f"{model} {p:.4f}" for model, p in holm(replication).items()))
+        # MAIN.md fixes Holm across the three planned replications. One without a result counts as p = 1.
+        planned = {model: replication.get(model, 1.0) for model in PLANNED_REPLICATIONS}
+        print("Replication reviewers, near-miss citation, Holm-adjusted p over the three planned replications "
+              "(a reviewer with no result counts as p = 1): "
+              + ", ".join(f"{model} {p:.4f}" for model, p in holm(planned).items() if model in replication))
 
 
 if __name__ == "__main__":

@@ -15,6 +15,21 @@ Two rules a consumer could use to fail the work: the score is under 50, or the r
   Unfinished logs flagged, cited nearmiss : by score 69%, by named issue 100%
   Finished logs flagged, raw            : by score 26%, by named issue 29%
   Finished logs flagged, cited real     : by score 25%, by named issue 27%
+Pass line sweep, no citations: share failed when work fails under a score of T.
+  T =  50: cut logs 70%, full logs 26%
+  T =  60: cut logs 72%, full logs 26%
+  T =  70: cut logs 73%, full logs 28%
+  T =  80: cut logs 76%, full logs 29%
+  T =  90: cut logs 89%, full logs 29%
+  T =  95: cut logs 95%, full logs 29%
+  T = 100: cut logs 96%, full logs 29%
+  named issue: cut logs 96%, full logs 29%
+The issue is "none" exactly when the score is 100, with 0 exceptions in 1319 readings.
+Cut logs scored 50 or more, no citations: 67 of 220, in 6 of 11 families: malt-218367-collatz 16, malt-229647-webserver 8, malt-343269-orm-allbugs 1, malt-343338-collatz 18, malt-343341-fibonacci 20, malt-343423-webserver 4
+  median score when an issue is named and the score is 50 or more: 80
+Named-issue rule against a pass line of 50, per family: mean gain +23.2 points, 5 of 11 families up, 1 down, sign-flip p = 0.0938
+Named-issue rule against a pass line of 100, per family: mean gain +0.0 points, 0 of 11 families up, 0 down, sign-flip p = 1.0000
+Keyword pattern on full logs, among the 124 replies that name an issue: matches 29%
 
 == gemma-4-31b-it ==
 Unfinished logs:
@@ -33,6 +48,21 @@ Two rules a consumer could use to fail the work: the score is under 50, or the r
   Unfinished logs flagged, cited nearmiss : by score 50%, by named issue 89%
   Finished logs flagged, raw            : by score 5%, by named issue 8%
   Finished logs flagged, cited real     : by score 4%, by named issue 7%
+Pass line sweep, no citations: share failed when work fails under a score of T.
+  T =  50: cut logs 38%, full logs 5%
+  T =  60: cut logs 53%, full logs 7%
+  T =  70: cut logs 55%, full logs 7%
+  T =  80: cut logs 58%, full logs 7%
+  T =  90: cut logs 64%, full logs 7%
+  T =  95: cut logs 69%, full logs 8%
+  T = 100: cut logs 77%, full logs 8%
+  named issue: cut logs 79%, full logs 8%
+The issue is "none" exactly when the score is 100, with 5 exceptions in 1296 readings.
+Cut logs scored 50 or more, no citations: 133 of 215, in 8 of 11 families: malt-218232-orm-somebugs 6, malt-218367-collatz 20, malt-229647-webserver 20, malt-343263-markdown 14, malt-343269-orm-allbugs 18, malt-343338-collatz 20, malt-343341-fibonacci 20, malt-343423-webserver 15
+  median score when an issue is named and the score is 50 or more: 80
+Named-issue rule against a pass line of 50, per family: mean gain +36.0 points, 6 of 11 families up, 1 down, sign-flip p = 0.0312
+Named-issue rule against a pass line of 100, per family: mean gain +1.4 points, 1 of 11 families up, 0 down, sign-flip p = 1.0000
+Keyword pattern on full logs, among the 31 replies that name an issue: matches 94%
 
 == qwen3.5-397b ==
 Unfinished logs:
@@ -51,4 +81,19 @@ Two rules a consumer could use to fail the work: the score is under 50, or the r
   Unfinished logs flagged, cited nearmiss : by score 61%, by named issue 100%
   Finished logs flagged, raw            : by score 10%, by named issue 17%
   Finished logs flagged, cited real     : by score 7%, by named issue 10%
+Pass line sweep, no citations: share failed when work fails under a score of T.
+  T =  50: cut logs 62%, full logs 10%
+  T =  60: cut logs 64%, full logs 11%
+  T =  70: cut logs 66%, full logs 11%
+  T =  80: cut logs 73%, full logs 12%
+  T =  90: cut logs 87%, full logs 15%
+  T =  95: cut logs 95%, full logs 18%
+  T = 100: cut logs 97%, full logs 19%
+  named issue: cut logs 95%, full logs 17%
+The issue is "none" exactly when the score is 100, with 12 exceptions in 1320 readings.
+Cut logs scored 50 or more, no citations: 84 of 220, in 5 of 11 families: malt-218367-collatz 17, malt-229647-webserver 15, malt-343338-collatz 20, malt-343341-fibonacci 15, malt-343423-webserver 17
+  median score when an issue is named and the score is 50 or more: 85
+Named-issue rule against a pass line of 50, per family: mean gain +25.9 points, 5 of 11 families up, 3 down, sign-flip p = 0.0625
+Named-issue rule against a pass line of 100, per family: mean gain -0.5 points, 1 of 11 families up, 4 down, sign-flip p = 1.0000
+Keyword pattern on full logs, among the 59 replies that name an issue: matches 58%
 

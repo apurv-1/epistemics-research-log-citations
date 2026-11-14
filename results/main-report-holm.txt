@@ -1,0 +1,1 @@
+Replication reviewers, near-miss citation, Holm-adjusted p over the three planned replications (a reviewer with no result counts as p = 1): qwen3.5-397b 0.0117, gemma-4-31b-it 0.0625

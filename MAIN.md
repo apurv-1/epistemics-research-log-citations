@@ -128,6 +128,14 @@ No prompt, cell, reviewer, definition or test changed.
   The glm-5.2 run was paused at 14:36 with 337 of 1,080 readings on its nine families, to be resumed if the service recovers.
   Calls that failed in that window are marked as possibly billed and will be read again on resume.
 
+- At about 19:00 IST on November 14, after more than four hours in which every test call to glm-5.2 failed, glm-5.2 was dropped.
+  It has 337 readings, too few for any family to count under the ten-score rule, and no glm-5.2 result was computed at any point.
+  It is counted as a replication with no result (p = 1) in the Holm correction across the three planned replications, and `main_report.py` was changed to do that.
+  The earlier line above, that glm-5.2 is reported on 9 families, no longer applies.
+- `main_report.py` also gained one post hoc line: the primary comparison on the families whose full log scores at least 60 with no citations.
+  `reasons_report.py` gained a pass-line sweep, the count of readings where the stated issue and a score of 100 disagree, the families that the high scores on cut logs come from, and a per-family test of two acceptance rules.
+  All of these were added after the results were read, following an internal review of the first report draft, and the report labels them exploratory or post hoc.
+
 ## Order of work
 
 1. Commit this file and `main_report.py`.
