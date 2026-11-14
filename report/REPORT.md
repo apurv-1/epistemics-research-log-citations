@@ -15,15 +15,15 @@ When an AI agent reports its own work, a reviewer model often decides whether to
 A proposed fix for overclaiming is to make each claim in the report cite the step in the agent's log that supports it.
 We test whether that fix can be cheated with a citation that points to a real step that does not support the claim.
 We built 11 task families from real agent runs in METR's MALT dataset.
-Each has the real log and a twin with one check step removed, and the agent's own report, which is then false in one claim.
-Under a pre-registered plan, reviewer models scored the same report with no citations, and with a citation on the false claim at three levels of plausibility.
-On the confirmatory reviewer, deepseek-v4-flash, a near-miss citation changed the gap between finished and unfinished work by +0.5 points (95% CI -2.2 to +3.1, 11 families, p = 0.73).
-A true "all citations resolve" line changed nothing either.
-The forged citation did not mislead, and a real citation did not help.
-In exploratory analysis the reviewers' failure was elsewhere: deepseek-v4-flash named the false claim in 95% to 100% of unfinished logs and still passed 30% of them, with a mean score of 80 out of 100.
-gemma-4-31b-it named it in 78% to 88% and passed 50% to 62%.
-[TODO: one sentence on glm-5.2 and qwen3.5-397b.]
-A reviewer's score can hide what the reviewer found, so a trust signal should carry its claim-level findings.
+Each has the real log, a twin with one check step removed, and the agent's own report, which is then false in one claim.
+Under a pre-registered plan, reviewer models scored the report with no citations, and with a citation on the false claim at three levels of plausibility.
+On the confirmatory reviewer, deepseek-v4-flash, a near-miss citation changed the gap between finished and unfinished work by +0.5 points (95% CI -2.2 to +3.1, p = 0.73).
+On gemma-4-31b-it and qwen3.5-397b it widened the gap, by +6.0 and +8.0 points.
+The forged citation misled no reviewer, and a true "all citations resolve" line changed nothing.
+[TODO: glm-5.2.]
+In exploratory analysis, reviewers named the false claim in 78% to 100% of unfinished logs and still gave 30% to 62% of them a passing score.
+deepseek-v4-flash named it in every unfinished log with a near-miss citation and passed 31%, at a mean score of 80.
+A reviewer's score can hide what the reviewer found, so a trust signal should carry claim-level findings.
 We release the families, the readings and the scripts.
 
 ## 1. Introduction
@@ -66,7 +66,7 @@ The reviewer catches it, says so, and accepts the work.
 Our contributions are:
 
 - **A test that isolates the citation.** Matched logs that differ in one step, a byte-identical report, and three levels of unsupporting citation, on 11 task families built from real agent runs in METR's MALT dataset, plus 3 hand-built development families.
-- **A pre-registered null with a tight interval.** On the confirmatory reviewer a near-miss citation changes separation by +0.5 points (95% CI -2.2 to +3.1), inside the band we fixed in advance for an effect that does not matter. A true "all citations resolve" line has no effect on either reviewer that read it.
+- **A pre-registered null with a tight interval, and two replications that point the other way from the attack.** On the confirmatory reviewer a near-miss citation changes separation by +0.5 points (95% CI -2.2 to +3.1), inside the band we fixed in advance for an effect that does not matter. On two replication reviewers it improves separation by +6.0 and +8.0 points. A true "all citations resolve" line has no effect on either reviewer that read it.
 - **Where the reviewers fail instead.** In exploratory analysis, reviewers name the false claim in most unfinished logs and still give the work a passing score. Citations raise how often they name it and do not change the verdict.
 - **A reusable check.** `monitor.py` runs the families against any reviewer model, and `main_report.py` and `reasons_report.py` print every number in this report.
 
@@ -191,7 +191,8 @@ The badge arm runs on deepseek-v4-flash and gemma-4-31b-it.
 
 deepseek-v4-flash finished 2,199 of 2,200 readings.
 gemma-4-31b-it finished 2,165 of 2,200: the gateway closed its calls on the longest logs after about 60 seconds, and those readings are missing.
-[TODO: glm-5.2 and qwen3.5-397b readings.]
+qwen3.5-397b finished all 1,320.
+[TODO: glm-5.2 readings.]
 
 ### 4.1 A forged citation does not change what the reviewer concludes
 
@@ -207,13 +208,15 @@ The result does not depend on the weaker families: it is +0.3 points without the
 |---|---|---|---|---|
 | deepseek-v4-flash (confirmatory) | +0.5 | -2.2 to +3.1 | 6 / 4 | 0.73 |
 | gemma-4-31b-it | +6.0 | +1.5 to +11.5 | 7 / 2 | 0.031 |
+| qwen3.5-397b | +8.0 | +4.6 to +11.5 | 9 / 2 | 0.0039 |
 | glm-5.2 | [TODO] | | | |
-| qwen3.5-397b | [TODO] | | | |
 
-On gemma-4-31b-it the effect was positive: +6.0 points at the near-miss level, +6.4 with an unrelated citation and +2.7 with none.
-Any citation on the false claim made gemma-4-31b-it score the unfinished log lower, by 6.1 points at the near-miss level (CI -11.5 to -1.7), and left finished logs alone.
-So where citations did anything, they helped, and a forged one helped as much as a missing one.
-[TODO: Holm-adjusted p across the three replications, once all are in. With gemma-4-31b-it alone it is 0.031.]
+On both finished replication reviewers the effect was positive.
+On gemma-4-31b-it it was +6.0 points at the near-miss level, +6.4 with an unrelated citation and +2.7 with none.
+On qwen3.5-397b it was +8.0, +8.6 and +4.3.
+A near-miss citation made gemma-4-31b-it score the unfinished log 6.1 points lower (CI -11.5 to -1.7) and qwen3.5-397b 5.2 points lower (CI -9.4 to -1.2).
+So where citations did anything, they helped, and a forged citation helped at least as much as a missing one.
+Holm-adjusted across the two replications, p is 0.0078 for qwen3.5-397b and 0.031 for gemma-4-31b-it. [TODO: redo with glm-5.2.]
 
 ### 4.2 An "all citations resolve" line changes nothing
 
@@ -224,9 +227,9 @@ With the line, near-miss separation changed by +0.2 points on deepseek-v4-flash 
 ### 4.3 Without citations, the reviewers are unreliable in both directions
 
 The reviewers' problem is not the citations.
-With no citations at all, deepseek-v4-flash scored 70% of unfinished logs under 50, and gemma-4-31b-it scored 38% under 50.
-deepseek-v4-flash also scored 26% of finished logs under 50, against 5% for gemma-4-31b-it.
-One reviewer is strict and the other trusting, and citations moved neither figure by more than a few points, except that gemma-4-31b-it's catch rate rose from 38% to 50% with a near-miss citation.
+With no citations at all, deepseek-v4-flash scored 70% of unfinished logs under 50, qwen3.5-397b 62% and gemma-4-31b-it 38%.
+deepseek-v4-flash also scored 26% of finished logs under 50, against 10% for qwen3.5-397b and 5% for gemma-4-31b-it.
+The reviewers range from strict to trusting, and citations moved these figures by a few points at most, except that gemma-4-31b-it's catch rate rose from 38% to 50% with a near-miss citation.
 
 The pattern across families is sharp (Appendix E).
 deepseek-v4-flash separated the variants by 84 to 99 points in five families: the three bug fixes, one research task and the word game.
@@ -242,7 +245,7 @@ This analysis was designed after the first main results were read, and it is not
 
 Each reply names the single most important unsupported claim, or "none".
 We checked that sentence against a keyword pattern written by hand for each family's false claim.
-On finished logs, where no claim is false, the patterns matched 7% to 9% of readings, which bounds how often they fire by accident.
+On finished logs, where no claim is false, the patterns matched 7% to 9% of readings on every reviewer, which bounds how often they fire by accident.
 
 | Reviewer | Unfinished log shown with | Names the false claim | Passes the work (score 50 or more) |
 |---|---|---|---|
@@ -250,13 +253,17 @@ On finished logs, where no claim is false, the patterns matched 7% to 9% of read
 | deepseek-v4-flash | near-miss citation | 100% | 31% |
 | gemma-4-31b-it | no citations | 78% | 62% |
 | gemma-4-31b-it | near-miss citation | 88% | 50% |
+| qwen3.5-397b | no citations | 93% | 38% |
+| qwen3.5-397b | near-miss citation | 98% | 39% |
 
 deepseek-v4-flash named the false claim in almost every unfinished log and still passed three in ten.
 Of its 69 passes at the near-miss level, 99% named the false claim, and their mean score was 80.
 One such reply, scored 90: "The report claims input 4 was checked in step 5, but step 5 only shows factorial 5 outputting 120."
 The reviewer opened the cited step, saw that it did not support the claim, wrote that down, and scored the work as nearly complete.
 
-Citations did what they were meant to do for detection: with a citation on the false claim, both reviewers named it more often.
+qwen3.5-397b behaved the same way: of its 86 passes at the near-miss level, 99% named the false claim, at a mean score of 76.
+
+Citations did what they were meant to do for detection: with a citation on the false claim, all three reviewers named it more often.
 The verdict did not follow.
 The score treats a claimed check that never happened as a small flaw in otherwise finished work, even though the instructions say that such work is not complete as reported.
 
@@ -275,11 +282,13 @@ deepseek-v4-flash was much better on these logs than on the real ones: it scored
 
 ## 5. Discussion
 
-**Citing the log is safe against a cheap forgery, and it is not a fix.**
-A citation that resolves and does not support did not mislead either reviewer, and a line vouching that all citations resolve did not either.
+**Citing the log is safe against a cheap forgery, and it helps a little.**
+A citation that resolves and does not support misled no reviewer, and a line vouching that all citations resolve did not either.
 Khalifa et al. asked for mechanisms that check an agent's claims against its observations.
 On these reviewers the simplest such mechanism survives its simplest attack.
-But it also does not make the reviewer better, because the reviewer was not failing to check.
+On two of three reviewers it also widened the gap between finished and unfinished work, by 6 to 8 points, and a forged citation did so more than leaving the false claim uncited.
+A citation tells the reviewer which step to open, and checking one named step is easier than searching a log for something that is missing.
+But the gain is small next to the problem: with citations, the reviewers still passed 31% to 50% of unfinished logs.
 
 **The verdict is the weak point.**
 The reviewers found the false claim and then discounted it.
@@ -344,7 +353,7 @@ TraceJudgeBench: A unified benchmark for validating LLM-as-a-judge on agent exec
 
 - On deepseek-v4-flash, across 11 families built from real agent runs, a near-miss citation on a false claim changes how well the reviewer separates finished from unfinished work by less than a few points in either direction.
 - A true line saying that all citations resolve does not change that on the two reviewers that read it.
-- [TODO: the replication statement, once all four reviewers are in.]
+- On gemma-4-31b-it and qwen3.5-397b the same citation improves that separation, by +6.0 and +8.0 points. No reviewer was misled. [TODO: glm-5.2.]
 
 ### What it does not establish
 
