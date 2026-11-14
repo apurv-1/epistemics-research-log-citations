@@ -29,6 +29,11 @@ Cut logs scored 50 or more, no citations: 67 of 220, in 6 of 11 families: malt-2
   median score when an issue is named and the score is 50 or more: 80
 Named-issue rule against a pass line of 50, per family: mean gain +23.2 points, 5 of 11 families up, 1 down, sign-flip p = 0.0938
 Named-issue rule against a pass line of 100, per family: mean gain +0.0 points, 0 of 11 families up, 0 down, sign-flip p = 1.0000
+Cut logs flagged and scored 50 or more, no citations: 26% of readings; mean over families 26% (95% CI over families 8% to 48%); at least half of a family's readings in 2 families, none in 5
+  cut-log readings that score exactly 50: 2 of 220; share scoring above 50: 30%
+Flag rate on cut logs, forged citation minus no citations, per family: mean +3.6 points, 1 of 11 families up, 0 down, sign-flip p = 1.0000
+Post hoc, the 8 families whose full log averages at least 60: a pass line of 100 fails 94% of cut logs and 5% of full logs; a pass line of 50 fails 66% and 3%
+  pass line of 100 against 50 on those families: mean gain +26.9 points, 4 of 8 families up, 1 down, sign-flip p = 0.1875
 Keyword pattern on full logs, among the 124 replies that name an issue: matches 29%
 
 == gemma-4-31b-it ==
@@ -62,6 +67,11 @@ Cut logs scored 50 or more, no citations: 133 of 215, in 8 of 11 families: malt-
   median score when an issue is named and the score is 50 or more: 80
 Named-issue rule against a pass line of 50, per family: mean gain +36.0 points, 6 of 11 families up, 1 down, sign-flip p = 0.0312
 Named-issue rule against a pass line of 100, per family: mean gain +1.4 points, 1 of 11 families up, 0 down, sign-flip p = 1.0000
+Cut logs flagged and scored 50 or more, no citations: 40% of readings; mean over families 40% (95% CI over families 16% to 65%); at least half of a family's readings in 4 families, none in 5
+  cut-log readings that score exactly 50: 33 of 215; share scoring above 50: 47%
+Flag rate on cut logs, forged citation minus no citations, per family: mean +11.1 points, 3 of 11 families up, 0 down, sign-flip p = 0.2500
+Post hoc, the 10 families whose full log averages at least 60: a pass line of 100 fails 75% of cut logs and 1% of full logs; a pass line of 50 fails 32% and 0%
+  pass line of 100 against 50 on those families: mean gain +41.0 points, 6 of 10 families up, 0 down, sign-flip p = 0.0312
 Keyword pattern on full logs, among the 31 replies that name an issue: matches 94%
 
 == qwen3.5-397b ==
@@ -95,5 +105,10 @@ Cut logs scored 50 or more, no citations: 84 of 220, in 5 of 11 families: malt-2
   median score when an issue is named and the score is 50 or more: 85
 Named-issue rule against a pass line of 50, per family: mean gain +25.9 points, 5 of 11 families up, 3 down, sign-flip p = 0.0625
 Named-issue rule against a pass line of 100, per family: mean gain -0.5 points, 1 of 11 families up, 4 down, sign-flip p = 1.0000
+Cut logs flagged and scored 50 or more, no citations: 35% of readings; mean over families 35% (95% CI over families 13% to 57%); at least half of a family's readings in 5 families, none in 6
+  cut-log readings that score exactly 50: 5 of 220; share scoring above 50: 36%
+Flag rate on cut logs, forged citation minus no citations, per family: mean +4.1 points, 4 of 11 families up, 0 down, sign-flip p = 0.1250
+Post hoc, the 10 families whose full log averages at least 60: a pass line of 100 fails 97% of cut logs and 11% of full logs; a pass line of 50 fails 58% and 2%
+  pass line of 100 against 50 on those families: mean gain +29.5 points, 5 of 10 families up, 1 down, sign-flip p = 0.0625
 Keyword pattern on full logs, among the 59 replies that name an issue: matches 58%
 

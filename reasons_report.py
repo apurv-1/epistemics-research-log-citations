@@ -20,7 +20,7 @@ from collections import defaultdict
 from pathlib import Path
 from statistics import mean, median
 
-from main_report import sign_flip_p
+from main_report import VALID_BASELINE, bootstrap_ci, sign_flip_p
 from monitor import PROJECT_DIR
 
 AUDIT_SEED = 20261114
@@ -163,6 +163,37 @@ def depth(rows: list[dict]) -> list[str]:
         lines.append(f"Named-issue rule against {label}, per family: mean gain {mean(gains):+.1f} points, "
                      f"{sum(g > 0 for g in gains)} of {len(gains)} families up, {sum(g < 0 for g in gains)} down, "
                      f"sign-flip p = {sign_flip_p(gains):.4f}")
+    # How the flagged high scores spread over families.
+    families = sorted({r["family"] for r in cut})
+    both = lambda r: names_issue(r) and r["score"] >= PASSED_AT  # noqa: E731
+    shares = [100 * mean(both(r) for r in cut if r["family"] == f) for f in families]
+    low, high = bootstrap_ci(shares)
+    lines.append(f"Cut logs flagged and scored {PASSED_AT:g} or more, no citations: {pct(sum(map(both, cut)), len(cut))} of readings; "
+                 f"mean over families {mean(shares):.0f}% (95% CI over families {low:.0f}% to {high:.0f}%); "
+                 f"at least half of a family's readings in {sum(s >= 50 for s in shares)} families, none in {sum(s == 0 for s in shares)}")
+    exactly = sum(r["score"] == PASSED_AT for r in cut)
+    lines.append(f"  cut-log readings that score exactly {PASSED_AT:g}: {exactly} of {len(cut)}; "
+                 f"share scoring above {PASSED_AT:g}: {pct(sum(r['score'] > PASSED_AT for r in cut), len(cut))}")
+    # Does a forged citation change how often the cut log is flagged, per family?
+    forged = [r for r in rows if r["variant"] == "skipped" and r["condition"] == "cited" and r["pointer"] == "nearmiss"]
+    change = [100 * (mean(names_issue(r) for r in forged if r["family"] == f) - mean(names_issue(r) for r in cut if r["family"] == f))
+              for f in families if any(r["family"] == f for r in forged)]
+    if change:
+        lines.append(f"Flag rate on cut logs, forged citation minus no citations, per family: mean {mean(change):+.1f} points, "
+                     f"{sum(c > 0 for c in change)} of {len(change)} families up, {sum(c < 0 for c in change)} down, "
+                     f"sign-flip p = {sign_flip_p(change):.4f}")
+    # The pass-line comparison on the families with a sound baseline (post hoc).
+    full_scores = {f: [r["score"] for r in full if r["family"] == f] for f in families}
+    sound = [f for f in families if full_scores[f] and mean(full_scores[f]) >= VALID_BASELINE]
+    cut_s, full_s = [r for r in cut if r["family"] in sound], [r for r in full if r["family"] in sound]
+    if cut_s and full_s:
+        lines.append(f"Post hoc, the {len(sound)} families whose full log averages at least {VALID_BASELINE:g}: a pass line of 100 fails "
+                     f"{pct(sum(r['score'] < 100 for r in cut_s), len(cut_s))} of cut logs and {pct(sum(r['score'] < 100 for r in full_s), len(full_s))} of full logs; "
+                     f"a pass line of {PASSED_AT:g} fails {pct(sum(r['score'] < PASSED_AT for r in cut_s), len(cut_s))} and "
+                     f"{pct(sum(r['score'] < PASSED_AT for r in full_s), len(full_s))}")
+        gains = rule_gain([r for r in rows if r["family"] in sound], lambda r: r["score"] < 100, lambda r: r["score"] < PASSED_AT)
+        lines.append(f"  pass line of 100 against {PASSED_AT:g} on those families: mean gain {mean(gains):+.1f} points, "
+                     f"{sum(g > 0 for g in gains)} of {len(gains)} families up, {sum(g < 0 for g in gains)} down, sign-flip p = {sign_flip_p(gains):.4f}")
     issues_full = [r for r in rows if r["variant"] == "done" and names_issue(r)]
     matched = sum(names_false_claim(r["family"], r.get("issue")) for r in issues_full)
     lines.append(f"Keyword pattern on full logs, among the {len(issues_full)} replies that name an issue: matches {pct(matched, len(issues_full))}")

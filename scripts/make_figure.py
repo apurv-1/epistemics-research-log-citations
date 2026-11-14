@@ -44,7 +44,8 @@ def main() -> None:
             ax.plot(LINES, values, color=colour, linewidth=2, solid_capstyle="round", zorder=3)
             for x, y, ha, dx in ((LINES[0], values[0], "left", 1.0), (LINES[-1], values[-1], "right", -1.0)):
                 ax.plot([x], [y], marker="o", markersize=5.5, color=colour, markeredgecolor=SURFACE, markeredgewidth=1.2, zorder=4)
-                ax.text(x + dx, y + 4, f"{y:.0f}%", ha=ha, va="bottom", fontsize=8, color=INK, zorder=5)
+                steep = x == LINES[0] and values[1] - values[0] > 8  # the line climbs through a label placed above
+                ax.text(x + dx, y - 5 if steep else y + 4, f"{y:.0f}%", ha=ha, va="top" if steep else "bottom", fontsize=8, color=INK, zorder=5)
         ax.set_xlim(47, 103)
         ax.set_ylim(0, 112)
         ax.set_xticks([50, 60, 70, 80, 90, 100])
@@ -59,7 +60,7 @@ def main() -> None:
         print(model, "cut", [round(v) for v in cut], "full", [round(v) for v in full])
     axes[0].set_ylabel("share of logs failed", fontsize=8.5)
     handles = [plt.Line2D([0], [0], color=CUT, linewidth=2), plt.Line2D([0], [0], color=FULL, linewidth=2)]
-    fig.legend(handles, ["cut logs, where one claim in the report is false", "full logs, where the report is true to the log"],
+    fig.legend(handles, ["cut logs: one check step removed, so one claim in the report is false", "full logs: the real runs"],
                loc="lower center", ncol=2, frameon=False, fontsize=8.5, bbox_to_anchor=(0.5, -0.03))
     fig.tight_layout(rect=(0, 0.07, 1, 1))
     out = PROJECT / "report" / "figures"

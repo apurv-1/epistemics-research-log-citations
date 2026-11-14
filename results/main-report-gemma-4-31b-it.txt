@@ -31,4 +31,3 @@ Badge line, near-miss citation: separation with the line minus without.
   all families: mean +1.6 points, 95% CI [-0.3, +3.8], 3 of 11 families negative, 6 positive, sign-flip p = 0.1836
   Unfinished logs scored under 50 with the badge line: 51%
 
-Replication reviewers, near-miss citation, Holm-adjusted p over the three planned replications (a reviewer with no result counts as p = 1): gemma-4-31b-it 0.0938

@@ -216,7 +216,7 @@ def main() -> None:
         print(text + "\n")
         if model != CONFIRMATORY and p is not None:
             replication[model] = p
-    if replication:
+    if len(replication) > 1:  # one reviewer alone cannot be corrected across reviewers
         # MAIN.md fixes Holm across the three planned replications. One without a result counts as p = 1.
         planned = {model: replication.get(model, 1.0) for model in PLANNED_REPLICATIONS}
         print("Replication reviewers, near-miss citation, Holm-adjusted p over the three planned replications "
