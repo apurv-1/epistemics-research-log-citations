@@ -52,6 +52,8 @@ def reading(row: dict) -> dict | None:
     if row.get("score") is None:
         return None
     out = {"score": float(row["score"]), "flag": not says_none(row.get("issue"))}
+    if row.get("works") is not None and row.get("shown") is not None:  # the two-number instructions
+        out["works"], out["shown"] = float(row["works"]), float(row["shown"])
     verdicts = row.get("verdicts")
     if verdicts:
         out["reject"] = any(v != SHOWN for v in verdicts)

@@ -15,7 +15,7 @@ A family is one small agent task, stored as data/families/<id>.toml.
 
 `validate` enforces all of this, so a family that loads is a valid twin pair.
 
-There are three sets of families.
+There are four sets of families.
 
 - `pilot`, in data/families: three hand-built families, each with a short and a long log.
 - `malt`, in data/families_malt: families built from real agent runs in METR's MALT dataset by
@@ -26,6 +26,10 @@ There are three sets of families.
   scripts/build_dilution_families.py. Each is one task with a single acceptance check, which is
   the critical step and the last claim, plus k other pieces of verified work. They have one
   length, `full`, and are read with no citations.
+- `related`, in data/families_related: constructed families written by
+  scripts/build_related_families.py on the same eight tasks. Each has the acceptance check and
+  exactly 7 other claims, which are neutral work, related evidence or lookalike checks, and in
+  two conditions the task does not state its requirement.
 """
 
 import re
@@ -36,8 +40,18 @@ from pathlib import Path
 FAMILIES_DIR = Path(__file__).parent / "data" / "families"
 MALT_FAMILIES_DIR = Path(__file__).parent / "data" / "families_malt"
 DILUTION_FAMILIES_DIR = Path(__file__).parent / "data" / "families_dilution"
-SETS = {"pilot": FAMILIES_DIR, "malt": MALT_FAMILIES_DIR, "dilution": DILUTION_FAMILIES_DIR}
+RELATED_FAMILIES_DIR = Path(__file__).parent / "data" / "families_related"
+SETS = {"pilot": FAMILIES_DIR, "malt": MALT_FAMILIES_DIR, "dilution": DILUTION_FAMILIES_DIR,
+        "related": RELATED_FAMILIES_DIR}
 DILUTION_ID = re.compile(r"dil-[a-z]+-(k01|k03|k07|k15|pad)")
+RELATED_ID = re.compile(r"rel-[a-z]+-(r1|r3|r7|look|imp0|imp7)")
+RELATED_CLAIMS = 8  # 7 other claims and the acceptance claim
+# The constructed sets share one shape: one length, an opening sentence, the acceptance check as
+# the last step before the closing step, and its claim last. Each has its own way of naming files.
+CONSTRUCTED = {
+    "dilution": (DILUTION_ID, "a dilution family is named dil-<template>-<k01|k03|k07|k15|pad>"),
+    "related": (RELATED_ID, "a related family is named rel-<template>-<r1|r3|r7|look|imp0|imp7>"),
+}
 VARIANTS = ("done", "skipped")
 LENGTHS = ("short", "long")  # the hand-built families
 FULL = "full"  # a real run has one length
@@ -122,17 +136,20 @@ def validate(family: Family) -> None:
             fail("a real run has no filler steps")
         if not dict(family.source).get("run_id"):
             fail("a real run must name its source run_id")
-    if family.set == "dilution":
-        if not DILUTION_ID.fullmatch(family.id):
-            fail("a dilution family is named dil-<template>-<k01|k03|k07|k15|pad>")
+    if family.set in CONSTRUCTED:
+        id_pattern, naming = CONSTRUCTED[family.set]
+        if not id_pattern.fullmatch(family.id):
+            fail(naming)
         if any(step.filler for step in family.steps):
-            fail("a dilution family has one length, so no filler steps")
+            fail(f"a {family.set} family has one length, so no filler steps")
         if not family.intro:
-            fail("a dilution report needs an opening sentence")
+            fail(f"a {family.set} report needs an opening sentence")
         if len(family.steps) < 2 or not family.steps[-2].critical:
             fail("the acceptance check must be the last step before the closing step")
         if not family.claims or not family.claims[-1].false_when_skipped:
             fail("the acceptance claim must be the last claim in the report")
+    if family.set == "related" and len(family.claims) != RELATED_CLAIMS:
+        fail(f"a related report has {RELATED_CLAIMS} claims: 7 other claims and the acceptance claim")
     ids = [s.id for s in family.steps]
     if len(set(ids)) != len(ids):
         fail("step ids must be unique")
