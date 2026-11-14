@@ -122,6 +122,9 @@ The issue field was "none" almost exactly when the score was 100 (17 exceptions 
 Failing every flagged log raised discrimination by 23, 36 and 26 points over a pass line of 50 (sign-flip p = 0.094, 0.031 and 0.0625 over families, uncorrected).
 For the two Claude models the flag gate lowered discrimination by 18 and 12 points, because they flagged 45% and 30% of full logs, often for real errors in the agent's work, while their scores already failed the cut logs.
 Figure 1 shows the same trade-off as the pass line moves.
+One procedure handles both kinds of reviewer.
+For each reviewer and each family, we chose a gate on the other 10 families, among pass lines from 10 to 100, the flag gate, and the flag gate combined with a pass line, and scored it on the held-out family (`calibrated_gate_report.py`, exploratory).
+The calibrated gate beat a pass line of 50 by 23, 35 and 18 points on the three open-weight reviewers (p = 0.094, 0.031 and 0.12) and lost only 3 points on each Claude model, against 12 to 18 for a fixed flag gate.
 
 ### 5.1 Where it happens
 
@@ -223,7 +226,7 @@ A separate evidence field is therefore necessary but not sufficient: its value d
 **A design rule for trust infrastructure.**
 A trust signal for an AI consumer should carry, per claim, whether it resolves, whether the log shows it, and what the reviewer found, as separate fields from any judgement of the work.
 The gate on those fields should be chosen per reviewer on labelled pairs like ours.
-For the open-weight reviewers here, failing every flagged log beat a pass line of 50 by 23 to 36 points of discrimination; for the frontier reviewers, the score at 50 was better, because they flag real errors in full logs.
+No fixed gate served every reviewer here: failing every flagged log beat a pass line of 50 by 23 to 36 points on the open-weight reviewers and lost 12 to 18 on the frontier ones, which flag real errors in full logs. Choosing the gate on held-out families recovered most of the gain where it existed and cost 3 points where it did not.
 {{DISCUSSION_VERDICT}}
 We release the 11 real-log pairs, the 8 constructed tasks with their conditions, and the harness as a test set for exactly this calibration.
 
