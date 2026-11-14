@@ -5,12 +5,11 @@
 #
 # The gateway allows one call at a time per account, so the work is split across two accounts by
 # template. Each account writes its own results files (the second account's end in SUFFIX), and
-# the files are joined before related_report.py and dilution_report.py read them. Each stage is
-# run twice: the second pass reads again any call that was cut off mid-way.
+# the files are joined before the report scripts read them. Each stage is run twice: the second
+# pass reads again any call that was cut off mid-way. Finished readings are never repeated.
 #
-# The order is the one RELATED.md fixes: the confirmatory reviewer's score readings, its
-# two-number readings, the replication reviewer, the rest of the second study, then the verdict
-# readings on this set. The second study's qwen3.5-397b replication is dropped, as RELATED.md says.
+# The order is the one RELATED.md fixes, with the two-number readings on the real logs added
+# after the confirmatory reviewer's score readings ("Changes during the run").
 set -u
 KEY_ENV="$1"; SFX="$2"; TEMPLATES="$3"; MALT="$4"
 cd "$(dirname "$0")/.."
@@ -35,8 +34,10 @@ stage() {  # name model set arm readings budget families...
 }
 
 stage related          deepseek-v4-flash related  score   20 12 $REL
+stage malt-two         deepseek-v4-flash malt     two     10 12 $MALT
 stage related-two      deepseek-v4-flash related  two     20 12 $TWO
 stage dilution-two     deepseek-v4-flash dilution two     20 12 $K07
+stage malt-two         gemma-4-31b-it    malt     two     10 10 $MALT
 stage related          gemma-4-31b-it    related  score   20 10 $REL
 stage related-two      gemma-4-31b-it    related  two     20 10 $TWO
 stage dilution-two     gemma-4-31b-it    dilution two     20 10 $K07
