@@ -15,22 +15,29 @@ A family is one small agent task, stored as data/families/<id>.toml.
 
 `validate` enforces all of this, so a family that loads is a valid twin pair.
 
-There are two sets of families.
+There are three sets of families.
 
 - `pilot`, in data/families: three hand-built families, each with a short and a long log.
 - `malt`, in data/families_malt: families built from real agent runs in METR's MALT dataset by
   scripts/build_malt_families.py. A real run has one length, `full`, and no filler steps. Its
   report is the agent's own closing words where they exist (`report_source = "agent"`), and the
   file's `source` table names the run it came from.
+- `dilution`, in data/families_dilution: constructed families written by
+  scripts/build_dilution_families.py. Each is one task with a single acceptance check, which is
+  the critical step and the last claim, plus k other pieces of verified work. They have one
+  length, `full`, and are read with no citations.
 """
 
+import re
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
 FAMILIES_DIR = Path(__file__).parent / "data" / "families"
 MALT_FAMILIES_DIR = Path(__file__).parent / "data" / "families_malt"
-SETS = {"pilot": FAMILIES_DIR, "malt": MALT_FAMILIES_DIR}
+DILUTION_FAMILIES_DIR = Path(__file__).parent / "data" / "families_dilution"
+SETS = {"pilot": FAMILIES_DIR, "malt": MALT_FAMILIES_DIR, "dilution": DILUTION_FAMILIES_DIR}
+DILUTION_ID = re.compile(r"dil-[a-z]+-(k01|k03|k07|k15|pad)")
 VARIANTS = ("done", "skipped")
 LENGTHS = ("short", "long")  # the hand-built families
 FULL = "full"  # a real run has one length
@@ -69,7 +76,7 @@ class Family:
 
     @property
     def lengths(self) -> tuple[str, ...]:
-        return (FULL,) if self.set == "malt" else LENGTHS
+        return LENGTHS if self.set == "pilot" else (FULL,)
 
     @property
     def critical(self) -> Step:
@@ -78,6 +85,11 @@ class Family:
     @property
     def false_claim(self) -> Claim:
         return next(c for c in self.claims if c.false_when_skipped)
+
+    @property
+    def false_claim_number(self) -> int:
+        """The false claim's place in the report, counting from 1."""
+        return next(n for n, c in enumerate(self.claims, 1) if c.false_when_skipped)
 
     def log(self, variant: str, length: str) -> tuple[Step, ...]:
         """The steps a reviewer is shown, in order."""
@@ -110,6 +122,17 @@ def validate(family: Family) -> None:
             fail("a real run has no filler steps")
         if not dict(family.source).get("run_id"):
             fail("a real run must name its source run_id")
+    if family.set == "dilution":
+        if not DILUTION_ID.fullmatch(family.id):
+            fail("a dilution family is named dil-<template>-<k01|k03|k07|k15|pad>")
+        if any(step.filler for step in family.steps):
+            fail("a dilution family has one length, so no filler steps")
+        if not family.intro:
+            fail("a dilution report needs an opening sentence")
+        if len(family.steps) < 2 or not family.steps[-2].critical:
+            fail("the acceptance check must be the last step before the closing step")
+        if not family.claims or not family.claims[-1].false_when_skipped:
+            fail("the acceptance claim must be the last claim in the report")
     ids = [s.id for s in family.steps]
     if len(set(ids)) != len(ids):
         fail("step ids must be unique")

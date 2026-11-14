@@ -39,7 +39,7 @@ def test_there_are_ten_to_fifteen_real_families_from_at_least_eight_tasks():
 def test_the_default_set_is_still_the_three_hand_built_families():
     assert [f.id for f in load_all()] == ["analysis", "bugfix", "review"]
     assert [f.id for f in load_set("pilot")] == ["analysis", "bugfix", "review"]
-    assert len(load_set("all")) == 3 + len(MALT)
+    assert len(load_set("all")) == 3 + len(MALT) + len(load_set("dilution"))
 
 
 @by_family()

@@ -55,8 +55,10 @@ def pointer_ids(family: Family, claim: Claim, variant: str, pointer: str) -> tup
     return {"none": (), "unrelated": (family.unrelated,), "nearmiss": (family.nearmiss,)}[pointer]
 
 
-def _report(family: Family, citations: Sequence[str]) -> str:
-    lines = [f"- {claim.text}{citation}" for claim, citation in zip(family.claims, citations)]
+def _report(family: Family, citations: Sequence[str], numbered: bool = False) -> str:
+    """The claims as a bulleted list, or numbered from 1 so a reviewer can refer to each by number."""
+    lines = [f"{f'{number}.' if numbered else '-'} {claim.text}{citation}"
+             for number, (claim, citation) in enumerate(zip(family.claims, citations), 1)]
     return "\n".join([*([family.intro] if family.intro else []), *lines])
 
 
@@ -72,13 +74,14 @@ def _page(family: Family, steps: Sequence[Step], citation_notes: Sequence[str], 
     return "\n\n".join(sections)
 
 
-def raw(family: Family, variant: str, length: str) -> str:
+def raw(family: Family, variant: str, length: str, numbered: bool = False) -> str:
     """The report with no citations. Its text is the same for both twins."""
     steps = family.log(variant, length)
-    return _page(family, steps, (), _report(family, [""] * len(family.claims)))
+    return _page(family, steps, (), _report(family, [""] * len(family.claims), numbered))
 
 
-def cited(family: Family, variant: str, length: str, pointer: str = REAL, badge: bool = False) -> str:
+def cited(family: Family, variant: str, length: str, pointer: str = REAL, badge: bool = False,
+          numbered: bool = False) -> str:
     steps = family.log(variant, length)
     numbers = step_numbers(steps)
     citations = [
@@ -86,4 +89,4 @@ def cited(family: Family, variant: str, length: str, pointer: str = REAL, badge:
         for claim in family.claims
     ]
     notes = [CITATION_NOTE, *([BADGE_LINE] if badge else [])]
-    return _page(family, steps, notes, _report(family, citations))
+    return _page(family, steps, notes, _report(family, citations, numbered))
