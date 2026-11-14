@@ -116,3 +116,21 @@ All are labelled secondary in the report.
 2. Run the confirmatory reviewer's score readings first, then its two-number readings, then gemma-4-31b-it, then the verdict readings.
 3. Run `related_report.py` on a reviewer only when its files are finished, except to count missing readings.
 4. Any change after this commit is listed here under a new heading, with its reason, and in the report's appendix.
+
+## Changes during the run
+
+- **Stronger reviewers, fixed before any of their readings.** `DILUTION.md` planned Claude Sonnet 5.5 and Claude Opus 5.5 as described reviewers on doses 1 and 15 of the second study.
+  The second study's primary result showed no dilution, so those conditions would say little.
+  The stronger reviewers are moved to the conditions that matter here, and this entry is committed before any of their readings and before any reading of the `related` set has been scored.
+  - **Harness.** `claude_reviewer.py` calls the `claude` command-line client once per reading, with every tool off, no project or user settings, the study's instructions as the system prompt and the same prompt text as the gateway reviewers.
+    The client adds a short preamble of its own and an organisation instruction about writing style, which cannot be removed.
+    Temperature and effort are the client's defaults and cannot be set.
+  - **Readings.** 3 readings of each prompt, for each of the two models.
+    Score instructions on `r0` and `r7`, both logs: 96 readings per model.
+    Two-number instructions on `r0` and `r7`, both logs: 96 readings per model.
+    Score instructions on the 11 real-log families of the main study with no citations, both logs: 66 readings per model.
+  - **Reporting.** These readings are in no test.
+    The report gives the same descriptive numbers as for the gateway reviewers, apart, with the harness named.
+    These models are from the same family as the agents whose runs the main study used and as the model that built the constructed tasks.
+  - **Order and cuts.** Claude Sonnet 5.5 first, then Claude Opus 5.5, each in the order above.
+    If the account's usage limit stops a run, what finished is reported and labelled incomplete.
