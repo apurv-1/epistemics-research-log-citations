@@ -38,3 +38,16 @@ def test_tally_separates_naming_from_passing():
     assert (c["n"], c["named"], c["passed"], c["passed_named"], c["passed_none"], c["passed_other"]) == (4, 2, 3, 1, 1, 1)
     text = report("m", rows)
     assert "names the false claim 50%, passes the work 75%" in text
+
+
+def test_the_two_consumer_rules_are_reported_side_by_side():
+    fam = "malt-343338-collatz"
+    rows = [
+        row(fam, "skipped", "raw", "", 90, "No test for input 4 appears in the log."),
+        row(fam, "skipped", "raw", "", 10, "No test for input 4 appears in the log."),
+        row(fam, "done", "raw", "", 100, "none"),
+        row(fam, "done", "raw", "", 80, "The file was never made executable."),
+    ]
+    text = report("m", rows)
+    assert "Unfinished logs flagged, raw            : by score 50%, by named issue 100%" in text
+    assert "Finished logs flagged, raw            : by score 0%, by named issue 50%" in text

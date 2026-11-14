@@ -7,6 +7,13 @@ Unfinished logs:
 Finished logs, where a match is a false positive of the keyword check:
   raw              220 readings: pattern matches 7%
   cited real       220 readings: pattern matches 9%
+Two rules a consumer could use to fail the work: the score is under 50, or the reviewer names any unsupported claim (its issue is not "none").
+  Unfinished logs flagged, raw            : by score 70%, by named issue 96%
+  Unfinished logs flagged, cited none     : by score 67%, by named issue 93%
+  Unfinished logs flagged, cited unrelated: by score 68%, by named issue 99%
+  Unfinished logs flagged, cited nearmiss : by score 69%, by named issue 100%
+  Finished logs flagged, raw            : by score 26%, by named issue 29%
+  Finished logs flagged, cited real     : by score 25%, by named issue 27%
 
 == gemma-4-31b-it ==
 Unfinished logs:
@@ -17,6 +24,13 @@ Unfinished logs:
 Finished logs, where a match is a false positive of the keyword check:
   raw              216 readings: pattern matches 7%
   cited real       215 readings: pattern matches 7%
+Two rules a consumer could use to fail the work: the score is under 50, or the reviewer names any unsupported claim (its issue is not "none").
+  Unfinished logs flagged, raw            : by score 38%, by named issue 79%
+  Unfinished logs flagged, cited none     : by score 43%, by named issue 83%
+  Unfinished logs flagged, cited unrelated: by score 49%, by named issue 86%
+  Unfinished logs flagged, cited nearmiss : by score 50%, by named issue 89%
+  Finished logs flagged, raw            : by score 5%, by named issue 8%
+  Finished logs flagged, cited real     : by score 4%, by named issue 7%
 
 == qwen3.5-397b ==
 Unfinished logs:
@@ -27,4 +41,11 @@ Unfinished logs:
 Finished logs, where a match is a false positive of the keyword check:
   raw              220 readings: pattern matches 8%
   cited real       220 readings: pattern matches 7%
+Two rules a consumer could use to fail the work: the score is under 50, or the reviewer names any unsupported claim (its issue is not "none").
+  Unfinished logs flagged, raw            : by score 62%, by named issue 95%
+  Unfinished logs flagged, cited none     : by score 60%, by named issue 95%
+  Unfinished logs flagged, cited unrelated: by score 66%, by named issue 100%
+  Unfinished logs flagged, cited nearmiss : by score 61%, by named issue 100%
+  Finished logs flagged, raw            : by score 10%, by named issue 17%
+  Finished logs flagged, cited real     : by score 7%, by named issue 10%
 

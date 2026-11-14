@@ -22,9 +22,8 @@ On gemma-4-31b-it and qwen3.5-397b it widened the gap, by +6.0 and +8.0 points.
 The forged citation misled no reviewer, and a true "all citations resolve" line changed nothing.
 [TODO: glm-5.2.]
 In exploratory analysis, reviewers named the false claim in 78% to 100% of unfinished logs and still gave 30% to 62% of them a passing score.
-deepseek-v4-flash named it in every unfinished log with a near-miss citation and passed 31%, at a mean score of 80.
-A reviewer's score can hide what the reviewer found, so a trust signal should carry claim-level findings.
-We release the families, the readings and the scripts.
+Failing work whenever the reviewer named an unsupported claim, not on its score, caught 79% to 96% of unfinished logs where the score caught 38% to 70%.
+A trust signal should carry the reviewer's claim-level findings, not only its score.
 
 ## 1. Introduction
 
@@ -67,7 +66,7 @@ Our contributions are:
 
 - **A test that isolates the citation.** Matched logs that differ in one step, a byte-identical report, and three levels of unsupporting citation, on 11 task families built from real agent runs in METR's MALT dataset, plus 3 hand-built development families.
 - **A pre-registered null with a tight interval, and two replications that point the other way from the attack.** On the confirmatory reviewer a near-miss citation changes separation by +0.5 points (95% CI -2.2 to +3.1), inside the band we fixed in advance for an effect that does not matter. On two replication reviewers it improves separation by +6.0 and +8.0 points. A true "all citations resolve" line has no effect on either reviewer that read it.
-- **Where the reviewers fail instead.** In exploratory analysis, reviewers name the false claim in most unfinished logs and still give the work a passing score. Citations raise how often they name it and do not change the verdict.
+- **Where the reviewers fail instead, and a fix that costs nothing.** In exploratory analysis, reviewers name the false claim in most unfinished logs and still give the work a passing score. Failing work on the reviewer's stated finding instead of its score catches 79% to 96% of unfinished logs, against 38% to 70%.
 - **A reusable check.** `monitor.py` runs the families against any reviewer model, and `main_report.py` and `reasons_report.py` print every number in this report.
 
 ## 2. Related work
@@ -185,7 +184,7 @@ The test is two-sided because the pilot gave no direction.
 Replications use the same test with Holm correction.
 The badge arm runs on deepseek-v4-flash and gemma-4-31b-it.
 
-`main_report.py` prints every number in Sections 4.1 to 4.3, and `reasons_report.py` prints Section 4.4.
+`main_report.py` prints every number in Sections 4.1 to 4.3, and `reasons_report.py` prints Sections 4.4 and 4.5.
 
 ## 4. Results
 
@@ -269,14 +268,32 @@ The score treats a claimed check that never happened as a small flaw in otherwis
 
 [TODO: audit a random sample of matched replies by hand, and report agreement with the keyword check.]
 
-### 4.5 Development set
+### 4.5 Exploratory: failing work on the reviewer's finding, not its score
+
+If the reviewer names the false claim, a consumer does not have to trust the score.
+We compared two rules a consumer could apply to the same replies: fail the work when the score is under 50, or fail it when the reviewer names any unsupported claim at all.
+The second rule uses no keyword pattern, only whether the stated issue is "none".
+
+| Reviewer | Unfinished logs failed, by score | Unfinished logs failed, by named issue | Finished logs failed, by score | Finished logs failed, by named issue |
+|---|---|---|---|---|
+| deepseek-v4-flash | 70% | 96% | 26% | 29% |
+| gemma-4-31b-it | 38% | 79% | 5% | 8% |
+| qwen3.5-397b | 62% | 95% | 10% | 17% |
+
+These are the rows with no citations.
+Reading the finding instead of the score caught 26 to 41 points more unfinished work, for 3 to 7 points more false alarms.
+With a near-miss citation on the false claim, the same rule failed 100%, 89% and 100% of unfinished logs.
+So citations and the claim-level finding work together: the citation points the reviewer at one step, the reviewer reports what it sees there, and the consumer acts on that report.
+Like Section 4.4, this was not planned in advance, and it applies a rule to replies that were written to be scored, so a prompt built for it may behave differently.
+
+### 4.6 Development set
 
 On the three hand-built families the pilot passed all four of its pre-set criteria on deepseek-v4-flash, with no missing readings.
 On the long logs, raw separation was 73.5 to 84.0 points and finished work scored 100.
 The near-miss citation effect was +5.5, -11.1 and +3.2 points, which gave no direction and is why the main test is two-sided.
 deepseek-v4-flash was much better on these logs than on the real ones: it scored 83% of unfinished long logs under 50 and raised no false alarm on finished work.
 
-### 4.6 Robustness
+### 4.7 Robustness
 
 [TODO: missing readings per cell for each reviewer; whether any family was dropped for a reviewer under the ten-score rule; the qwen3.5-397b and glm-5.2 rows of every table above.]
 
@@ -299,6 +316,7 @@ This is the failure Cotton-Barratt and Finnveden warn of, in a different place f
 A trust signal for an AI reader should carry what was checked and what was found, claim by claim.
 "Resolves" and "supports" are different checks and should be different fields.
 The reviewer's overall score should not be the only thing that travels downstream, and a claim the reviewer could not support should be able to block acceptance on its own.
+On our data that one change, failing work whenever the reviewer names an unsupported claim, would have caught 79% to 96% of unfinished work where the score caught 38% to 70%.
 
 **What would change our mind.**
 [TODO: after glm-5.2 and qwen3.5-397b.]

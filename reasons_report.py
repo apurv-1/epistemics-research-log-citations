@@ -70,6 +70,7 @@ def tally(rows: list[dict]) -> dict:
         c["passed_other"] += passed and not named and not says_none(row.get("issue"))
         c["passed_none"] += passed and says_none(row.get("issue"))
         c["score_when_passed_named"] += row["score"] if passed and named else 0.0
+        c["flagged_by_issue"] += not says_none(row.get("issue"))
     return cells
 
 
@@ -93,6 +94,13 @@ def report(model: str, rows: list[dict]) -> str:
     for condition, pointer in (("raw", ""), ("cited", "real")):
         c = cells[("done", condition, pointer)]
         lines.append(f"  {condition:5s} {pointer:9s} {int(c['n']):4d} readings: pattern matches {pct(c['named'], c['n'])}")
+    lines.append("Two rules a consumer could use to fail the work: the score is under "
+                 f"{PASSED_AT:g}, or the reviewer names any unsupported claim (its issue is not \"none\").")
+    for label, variant, cells_ in (("Unfinished logs flagged", "skipped", CELLS), ("Finished logs flagged", "done", (("raw", ""), ("cited", "real")))):
+        for condition, pointer in cells_:
+            c = cells[(variant, condition, pointer)]
+            lines.append(f"  {label}, {condition:5s} {pointer:9s}: by score {pct(c['n'] - c['passed'], c['n'])}, "
+                         f"by named issue {pct(c['flagged_by_issue'], c['n'])}")
     return "\n".join(lines)
 
 
