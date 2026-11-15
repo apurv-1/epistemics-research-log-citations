@@ -64,6 +64,7 @@ def reading(row: dict) -> dict | None:
 def collect(rows: list[dict], key=parse) -> dict:
     """Readings per (unit, condition, variant). `key` maps a family id to (unit, condition), or None to skip it."""
     cells: dict[tuple, list[dict]] = defaultdict(list)
+    missing_cells: dict[tuple, int] = defaultdict(int)
     missing = total = 0
     for row in rows:
         parsed = key(row["family"])
@@ -73,9 +74,11 @@ def collect(rows: list[dict], key=parse) -> dict:
         r = reading(row)
         if r is None:
             missing += 1
+            missing_cells[(*parsed, row["variant"])] += 1
         else:
             cells[(*parsed, row["variant"])].append(r)
-    return {"cells": dict(cells), "missing": missing, "total": total, "units": sorted({k[0] for k in cells})}
+    return {"cells": dict(cells), "missing": missing, "missing_cells": dict(missing_cells), "total": total,
+            "units": sorted({k[0] for k in cells})}
 
 
 def cell(data: dict, unit: str, condition: str, variant: str, measure, min_readings: int) -> float | None:
@@ -232,6 +235,44 @@ def report_real(model: str, verdict: dict, score: dict, n: int) -> str:
                                              ("pass line of 100", score, under(100), under(100))):
         c, f = pooled(data, "skipped", c_measure), pooled(data, "done", f_measure)
         lines.append(f"  {label}: cut logs caught {'n/a' if c is None else format(c, '.0f')}%, full logs failed {'n/a' if f is None else format(f, '.0f')}%")
+    def family_mean(data, c_measure, f_measure):
+        nets = [c - f for unit in data["units"]
+                if (c := cell(data, unit, "", "skipped", c_measure, n)) is not None
+                and (f := cell(data, unit, "", "done", f_measure, n)) is not None]
+        return mean(nets) if nets else float("nan")
+
+    lines.append("  discrimination as a mean over families (cut logs failed minus full logs failed): "
+                 f"verdict rule {family_mean(verdict, CATCH, REJECT):.1f}, "
+                 f"flag gate {family_mean(score, FLAG, FLAG):.1f}, pass line of {MAIN_PASS_LINE} "
+                 f"{family_mean(score, under(MAIN_PASS_LINE), under(MAIN_PASS_LINE)):.1f}")
+    miss = verdict.get("missing_cells", {})
+    lines.append(f"  missing verdict readings: {sum(v for k, v in miss.items() if k[2] == 'skipped')} on cut logs, "
+                 f"{sum(v for k, v in miss.items() if k[2] == 'done')} on full logs")
+
+    def worst(unit):  # every missing cut-log reading counted as not caught, every missing full-log reading as a false alarm
+        cut, full = verdict["cells"].get((unit, "", "skipped"), []), verdict["cells"].get((unit, "", "done"), [])
+        mc, mf = miss.get((unit, "", "skipped"), 0), miss.get((unit, "", "done"), 0)
+        if not cut or not full:
+            return None
+        return (100.0 * sum(r["catch"] for r in cut) / (len(cut) + mc)
+                - 100.0 * (sum(r["reject"] for r in full) + mf) / (len(full) + mf))
+    worst_gain = {unit: None if (a := worst(unit)) is None or (b := net_score(unit, "")) is None else a - b for unit in verdict["units"]}
+    lines.append(_line("worst case, missing readings counted against the verdict rule: verdict rule minus a pass line of "
+                       f"{MAIN_PASS_LINE}", summary(worst_gain), "families"))
+    lines.append(f"    worst-case verdict discrimination, mean over families: "
+                 f"{mean(v for v in (worst(u) for u in verdict['units']) if v is not None):.1f}")
+    def closed(unit):  # a deployed gate that rejects any reply it cannot read: missing cut readings caught, missing full ones false alarms
+        cut, full = verdict["cells"].get((unit, "", "skipped"), []), verdict["cells"].get((unit, "", "done"), [])
+        mc, mf = miss.get((unit, "", "skipped"), 0), miss.get((unit, "", "done"), 0)
+        if not cut or not full:
+            return None
+        return (100.0 * (sum(r["catch"] for r in cut) + mc) / (len(cut) + mc)
+                - 100.0 * (sum(r["reject"] for r in full) + mf) / (len(full) + mf))
+    closed_gain = {unit: None if (a := closed(unit)) is None or (b := net_score(unit, "")) is None else a - b for unit in verdict["units"]}
+    lines.append(_line("fail-closed gate, unreadable replies rejected: verdict rule minus a pass line of "
+                       f"{MAIN_PASS_LINE}", summary(closed_gain), "families"))
+    lines.append(f"    fail-closed verdict discrimination, mean over families: "
+                 f"{mean(v for v in (closed(u) for u in verdict['units']) if v is not None):.1f}")
     lines.append("  per family, cut logs caught and full logs failed under the verdict rule:")
     for unit in verdict["units"]:
         c, f = cell(verdict, unit, "", "skipped", CATCH, n), cell(verdict, unit, "", "done", REJECT, n)
@@ -249,7 +290,16 @@ def load_gateway(model: str, path: Path, set_name: str, arm: str, readings: int,
 
     jobs = build_jobs(load_set(set_name), conditions=("raw",), arm=arm)
     calls = plan_calls(jobs, [model], readings, temperature, max_output_tokens)
-    return load_results(path, calls, jobs)
+    # The second account writes the same readings to a file ending in -b (scripts/run_*.sh); join them.
+    second = path.with_name(path.stem + "-b" + path.suffix)
+    files = [p for p in (path, second) if p.exists()]
+    if not files:
+        return load_results(path, calls, jobs)
+    rank = lambda row: (not row["missing"]) + (row["error"] is None) + (row["score"] is not None or row["verdicts"] is not None)  # noqa: E731
+    merged = load_results(files[0], calls, jobs)
+    for other in files[1:]:
+        merged = [b if rank(b) > rank(a) else a for a, b in zip(merged, load_results(other, calls, jobs))]
+    return merged
 
 
 def load_rows(path: Path) -> list[dict]:

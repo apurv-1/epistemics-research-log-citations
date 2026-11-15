@@ -157,7 +157,7 @@ def main() -> None:
     def rows(model: str, arm: str, prefix: str, set_name: str) -> list[dict]:
         name = f"{prefix}-{model}.jsonl" if arm == "score" else f"{prefix}-{arm}-{model}.jsonl"
         path = args.results_dir / name
-        return load_gateway(model, path, set_name, arm, args.readings, args.temperature, args.max_output_tokens) if path.exists() else []
+        return load_gateway(model, path, set_name, arm, args.readings, args.temperature, args.max_output_tokens) if path.exists() or path.with_name(path.stem + "-b" + path.suffix).exists() else []
 
     def gather(model: str, arm: str, conditions: tuple[str, ...]) -> dict | None:
         related = rows(model, arm, "related", "related")
