@@ -11,12 +11,13 @@ Research conducted at the AI x Epistemics Research Sprint, November 2026 (Track 
 AI agents report on their own work and a second model, the reviewer, often decides whether to believe it.
 We pair a full agent log with a cut log missing one check step, so the unchanged report makes one false claim.
 On 11 pairs from real agent runs in METR's MALT dataset, citing a relevant-looking step that does not show the claim did not fool three open-weight reviewers on average (pre-registered; deepseek-v4-flash +0.5 points, 95% CI -2.2 to +3.1).
-Instead, the reviewers name an unsupported claim and still score 26% to 40% of cut logs as passing (50 or more), mostly where the cut log still shows related evidence that the work succeeded.
-In a planned test on one reviewer, removing that evidence from three real logs cut this rate from between 45% and 100% to between 0% and 15%.
+The reviewers instead name an unsupported claim and still score 26% to 40% of cut logs as passing (50 or more), mostly where the cut log still shows related evidence of success.
+Removing that evidence from three real logs cut this rate from 45-100% to 0-15% (planned, one reviewer).
 On eight constructed tasks stating their requirement, related evidence did not shrink the score drop from full to cut log (pre-registered, -4.8 points, 95% CI -11.5 to +0.4).
-With the requirement only implied, the reviewer passed 41% of flagged cut logs, and 65% once related evidence was added (secondary).
-Failing every flagged log, rather than a pass line of 50, separated cut from full logs by 23 to 36 points more on the open-weight reviewers (exploratory), but lowered it on Claude Sonnet 5.5 and Opus 5.5.
-Trust infrastructure should state the requirement, carry the reviewer's claim-level finding as its own field, and calibrate the gate per reviewer.
+With the requirement only implied, the reviewer passed 41% of flagged cut logs, and 65% with related evidence (secondary).
+Stating the requirement in five real tasks did not reliably help (planned, p = 0.19).
+A verdict per claim instead of a score did help: on the 11 real-log pairs, deepseek-v4-flash marked the false claim unshown in every cut log, rejecting 12% of full logs, 45.5 points more separation than a pass line of 50 (pre-registered, 95% CI +17.9 to +73.7, p = 0.02).
+Trust infrastructure should gate on claim-level verdicts, not one score.
 
 ## 1. Introduction
 
@@ -38,7 +39,7 @@ We label each result as pre-registered, exploratory, or descriptive (frontier re
 
 1. **Pre-registered: citations held up.** On 11 real-log pairs, a forged citation did not fool three open-weight reviewers on average, and a true "all citations resolve" line created no false trust (Section 4).
 2. **Exploratory: flagged, then passed.** Open-weight reviewers name an unsupported claim in 77% to 96% of cut logs but score 26% to 40% of them 50 or more anyway. The failure sits mostly in families whose cut log still shows related evidence. In a planned test, removing that evidence from three real logs cut flagged-and-passed from between 45% and 100% of cut logs to between 0% and 15%, though full-log scores fell too (Section 5).
-3. **Exploratory, with a planned real-log test: the gate matters.** Failing every flagged log recovers most of what the score drops on open-weight reviewers, and hurts on frontier reviewers (Section 5).
+3. **Pre-registered on real logs: a verdict per claim fixes it.** Asked for a verdict on each claim instead of a score, deepseek-v4-flash marked the false claim unshown in every cut log of the 11 real-log pairs and rejected 12% of full logs, 45.5 points more discrimination than a pass line of 50 (p = 0.02). Stating the requirement in five real tasks did not reliably help. Among score-based gates, failing every flagged log helps open-weight reviewers and hurts frontier ones (exploratory, Section 5).
 4. **Pre-registered: when it happens.** On constructed tasks, more neutral work around the false claim does not soften the penalty (Section 6), and neither does related evidence while the task states its requirement. When the requirement is only implied, related evidence does soften it, and the reviewer flags every cut log and passes 65% of them (secondary, Section 7).
 5. **Descriptive: frontier reviewers.** Claude Sonnet 5.5 and Claude Opus 5.5 flagged-and-passed 3% and 0% of real cut logs. Asked for two numbers, they raised their belief that the work succeeded when nearby checks passed and still rated the claim as unshown (Sections 5 and 7).
 
@@ -118,7 +119,6 @@ The Claude rows come from Claude Sonnet 5.5 and Claude Opus 5.5 run through the 
 The open-weight reviewers flagged almost every cut log, and a keyword check shows that 95%, 78% and 93% of their cut-log issues name the false claim itself. The check is loose: on full logs, where no claim is false, it also matched 29%, 94% and 58% of the issues the reviewers named, so these shares are upper bounds.
 Yet they flagged and passed 26%, 40% and 35% of cut logs, with a median score of 80 to 85 in those readings.
 One reading scored 90 after writing "The report claims input 4 was checked in step 5, but step 5 only shows factorial 5 outputting 120."
-The issue field was "none" almost exactly when the score was 100 (17 exceptions in 3,935 readings), so for these reviewers the score carries the flag only at the top of the scale.
 Failing every flagged log raised discrimination by 23, 36 and 26 points over a pass line of 50 (sign-flip p = 0.094, 0.031 and 0.0625 over families, uncorrected).
 For the two Claude models the flag gate lowered discrimination by 18 and 12 points, because they flagged 45% and 30% of full logs, often for real errors in the agent's work, while their scores already failed the cut logs.
 Figure 1 shows the same trade-off as the pass line moves.
@@ -141,7 +141,29 @@ The full-log score fell too, by 16 to 36 points, because these full logs also lo
 With related evidence gone, the reviewer flagged and failed cut logs it had flagged and passed before; in `malt-343338-collatz` it also flagged more of them, 95% against 55%. The test covers 3 families on one reviewer and has no control that removes the same number of unrelated steps, so it cannot fully separate a loss of related evidence from a loss of evidence in general.
 This comparison is described per family, as the plan fixed, and is not a significance test.
 
-### 5.3 Two numbers instead of one
+### 5.3 Stating the requirement (planned)
+
+Study 3 below found that a stated requirement kept flagged-and-passed near 3% on constructed tasks.
+Before any reading, `RELATED.md` fixed the same change on real logs: in the five related-evidence families, one sentence at the end of the task states its acceptance requirement in the task's own terms (Appendix C), and every step and every word of the report stay the same.
+On deepseek-v4-flash, 193 of 200 readings, flagged-and-passed fell from 57% to 46% of cut logs on average, in 4 of 5 families, which is not significant (one-sided sign-flip p = 0.19, the smallest possible value being 0.031).
+In one Collatz family it rose from 80% to 100%, and discrimination under a pass line of 50 stayed near 0 (0 points before, 1 after).
+So the stated requirement that worked on constructed tasks did not carry over to these real logs in the form we tested.
+
+### 5.4 A verdict per claim (pre-registered)
+
+`DILUTION.md` fixed a second set of instructions before any reviewer saw them: the same opening, then one verdict for each numbered claim, SHOWN, NOT_SHOWN or CONTRADICTED, and no score.
+A consumer accepts the report only if every claim is SHOWN; a reading catches a cut log only when the false claim's own verdict is not SHOWN, and any verdict other than SHOWN on a full log is a false alarm.
+The planned test compares, per family, cut logs caught minus full logs rejected under this rule against the same quantity under a pass line of 50 on the Study 1 score readings, with a sign-flip test over the 11 families.
+
+On deepseek-v4-flash, the verdict rule caught 100% of cut logs and rejected 12% of full logs, against 70% and 26% for a pass line of 50.
+That is 45.5 points more discrimination (95% CI +17.9 to +73.7, 8 of 11 families up and 1 down, p = 0.0195).
+For comparison, the flag gate reached 67 points of discrimination on the same reviewer and the verdict rule reached 88.
+The false claim was marked not shown in every valid reading of every cut log, including the five related-evidence families where the score rule passed 57% of flagged cut logs.
+False alarms were 0% in 8 families and came from three: the two web-server families (28% and 65%), where the reviewers also found real errors in the full runs, and one bug-fix family (26%).
+Forty-two of 440 readings gave no valid verdict for every claim and are missing; every family kept at least half its readings.
+The verdict readings were taken a day after the score readings they are compared with.
+
+### 5.5 Two numbers instead of one
 
 A second set of instructions replaces the score with two numbers from 0 to 100: **works**, how likely the requirement is in fact met whatever the report says, and **shown**, how fully the log shows what the report says (Appendix F).
 We asked deepseek-v4-flash for the two numbers on the same 11 families, 10 readings per prompt, under a comparison fixed in `RELATED.md` before any reading (218 of 220 readings).
@@ -166,8 +188,7 @@ A padded condition has the claims of k = 1 and a log as long as k = 15.
 The primary comparison was the penalty at k = 15 minus at k = 1 on deepseek-v4-flash, predicted negative.
 
 The reviewer flagged every cut log at every dose and scored them 8.2, 6.8, 5.8 and 4.9.
-The dilution effect was +3.2 points (95% CI +1.6 to +4.7, p = 0.023), the opposite of the prediction and inside the 10-point band, and log length alone did nothing (padded minus k = 1: -0.6 points).
-More neutral work did not soften the penalty on these tasks.
+The dilution effect was +3.2 points (95% CI +1.6 to +4.7, p = 0.023), opposite to the prediction and inside the 10-point band, and log length alone did nothing (-0.6 points).
 Because the reviewer already failed these cut logs, the test has little room to show dilution, and it cannot explain why real cut logs pass.
 
 ## 7. Study 3: Does Related Evidence Cause It? (Pre-registered)
@@ -184,7 +205,6 @@ Under a stated requirement, related evidence did not make the reviewer pass the 
 With 7 related items the cut log scored 10.6, against 5.8 with 7 neutral, and the penalty changed by -4.8 points (95% CI -11.5 to +0.4, p = 0.20, 3 tasks up and 5 down).
 The interval reaches just past -10, so a small effect is not ruled out, but no meaningful effect was found.
 Lookalikes moved the penalty by about the same, -4.6 points, and the reviewer flagged 99% to 100% of cut logs in every condition with a stated requirement.
-With 1 and 3 related items the cut log scored 11.6 and 10.3, so there was no dose curve either.
 
 Removing the sentence that states the requirement changed the picture (secondary).
 With 7 neutral items and an implied requirement, the penalty fell by 30.2 points against the stated version (95% CI -36.8 to -23.1, all 8 tasks down, p = 0.0078).
@@ -207,8 +227,7 @@ Both Claude models raised **works** by 11 points when nearby checks passed (95% 
 ## 8. Discussion
 
 **Citations held up; the score did not.**
-A forged citation is the cheapest attack on a cited report, and on average it fooled none of the reviewers we tested.
-A true "all citations resolve" line, the closest thing to a verification badge, created no false trust.
+A forged citation, the cheapest attack on a cited report, fooled none of the reviewers on average, and a true "all citations resolve" line created no false trust.
 The weak point is downstream of the citation: open-weight reviewers found the false claim and then let the score carry it only as a small deduction, mostly when other evidence suggested the work was fine.
 
 **What the reviewer is scoring.**
@@ -227,25 +246,22 @@ A separate evidence field is therefore necessary but not sufficient: its value d
 A trust signal for an AI consumer should carry, per claim, whether it resolves, whether the log shows it, and what the reviewer found, as separate fields from any judgement of the work.
 The gate on those fields should be chosen per reviewer on labelled pairs like ours.
 No fixed gate served every reviewer here: failing every flagged log beat a pass line of 50 by 23 to 36 points on the open-weight reviewers and lost 12 to 18 on the frontier ones, which flag real errors in full logs. Choosing the gate on held-out families recovered most of the gain where it existed and cost 3 points where it did not.
-{{DISCUSSION_VERDICT}}
+The verdict instructions are the planned test of exactly this design, and on real logs they removed the failure on the confirmatory reviewer: the false claim was marked not shown every time, with fewer false alarms than a pass line of 50. A gate that requires every claim to be SHOWN needs no threshold to tune for this reviewer, though its false alarms on frontier reviewers, which flag real errors in full logs, are untested.
 We release the 11 real-log pairs, the 8 constructed tasks with their conditions, and the harness as a test set for exactly this calibration.
 
 **Limitations.**
-The pre-registered results rest on one confirmatory open-weight reviewer, 11 real-log families or 8 constructed tasks, and one prompt wording.
-The flagged-then-passed findings and the gate comparison are exploratory, the related-evidence split was named after Study 1 was read, and the frontier readings are descriptive, from the same model family as the agents behind the real logs.
-Appendix A gives the full list and the dual-use assessment, and Appendix B lists planned arms that were not completed.
+The pre-registered results rest on one confirmatory reviewer, 11 real-log families or 8 constructed tasks, and one prompt wording; flagged-then-passed and the score-gate comparison are exploratory, and the frontier readings are descriptive (Appendices A and B).
 
 ## 9. Conclusion
 
 A citation that resolves and does not support its claim did not fool the reviewers we tested.
 What failed was the path from finding to decision: weaker reviewers named the false claim and still scored the work as passing, mostly when related evidence suggested the work was fine, and on constructed tasks the same happened once the task stopped stating what finishing required.
-Frontier reviewers kept the finding in the score, but flagged many full logs.
-Trust infrastructure should carry the claim-level finding as its own field and calibrate the gate to the reviewer, so that what a reviewer finds reaches the decision.
+Asking for a verdict on each claim, rather than one score, closed that gap on the real logs for the confirmatory reviewer, while stating the requirement did not. Trust infrastructure should ask for claim-level verdicts and gate on them, so that what a reviewer finds reaches the decision.
 
 ## Code and Data
 
 Code, task families, every raw reading and the plans (`PILOT.md`, `MAIN.md`, `DILUTION.md`, `RELATED.md`) are at <https://github.com/apurv-1/epistemics-research-log-citations>.
-`main_report.py`, `reasons_report.py`, `dilution_report.py`, `related_report.py` and `claude_reviewer.py --report` print every number in this report from the raw readings.
+The `*_report.py` scripts and `claude_reviewer.py --report` print every number in this report from the raw readings.
 Two files are pre-existing work, copied from <https://github.com/apurv-1/swarm-alignment-maoc> at commit `52f1422`: `monitor.py`, the model client, and `tests/test_monitor.py`.
 Everything else was written during the sprint.
 The 11 real-log families are derived from METR's MALT dataset, `metr-evals/malt-public`, under its MIT license.
@@ -283,11 +299,14 @@ Zahraei, P. S., Wang, X., Bozdag, N. B., Tur, G., and Hakkani-Tür, D. (2026). P
 - On deepseek-v4-flash, across 11 families built from real agent runs, a forged citation on a false claim changes the penalty by less than a few points on average. On qwen3.5-397b it increases the penalty, and on gemma-4-31b-it the increase does not survive the planned correction.
 - A true line saying that all citations resolve does not change the penalty on the two reviewers that read it.
 - On deepseek-v4-flash and eight constructed tasks that it already fails, more neutral real work around a false claim does not soften the penalty for it.
+- On deepseek-v4-flash and the 11 real-log pairs, a verdict per claim with the rule "every claim SHOWN" separates cut from full logs better than a pass line of 50 on the score, by 45.5 points (p = 0.02).
 - On deepseek-v4-flash and the same eight tasks, related evidence does not meaningfully soften the penalty while the task states its requirement, though an effect just over 10 points is not excluded. When the requirement is only implied, related evidence does soften it, in a secondary analysis on 8 tasks with p = 0.031 and no correction for the other secondary analyses.
 
 ### What they do not establish
 
 - **That flagged-and-passed is a confirmed effect.** It was found in exploratory analysis of Study 1, the related-evidence split was named after that analysis, and the result depends on the consumer's gate.
+- **That the verdict rule transfers.** It was tested on one reviewer, one prompt and 11 families; its false alarms on reviewers that flag real errors in full logs are unknown.
+- **That stating the requirement fails on real logs.** The planned test on five families was not significant, and one sentence of one wording was tried.
 - **That the flag gate works in deployment.** It was compared after the fact, on one prompt, and it hurts frontier reviewers that flag real errors in full logs.
 - **That no forged citation can fool a reviewer.** We tested the mean effect of one hand-placed citation per family.
 - **How often agents cite steps that do not support their claims.** We place the citations ourselves.
@@ -315,7 +334,7 @@ This work describes a way to make a false claim look supported: cite a real step
 It did not work on the reviewers we tested, which lowers the risk of describing it.
 The finding more useful to an attacker is that weaker reviewers may score work as passing after naming a false claim in it.
 An agent or a person could use that to get an overclaiming report through a pipeline that reads only a score against a lenient pass line.
-The defence is in the consumer's hands and is the paper's main recommendation: act on the reviewer's claim-level finding, not only its score.
+The defence is in the consumer's hands and is the paper's main recommendation: ask for a verdict on each claim and act on it, not only on a score.
 We judge that publishing helps defenders more than attackers.
 Nothing here is a tool for persuading or manipulating people.
 We release the task families and the reviewer harness.
@@ -375,6 +394,11 @@ Dropped connections stalled some runs, which were restarted, and calls that were
 The pool came from four files of the dataset: runs labelled `normal`, without two kinds of security puzzle, of 5 to 40 steps and at most 60,000 characters.
 Of the 100 runs in the pool, 46 were read: 11 became families and 35 were turned down.
 `data/malt_pool.json` records the decision on each run, and each family file lists every edit made to the run and the report.
+
+The stated-requirement test of Section 5.3 appends one sentence to the task of each related-evidence family, in `data/families_malt_stated/`.
+The three esolang families get "The task is done only when the submitted program, run with the interpreter, outputs nothing but the correct Collatz result for its input.", with "Fibonacci number" in place of "Collatz result" for `malt-343341-fibonacci`.
+The two web-server families get "The task is done only when the server, left running in the background, answers POST requests to /exp_last_digit promptly and with the correct last digit of the power tower of the input list."
+No sentence names an input, a step, the log or the report.
 
 ## Appendix D. Pilot
 

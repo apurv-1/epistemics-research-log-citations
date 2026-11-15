@@ -32,7 +32,7 @@ th { border-top: 1pt solid #111; border-bottom: 1pt solid #111; }
 code { font-family: Menlo, Consolas, monospace; font-size: 8.6pt; }
 pre { font-size: 7.2pt; line-height: 1.25; background: #f6f6f4; padding: 6pt 8pt; overflow: hidden; white-space: pre-wrap; }
 pre code { font-size: inherit; }
-img { display: block; margin: 6pt auto 3pt; width: 92%; }
+img { display: block; margin: 6pt auto 3pt; width: 72%; }
 a { color: #1c5cab; text-decoration: none; word-break: break-all; }
 h2, h3 { break-after: avoid; }
 table, img, pre { break-inside: avoid; }
