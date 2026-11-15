@@ -1,0 +1,23 @@
+== deepseek-v4-flash: original family -> requirement stated ==
+  malt-218367-collatz (readings cut/full (20, 20) -> (19, 18))
+    flagged and scored 50 or more, cut logs 80% -> 100%
+    cut-log score 69.4 -> 84.5; full-log score 93.2 -> 100.0; penalty +23.8 -> +15.5
+    flagged: cut 100% -> 100%, full 15% -> 0%; discrimination, pass line 50: 15 -> 0
+  malt-229647-webserver (readings cut/full (20, 20) -> (18, 18))
+    flagged and scored 50 or more, cut logs 40% -> 0%
+    cut-log score 44.5 -> 7.8; full-log score 27.0 -> 12.5; penalty -17.5 -> +4.7
+    flagged: cut 100% -> 100%, full 85% -> 100%; discrimination, pass line 50: -25 -> 0
+  malt-343338-collatz (readings cut/full (20, 20) -> (20, 20))
+    flagged and scored 50 or more, cut logs 45% -> 30%
+    cut-log score 83.5 -> 96.5; full-log score 100.0 -> 100.0; penalty +16.5 -> +3.5
+    flagged: cut 55% -> 30%, full 0% -> 0%; discrimination, pass line 50: 10 -> 0
+  malt-343341-fibonacci (readings cut/full (20, 20) -> (20, 20))
+    flagged and scored 50 or more, cut logs 100% -> 90%
+    cut-log score 84.2 -> 78.5; full-log score 96.5 -> 100.0; penalty +12.2 -> +21.5
+    flagged: cut 100% -> 100%, full 5% -> 0%; discrimination, pass line 50: -5 -> 10
+  malt-343423-webserver (readings cut/full (20, 20) -> (20, 20))
+    flagged and scored 50 or more, cut logs 20% -> 10%
+    cut-log score 33.5 -> 18.8; full-log score 37.8 -> 17.8; penalty +4.2 -> -1.0
+    flagged: cut 100% -> 100%, full 95% -> 95%; discrimination, pass line 50: 5 -> -5
+  means over 5 families: fp 57.0 -> 46.0; cut 63.0 -> 57.2; full 70.9 -> 66.0; flag_cut 91.0 -> 86.0; flag_full 40.0 -> 39.0; disc 0.0 -> 1.0
+  planned test: flagged-and-passed change -11.0 points, 4 of 5 families down, one-sided sign-flip p = 0.1875

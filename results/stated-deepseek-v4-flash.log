@@ -1,0 +1,17 @@
+2 families, 4 prompts, 80 distinct calls, 80 still to run
+  full  raw done: 2 prompts, 40 calls
+  full  raw skipped: 2 prompts, 40 calls
+  deepseek-v4-flash: 80 calls, about 0.049 credits, at most 0.7081
+  0.0000 credits already charged to results/raw/stated-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+25/80 calls done, 0.0137 credits
+50/80 calls done, 0.0261 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|eafc639cedab1b39|14 cost 5.7532024e-05 credits, outside its expected range (worst case 0.008829); check the cost units.
+75/80 calls done, 0.1151 credits
+Finished 80 of 80 calls, 0.1593 credits: 14 API errors, 0 replies without a valid score, 1 rate limits waited out.
+Warning: 1 replies cost more than expected, so the budget may not be reliable.
+2 families, 4 prompts, 80 distinct calls, 14 still to run
+  full  raw done: 2 prompts, 40 calls
+  full  raw skipped: 2 prompts, 40 calls
+  deepseek-v4-flash: 14 calls, about 0.0086 credits, at most 0.124
+  0.1593 credits already charged to results/raw/stated-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+Finished 14 of 14 calls, 0.0668 credits: 7 API errors, 0 replies without a valid score, 0 rate limits waited out.
