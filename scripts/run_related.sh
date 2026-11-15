@@ -42,10 +42,10 @@ stage verdict-malt     deepseek-v4-flash malt     verdict 20 12 $MALT
 stage related-two      deepseek-v4-flash related  two     20 12 $TWO
 stage verdict-malt     gemma-4-31b-it    malt     verdict 20 10 $MALT
 stage verdict-malt     qwen3.5-397b      malt     verdict 10 20 $MALT
+stage dilution-two     deepseek-v4-flash dilution two     20 12 $K07
 stage dilution-verdict deepseek-v4-flash dilution verdict 20 12 $DIL
 stage malt-two         gemma-4-31b-it    malt     two     10 10 $MALT
 [ -n "$NOREL" ] && stage norel qwen3.5-397b malt_norel score 10 20 $NOREL
-stage dilution-two     deepseek-v4-flash dilution two     20 12 $K07
 stage related          gemma-4-31b-it    related  score   20 10 $REL
 stage related-two      gemma-4-31b-it    related  two     20 10 $TWO
 stage dilution-two     gemma-4-31b-it    dilution two     20 10 $K07
