@@ -216,8 +216,11 @@ def report_verdict(model: str, data: dict, score_data: dict | None, n: int) -> s
     return "\n".join(lines)
 
 
-def report_real(model: str, verdict: dict, score: dict, n: int) -> str:
-    """The verdict instructions on the 11 real-log families, against a pass line of 50 on the main study's readings."""
+def report_real(model: str, verdict: dict, score: dict, n: int, exclude: tuple[str, ...] = ()) -> str:
+    """The verdict instructions on the 11 real-log families, against a pass line of 50 on the main study's readings.
+
+    Families in exclude are left out of every number except the missing-reading count, for a sensitivity check."""
+    verdict = {**verdict, "units": [u for u in verdict["units"] if u not in exclude]}
     def net_verdict(unit, _):
         c, f = cell(verdict, unit, "", "skipped", CATCH, n), cell(verdict, unit, "", "done", REJECT, n)
         return None if c is None or f is None else c - f
@@ -226,7 +229,7 @@ def report_real(model: str, verdict: dict, score: dict, n: int) -> str:
         c, f = cell(score, unit, "", "skipped", under(MAIN_PASS_LINE), n), cell(score, unit, "", "done", under(MAIN_PASS_LINE), n)
         return None if c is None or f is None else c - f
 
-    lines = [f"== {model}: verdict instructions on the real-log families ==",
+    lines = [f"== {model}: verdict instructions on the real-log families" + (f", without {', '.join(exclude)}" if exclude else "") + " ==",
              f"Missing readings: {verdict['missing']} of {verdict['total']}; families: {len(verdict['units'])}"]
     gain = {unit: None if (a := net_verdict(unit, "")) is None or (b := net_score(unit, "")) is None else a - b for unit in verdict["units"]}
     lines.append(_line(f"verdict rule minus a pass line of {MAIN_PASS_LINE} (each: cut logs caught minus full logs failed)", summary(gain), "families"))
@@ -339,6 +342,7 @@ def main() -> None:
     parser.add_argument("--real-rows", type=Path, help="Score readings on the real-log families from claude_reviewer.py.")
     parser.add_argument("--real-verdict-rows", type=Path, help="Verdict readings on the real-log families from claude_reviewer.py.")
     parser.add_argument("--real-model", help="The model name in those rows, such as sonnet.")
+    parser.add_argument("--exclude-families", nargs="*", default=[], help="Real-log families to leave out, for a sensitivity check.")
     parser.add_argument("--min-readings", type=int, help="Scores a cell needs for its template to count. Default: half the planned readings.")
     args = parser.parse_args()
     n = args.min_readings or max(1, args.readings // 2)
@@ -360,11 +364,11 @@ def main() -> None:
         if (args.results_dir / f"verdict-malt-{model}.jsonl").exists():
             verdict = collect(load(model, f"verdict-malt-{model}.jsonl", "malt", "verdict", args.readings), real_key)
             score = collect(load(model, f"main-{model}.jsonl", "malt", "score", 20), real_key)
-            print(report_real(model, verdict, score, n) + "\n")
+            print(report_real(model, verdict, score, n, tuple(args.exclude_families)) + "\n")
     if args.real_rows and args.real_verdict_rows:
         verdict = collect(load_rows(args.real_verdict_rows, args.real_model, "verdict"), real_key)
         score = collect(load_rows(args.real_rows, args.real_model, "score"), real_key)
-        print(report_real(args.real_model or args.name, verdict, score, n) + "\n")
+        print(report_real(args.real_model or args.name, verdict, score, n, tuple(args.exclude_families)) + "\n")
     if args.rows:
         score_data = collect(load_rows(args.rows))
         print(report_score(args.name, score_data, n)[0] + "\n")

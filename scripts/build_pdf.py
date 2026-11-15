@@ -33,9 +33,11 @@ code { font-family: Menlo, Consolas, monospace; font-size: 8.6pt; }
 pre { font-size: 7.2pt; line-height: 1.25; background: #f6f6f4; padding: 6pt 8pt; overflow: hidden; white-space: pre-wrap; }
 pre code { font-size: inherit; }
 img { display: block; margin: 6pt auto 3pt; width: 60%; }
+img[alt="Figure 1"] { width: 100%; }
 a { color: #1c5cab; text-decoration: none; word-break: break-all; }
 h2, h3 { break-after: avoid; }
 table, img, pre { break-inside: avoid; }
+p:has(+ table), p:has(+ p > img) { break-after: avoid; }
 """
 
 
