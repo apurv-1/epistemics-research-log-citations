@@ -17,8 +17,7 @@ A verdict on each claim instead of a score closed the gap.
 deepseek-v4-flash caught the false claim in every valid cut-log reading, 45.5 points more discrimination than a pass line of 50 (pre-registered secondary, p = 0.02; +35.0 if unreadable replies count as rejections).
 gemma-4-31b-it replicated it (+54.9 points, p = 0.016), and qwen3.5-397b pointed the same way (+38.6, p = 0.055).
 deepseek-v4-flash's full-log rejections fell on claims the agents' own reports overclaim (post hoc).
-On eight constructed tasks, related evidence had no meaningful effect while the task stated its requirement (pre-registered); with the requirement implied, the reviewer passed 65% of flagged cut logs (secondary).
-Stating the requirement in five real-log families did not reliably help (secondary, p = 0.19).
+On eight constructed tasks with the requirement stated, related evidence had no meaningful effect on deepseek-v4-flash (pre-registered), but gemma-4-31b-it then passed 71% of cut logs instead of 31% (planned replication, p = 0.063); with the requirement implied, deepseek-v4-flash passed 65% of flagged cut logs (secondary).
 Trust infrastructure should gate on claim-level verdicts, not scores.
 
 ## 1. Introduction
@@ -42,7 +41,7 @@ Each result is labelled pre-registered (a test fixed in a plan, primary or secon
 1. **Pre-registered: citations held up.** A forged citation did not fool three open-weight reviewers on 11 real-log pairs, and a true "all citations resolve" line created no false trust (Section 4).
 2. **Exploratory: flagged, then passed.** The same reviewers flag an unsupported claim in most cut logs and still pass 26% to 40% of them, mostly where related evidence remains (Section 5).
 3. **Pre-registered secondary: a verdict per claim closes the gap.** The verdict rule beat a pass line of 50 by 45.5 points on deepseek-v4-flash; gemma-4-31b-it replicated it and qwen3.5-397b pointed the same way (Section 6).
-4. **Pre-registered: when it happens.** On constructed tasks, neither more neutral work nor related evidence softens the penalty while the task states its requirement; when it is implied, related evidence does (secondary; Sections 7 and 8).
+4. **Pre-registered: when it happens.** On constructed tasks with a stated requirement, neither more neutral work nor related evidence softens deepseek-v4-flash's penalty, but related evidence softens gemma-4-31b-it's; with the requirement implied, it softens both (Sections 7 and 8).
 5. **Descriptive: frontier reviewers.** Claude Sonnet 5.5 and Opus 5.5 rarely pass a flagged cut log, and they keep their belief that the work succeeded apart from what the log shows (Sections 5, 6 and 8).
 
 ## 2. Related Work
@@ -201,6 +200,7 @@ The primary comparison was the penalty at k = 15 minus at k = 1 on deepseek-v4-f
 The reviewer flagged every cut log at every dose and scored them 8.2, 6.8, 5.8 and 4.9.
 The dilution effect was +3.2 points (95% CI +1.6 to +4.7, p = 0.023), opposite to the prediction and inside the 10-point band, and log length alone did nothing (-0.6 points).
 Because the reviewer already failed these cut logs, the test had little room to show dilution.
+The planned replication on gemma-4-31b-it also moved the wrong way, +7.9 points (95% CI +5.0 to +11.2, 7 of 7 tasks up, p = 0.016).
 
 ## 8. Study 3: Does Related Evidence Cause It? (Pre-registered)
 
@@ -212,24 +212,25 @@ The 7-neutral condition reuses Study 2's dose-7 readings, which were collected a
 A second set of instructions asks for **works** and **shown** instead of a score (Section 5.3).
 The primary comparison was the penalty with 7 related minus with 7 neutral on deepseek-v4-flash, predicted negative.
 
-Under a stated requirement, related evidence did not make the reviewer pass the cut log.
+**Table 4.** Study 3, cut logs, means over the 8 tasks, with 7 neutral and then 7 related items. Score instructions, then the two numbers. Claude rows are descriptive, 3 readings per prompt.
+
+| Reviewer | Score, neutral | Score, related | Flagged | works | shown |
+|---|---|---|---|---|---|
+| deepseek-v4-flash | 5.8 | 10.6 | 100% | 55 → 63 | 21 → 33 |
+| gemma-4-31b-it | 20.1 | 49.7 | 98% | 31 → 56 | 1.7 → 11 |
+| Claude Sonnet 5.5 | 2.5 | 3.1 | 100% | 57 → 69 | 4.5 → 6.5 |
+| Claude Opus 5.5 | 2.9 | 3.2 | 100% | 51 → 62 | 4.5 → 6.3 |
+
+Under a stated requirement, related evidence did not make deepseek-v4-flash pass the cut log.
 With 7 related items the cut log scored 10.6, against 5.8 with 7 neutral, and the penalty changed by -4.8 points (95% CI -11.5 to +0.4, p = 0.20, 3 tasks up and 5 down).
-The interval reaches just past -10, so a small effect is not ruled out.
 Lookalikes moved the penalty by about the same, -4.6 points, and the reviewer flagged 99% to 100% of cut logs in every condition with a stated requirement.
+The planned replication on gemma-4-31b-it differed: its penalty fell 29.5 points (95% CI -52.1 to -5.9, 7 of 8 tasks down, p = 0.063), and it passed 71% of cut logs against 31%, while flagging 98%.
 
 Removing the sentence that states the requirement changed the picture (secondary).
 With 7 neutral items and an implied requirement, the penalty fell by 30.2 points against the stated version (95% CI -36.8 to -23.1, all 8 tasks down, p = 0.0078).
 Related evidence then shrank it by a further 18.0 points (95% CI -27.7 to -7.2, 6 of 8 tasks down, p = 0.031).
 In that condition the reviewer still flagged every cut log, and it scored 65% of them 50 or more, against 41% with neutral items and 3% with a stated requirement.
 Full logs scored 99.9 or 100 in every condition, so the flag gate still separated almost every cut log from every full log.
-
-**Table 4.** Study 3, cut logs, means over the 8 tasks, with 7 neutral and then 7 related items. Score instructions, then the two numbers. Claude rows are descriptive, 3 readings per prompt.
-
-| Reviewer | Score, neutral | Score, related | Flagged | works | shown |
-|---|---|---|---|---|---|
-| deepseek-v4-flash | 5.8 | 10.6 | 100% | 55 → 63 | 21 → 33 |
-| Claude Sonnet 5.5 | 2.5 | 3.1 | 100% | 57 → 69 | 4.5 → 6.5 |
-| Claude Opus 5.5 | 2.9 | 3.2 | 100% | 51 → 62 | 4.5 → 6.3 |
 
 Both Claude models raised **works** by 11 points when nearby checks passed (95% CIs +4.1 to +20.0 and +4.0 to +19.6 over tasks) while **shown** stayed near 5, so the related items were strong enough to move belief in the work, and the frontier reviewers kept that belief out of their judgement of the report. deepseek-v4-flash let it in: its **shown** rose by 11 points (95% CI +5.1 to +17.5, 7 of 8 tasks up, p = 0.016).
 
@@ -247,19 +248,16 @@ Asked for two numbers, the Claude models kept the two questions apart and deepse
 A trust signal for an AI consumer should carry, per claim, whether its citation resolves, the reviewer's verdict on whether the log shows it, and the reviewer's finding, as fields separate from any judgement of the work.
 The consumer should accept a report only if every claim is shown, and reject replies it cannot read.
 This rule beat a pass line of 50 on the confirmatory reviewer in a pre-registered test and on the planned replication, pointed the same way on the third open-weight reviewer, and beat the flag gate on all three in untested comparisons.
-In descriptive readings it also beat both score gates on Claude Sonnet 5.5.
 On deepseek-v4-flash every full-log rejection named a claim that the agent's unmodified report overclaims, so the same rule also surfaced real overclaiming that we did not construct (post hoc).
 The gate should still be checked per reviewer on labelled pairs.
 We release the 11 real-log pairs, the 8 constructed tasks with their conditions, and the harness as a test set for exactly this check.
-
-**Limitations.**
 The results rest on one confirmatory reviewer, 11 real-log or 8 constructed tasks, and one prompt wording, and two real-log pairs overclaim in the full run (Appendix A).
 
 ## 10. Conclusion
 
 A citation that resolves and does not support its claim did not fool the reviewers we tested.
 What failed was the path from finding to decision: open-weight reviewers flagged the false claim and still passed the work, mostly when related evidence suggested it was fine.
-Asking for a verdict on each claim, rather than one score, closed that gap on the real logs in a pre-registered test on one reviewer and a planned replication on a second, with a third pointing the same way, while stating the requirement did not. Trust infrastructure should ask for claim-level verdicts and gate on them, so that what a reviewer finds reaches the decision.
+Asking for a verdict on each claim, rather than one score, closed that gap on the real logs on two reviewers, with a third pointing the same way, while stating the requirement did not. Trust infrastructure should ask for claim-level verdicts and gate on them, so that what a reviewer finds reaches the decision.
 
 ## Code and Data
 
@@ -298,9 +296,9 @@ Zahraei, P. S., Wang, X., Bozdag, N. B., Tur, G., and Hakkani-Tür, D. (2026). P
 
 - On deepseek-v4-flash, across 11 families built from real agent runs, a forged citation on a false claim changes the penalty by less than a few points on average. On qwen3.5-397b it increases the penalty, and on gemma-4-31b-it the increase does not survive the planned correction.
 - A true line saying that all citations resolve does not change the penalty on the two reviewers that read it.
-- On deepseek-v4-flash and eight constructed tasks that it already fails, more neutral real work around a false claim does not soften the penalty for it.
+- On deepseek-v4-flash and eight constructed tasks that it already fails, more neutral real work around a false claim does not soften the penalty for it. The planned replication on gemma-4-31b-it agrees.
 - On deepseek-v4-flash and the 11 real-log pairs, a verdict per claim with the rule "every claim SHOWN" separates cut from full logs better than a pass line of 50 on the score, by 45.5 points (pre-registered secondary, p = 0.02), and by 35.0 points (p = 0.06) if unreadable replies are counted as rejections. gemma-4-31b-it replicates this (+54.9 points, p = 0.016, 0.031 after Holm correction) and qwen3.5-397b, added afterwards, points the same way (+38.6, p = 0.055). Without the two server families, whose false claim is also false in the full run, the gains are 41.5, 56.1 and 39.4 points (post hoc).
-- On deepseek-v4-flash and the same eight tasks, related evidence does not meaningfully soften the penalty while the task states its requirement, though an effect just over 10 points is not excluded. When the requirement is only implied, related evidence does soften it, in a secondary analysis on 8 tasks with p = 0.031 and no correction for the other secondary analyses.
+- On deepseek-v4-flash and the same eight tasks, related evidence does not meaningfully soften the penalty while the task states its requirement, though an effect just over 10 points is not excluded. On the planned replication, gemma-4-31b-it, it softens the penalty by 29.5 points (p = 0.063, 7 of 8 tasks down), so the null result does not carry over to a more lenient reviewer. When the requirement is only implied, related evidence does soften it, in a secondary analysis on 8 tasks with p = 0.031 and no correction for the other secondary analyses.
 
 ### What they do not establish
 
@@ -352,7 +350,7 @@ The Claude reviewers' readings were added to `RELATED.md` before any was taken (
 Each file lists the changes made during its run.
 No change altered a prompt, a definition, a threshold or a test after its results were read.
 
-**Planned but not completed.** {{NOT_COMPLETED}}
+**Planned but not completed.** The gateway runs stopped at 18:00 IST on November 15, as planned, before the last three arms in `RELATED.md`'s order finished. gemma-4-31b-it's verdict readings on the Study 2 tasks reached 800 of 1,600 calls, 700 with a valid verdict, on 4 of 8 tasks; that is below the half rule, so no result is computed, and on the tasks it read every cut log was caught and no full log rejected (descriptive). deepseek-v4-flash's verdict readings on the Study 3 tasks reached 103 of 320 calls, 93 valid, and gemma-4-31b-it's did not start (0 of 320); no result is computed for either. The optional qwen3.5-397b readings on the stated-requirement logs (100, described only, "if time allows") were not run. Every finished reading is in `results/raw/`.
 
 **Study 1.** Six conditions on 11 families at 20 readings is 1,320 readings per reviewer, plus 880 with the "all citations resolve" line on deepseek-v4-flash and gemma-4-31b-it.
 deepseek-v4-flash finished 2,199 of 2,200, gemma-4-31b-it 2,165 of 2,200 and qwen3.5-397b all 1,320.
@@ -363,11 +361,11 @@ The exploratory analysis (`reasons_report.py`) was written after the first main 
 **Study 2.** 8 tasks, 5 conditions, 2 logs and 20 readings is 1,600 readings on deepseek-v4-flash, none missing.
 The verdict parser was changed after 13 verdict readings to accept a second reply layout, before any verdict result was computed; stored replies are re-parsed, so no reading was repeated.
 The reduced replication on qwen3.5-397b was dropped to make room for Study 3, as `RELATED.md` states.
-{{APPX_B_REPLICATIONS}}
+The planned replication on gemma-4-31b-it finished 1,561 of 1,600 score readings, with 7 of 8 tasks meeting the half rule at doses 1 and 15, and all 320 two-number readings at dose 7 (`results/dilution-report-gemma-4-31b-it.txt`).
 
 **Study 3.** 8 tasks, 6 new conditions, 2 logs and 20 readings is 1,920 score readings per reviewer, with `r0` reused from Study 2.
 deepseek-v4-flash finished 1,919 of 1,920 new score readings, after a provider outage on November 15 was waited out and the failed calls were retried; every task met the half rule.
-{{APPX_B_STUDY3_MORE}}
+deepseek-v4-flash also finished all 640 two-number readings. The planned replication on gemma-4-31b-it finished 1,918 of 1,920 score readings and all 640 two-number readings (`results/related-report-gemma-4-31b-it.txt`). deepseek-v4-flash finished all 120 readings and qwen3.5-397b all 60 on the related-evidence-removed real logs, deepseek-v4-flash all 200 on the stated-requirement real logs, and both deepseek-v4-flash and gemma-4-31b-it all 220 two-number readings on the real logs.
 All runs were stopped for 26 minutes on November 14 for a reason unrelated to any result and resumed without repeating finished readings.
 
 **Claude reviewers.** 258 readings per model, through the `claude` client with every tool, MCP server and settings file off.

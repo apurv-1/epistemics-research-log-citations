@@ -1,0 +1,24 @@
+8 families, 16 prompts, 320 distinct calls, 320 still to run (two instructions)
+  full  raw done: 8 prompts, 160 calls
+  full  raw skipped: 8 prompts, 160 calls
+  gemma-4-31b-it: 320 calls, about 0.4637 credits, at most 7.0772
+  0.0000 credits already charged to results/raw/related-two-gemma-4-31b-it.jsonl; the budget for this file is 10.0
+25/320 calls done, 0.0264 credits
+50/320 calls done, 0.0740 credits
+75/320 calls done, 0.0997 credits
+100/320 calls done, 0.1253 credits
+125/320 calls done, 0.1291 credits
+150/320 calls done, 0.1329 credits
+175/320 calls done, 0.1367 credits
+200/320 calls done, 0.1404 credits
+225/320 calls done, 0.1661 credits
+250/320 calls done, 0.1698 credits
+275/320 calls done, 0.1736 credits
+300/320 calls done, 0.1774 credits
+Finished 320 of 320 calls, 0.1803 credits: 6 API errors, 0 replies without a valid score, 2 rate limits waited out.
+8 families, 16 prompts, 320 distinct calls, 6 still to run (two instructions)
+  full  raw done: 8 prompts, 160 calls
+  full  raw skipped: 8 prompts, 160 calls
+  gemma-4-31b-it: 6 calls, about 0.0087 credits, at most 0.1326
+  0.1803 credits already charged to results/raw/related-two-gemma-4-31b-it.jsonl; the budget for this file is 10.0
+Finished 6 of 6 calls, 0.0009 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.

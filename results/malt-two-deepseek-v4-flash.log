@@ -34,3 +34,44 @@ Warning: 19 replies cost more than expected, so the budget may not be reliable.
   deepseek-v4-flash: 3 calls, about 0.0018 credits, at most 0.0265
   0.0956 credits already charged to results/raw/malt-two-deepseek-v4-flash.jsonl; the budget for this file is 12.0
 Finished 3 of 3 calls, 0.0179 credits: 2 API errors, 0 replies without a valid score, 0 rate limits waited out.
+6 families, 12 prompts, 120 distinct calls, 0 still to run (two instructions)
+  full  raw done: 6 prompts, 60 calls
+  full  raw skipped: 6 prompts, 60 calls
+  0.1134 credits already charged to results/raw/malt-two-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+6 families, 12 prompts, 120 distinct calls, 2 still to run (two instructions)
+  full  raw done: 6 prompts, 60 calls
+  full  raw skipped: 6 prompts, 60 calls
+  deepseek-v4-flash: 2 calls, about 0.0012 credits, at most 0.0178
+  0.1134 credits already charged to results/raw/malt-two-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+Finished 2 of 2 calls, 0.0004 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+6 families, 12 prompts, 120 distinct calls, 0 still to run (two instructions)
+  full  raw done: 6 prompts, 60 calls
+  full  raw skipped: 6 prompts, 60 calls
+  0.1138 credits already charged to results/raw/malt-two-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+6 families, 12 prompts, 120 distinct calls, 0 still to run (two instructions)
+  full  raw done: 6 prompts, 60 calls
+  full  raw skipped: 6 prompts, 60 calls
+  0.1138 credits already charged to results/raw/malt-two-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+6 families, 12 prompts, 120 distinct calls, 0 still to run (two instructions)
+  full  raw done: 6 prompts, 60 calls
+  full  raw skipped: 6 prompts, 60 calls
+  0.1138 credits already charged to results/raw/malt-two-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+6 families, 12 prompts, 120 distinct calls, 0 still to run (two instructions)
+  full  raw done: 6 prompts, 60 calls
+  full  raw skipped: 6 prompts, 60 calls
+  0.1138 credits already charged to results/raw/malt-two-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+6 families, 12 prompts, 120 distinct calls, 0 still to run (two instructions)
+  full  raw done: 6 prompts, 60 calls
+  full  raw skipped: 6 prompts, 60 calls
+  0.1138 credits already charged to results/raw/malt-two-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+6 families, 12 prompts, 120 distinct calls, 0 still to run (two instructions)
+  full  raw done: 6 prompts, 60 calls
+  full  raw skipped: 6 prompts, 60 calls
+  0.1138 credits already charged to results/raw/malt-two-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.

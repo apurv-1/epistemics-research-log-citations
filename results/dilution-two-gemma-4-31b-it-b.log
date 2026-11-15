@@ -1,0 +1,17 @@
+4 families, 8 prompts, 160 distinct calls, 160 still to run (two instructions)
+  full  raw done: 4 prompts, 80 calls
+  full  raw skipped: 4 prompts, 80 calls
+  gemma-4-31b-it: 160 calls, about 0.2303 credits, at most 3.5323
+  0.0000 credits already charged to results/raw/dilution-two-gemma-4-31b-it-b.jsonl; the budget for this file is 10.0
+25/160 calls done, 0.0035 credits
+50/160 calls done, 0.0068 credits
+75/160 calls done, 0.0102 credits
+100/160 calls done, 0.0135 credits
+125/160 calls done, 0.0169 credits
+150/160 calls done, 0.0201 credits
+Finished 160 of 160 calls, 0.0214 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+4 families, 8 prompts, 160 distinct calls, 0 still to run (two instructions)
+  full  raw done: 4 prompts, 80 calls
+  full  raw skipped: 4 prompts, 80 calls
+  0.0214 credits already charged to results/raw/dilution-two-gemma-4-31b-it-b.jsonl; the budget for this file is 10.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.

@@ -1,0 +1,62 @@
+20 families, 40 prompts, 800 distinct calls, 800 still to run (verdict instructions)
+  full  raw done: 20 prompts, 400 calls
+  full  raw skipped: 20 prompts, 400 calls
+  deepseek-v4-flash: 800 calls, about 0.4589 credits, at most 6.9552
+  0.0000 credits already charged to results/raw/dilution-verdict-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+25/800 calls done, 0.0043 credits
+50/800 calls done, 0.0082 credits
+75/800 calls done, 0.0113 credits
+100/800 calls done, 0.0148 credits
+125/800 calls done, 0.0177 credits
+150/800 calls done, 0.0212 credits
+175/800 calls done, 0.0243 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|32ad28dad93984f6|4 cost 4.94496e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+200/800 calls done, 0.0271 credits
+225/800 calls done, 0.0305 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|9712ad1ad4332142|5 cost 4.860524e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+250/800 calls done, 0.0336 credits
+20 families, 40 prompts, 800 distinct calls, 543 still to run (verdict instructions)
+  full  raw done: 20 prompts, 400 calls
+  full  raw skipped: 20 prompts, 400 calls
+  deepseek-v4-flash: 543 calls, about 0.3116 credits, at most 4.7211
+  0.0432 credits already charged to results/raw/dilution-verdict-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+25/543 calls done, 0.0037 credits
+50/543 calls done, 0.0075 credits
+75/543 calls done, 0.0109 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|3aef725d12b29522|8 cost 4.5138920000000004e-05 credits, outside its expected range (worst case 0.008726); check the cost units.
+100/543 calls done, 0.0138 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|3aef725d12b29522|9 cost 5.047172000000001e-05 credits, outside its expected range (worst case 0.008726); check the cost units.
+125/543 calls done, 0.0170 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|9712ad1ad4332142|9 cost 4.660544e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+150/543 calls done, 0.0199 credits
+175/543 calls done, 0.0230 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|32ad28dad93984f6|10 cost 5.318256e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+200/543 calls done, 0.0264 credits
+225/543 calls done, 0.0301 credits
+250/543 calls done, 0.0337 credits
+275/543 calls done, 0.0368 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|3aef725d12b29522|13 cost 4.847192e-05 credits, outside its expected range (worst case 0.008726); check the cost units.
+300/543 calls done, 0.0399 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|3aef725d12b29522|14 cost 5.313812e-05 credits, outside its expected range (worst case 0.008726); check the cost units.
+325/543 calls done, 0.0429 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|566372acaec6efaf|14 cost 5.5004600000000005e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+350/543 calls done, 0.0460 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|9712ad1ad4332142|15 cost 5.473796e-05 credits, outside its expected range (worst case 0.008742); check the cost units.
+375/543 calls done, 0.0490 credits
+400/543 calls done, 0.0519 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|566372acaec6efaf|16 cost 5.1005000000000004e-05 credits, outside its expected range (worst case 0.008735); check the cost units.
+425/543 calls done, 0.0549 credits
+450/543 calls done, 0.0585 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|2a7af4573af7f387|17 cost 2.6727832e-05 credits, outside its expected range (worst case 0.008647); check the cost units.
+475/543 calls done, 0.0614 credits
+500/543 calls done, 0.0644 credits
+Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|a22523418c0600a9|19 cost 5.0338400000000006e-05 credits, outside its expected range (worst case 0.008734); check the cost units.
+525/543 calls done, 0.0672 credits
+Finished 543 of 543 calls, 0.0694 credits: 0 API errors, 21 replies without a valid score, 9 rate limits waited out.
+Warning: 11 replies cost more than expected, so the budget may not be reliable.
+20 families, 40 prompts, 800 distinct calls, 1 still to run (verdict instructions)
+  full  raw done: 20 prompts, 400 calls
+  full  raw skipped: 20 prompts, 400 calls
+  deepseek-v4-flash: 1 calls, about 0.0006 credits, at most 0.0088
+  0.1126 credits already charged to results/raw/dilution-verdict-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+Finished 1 of 1 calls, 0.0002 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.

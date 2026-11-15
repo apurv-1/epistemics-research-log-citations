@@ -1,0 +1,9 @@
+4 families, 8 prompts, 160 distinct calls, 160 still to run (verdict instructions)
+  full  raw done: 4 prompts, 80 calls
+  full  raw skipped: 4 prompts, 80 calls
+  deepseek-v4-flash: 160 calls, about 0.0922 credits, at most 1.3928
+  0.0000 credits already charged to results/raw/related-verdict-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+25/160 calls done, 0.0049 credits
+50/160 calls done, 0.0089 credits
+75/160 calls done, 0.0131 credits
+100/160 calls done, 0.0172 credits

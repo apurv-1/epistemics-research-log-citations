@@ -78,3 +78,23 @@ Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|198c91eed9f1379e|18 c
 Warning: reading deepseek-v4-flash|t=1.0|max=64000|verdict|23723189be1c04fc|18 cost 5.7964304e-05 credits, outside its expected range (worst case 0.009259); check the cost units.
 Finished 57 of 57 calls, 0.0212 credits: 0 API errors, 6 replies without a valid score, 0 rate limits waited out.
 Warning: 15 replies cost more than expected, so the budget may not be reliable.
+5 families, 10 prompts, 200 distinct calls, 0 still to run (verdict instructions)
+  full  raw done: 5 prompts, 100 calls
+  full  raw skipped: 5 prompts, 100 calls
+  0.5860 credits already charged to results/raw/verdict-malt-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+5 families, 10 prompts, 200 distinct calls, 0 still to run (verdict instructions)
+  full  raw done: 5 prompts, 100 calls
+  full  raw skipped: 5 prompts, 100 calls
+  0.5860 credits already charged to results/raw/verdict-malt-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+5 families, 10 prompts, 200 distinct calls, 0 still to run (verdict instructions)
+  full  raw done: 5 prompts, 100 calls
+  full  raw skipped: 5 prompts, 100 calls
+  0.5860 credits already charged to results/raw/verdict-malt-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+5 families, 10 prompts, 200 distinct calls, 0 still to run (verdict instructions)
+  full  raw done: 5 prompts, 100 calls
+  full  raw skipped: 5 prompts, 100 calls
+  0.5860 credits already charged to results/raw/verdict-malt-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.

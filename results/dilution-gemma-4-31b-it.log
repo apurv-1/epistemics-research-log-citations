@@ -1,0 +1,44 @@
+20 families, 40 prompts, 800 distinct calls, 800 still to run
+  full  raw done: 20 prompts, 400 calls
+  full  raw skipped: 20 prompts, 400 calls
+  gemma-4-31b-it: 800 calls, about 1.1534 credits, at most 17.6694
+  0.0000 credits already charged to results/raw/dilution-gemma-4-31b-it.jsonl; the budget for this file is 10.0
+25/800 calls done, 0.0039 credits
+50/800 calls done, 0.0078 credits
+75/800 calls done, 0.0108 credits
+100/800 calls done, 0.0139 credits
+125/800 calls done, 0.0169 credits
+150/800 calls done, 0.0202 credits
+175/800 calls done, 0.0232 credits
+200/800 calls done, 0.0263 credits
+225/800 calls done, 0.0293 credits
+250/800 calls done, 0.0327 credits
+275/800 calls done, 0.0361 credits
+300/800 calls done, 0.0392 credits
+325/800 calls done, 0.0424 credits
+350/800 calls done, 0.0457 credits
+375/800 calls done, 0.0487 credits
+400/800 calls done, 0.0519 credits
+425/800 calls done, 0.0549 credits
+450/800 calls done, 0.0580 credits
+475/800 calls done, 0.0611 credits
+500/800 calls done, 0.1085 credits
+525/800 calls done, 0.1115 credits
+550/800 calls done, 0.1148 credits
+575/800 calls done, 0.1178 credits
+600/800 calls done, 0.1210 credits
+625/800 calls done, 0.1240 credits
+650/800 calls done, 0.1272 credits
+675/800 calls done, 0.1303 credits
+700/800 calls done, 0.1334 credits
+725/800 calls done, 0.1365 credits
+750/800 calls done, 0.1398 credits
+775/800 calls done, 0.1428 credits
+800/800 calls done, 0.1460 credits
+Finished 800 of 800 calls, 0.1460 credits: 2 API errors, 0 replies without a valid score, 4 rate limits waited out.
+20 families, 40 prompts, 800 distinct calls, 2 still to run
+  full  raw done: 20 prompts, 400 calls
+  full  raw skipped: 20 prompts, 400 calls
+  gemma-4-31b-it: 2 calls, about 0.0029 credits, at most 0.0443
+  0.1460 credits already charged to results/raw/dilution-gemma-4-31b-it.jsonl; the budget for this file is 10.0
+Finished 2 of 2 calls, 0.0003 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.

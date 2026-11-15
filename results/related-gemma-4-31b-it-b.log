@@ -1,0 +1,51 @@
+24 families, 48 prompts, 960 distinct calls, 960 still to run
+  full  raw done: 24 prompts, 480 calls
+  full  raw skipped: 24 prompts, 480 calls
+  gemma-4-31b-it: 960 calls, about 1.3832 credits, at most 21.1999
+  0.0000 credits already charged to results/raw/related-gemma-4-31b-it-b.jsonl; the budget for this file is 10.0
+25/960 calls done, 0.0262 credits
+50/960 calls done, 0.0742 credits
+75/960 calls done, 0.0996 credits
+100/960 calls done, 0.1030 credits
+125/960 calls done, 0.1284 credits
+150/960 calls done, 0.1756 credits
+175/960 calls done, 0.2011 credits
+200/960 calls done, 0.2483 credits
+225/960 calls done, 0.2738 credits
+250/960 calls done, 0.3210 credits
+275/960 calls done, 0.3245 credits
+300/960 calls done, 0.3716 credits
+325/960 calls done, 0.3752 credits
+350/960 calls done, 0.4222 credits
+375/960 calls done, 0.4476 credits
+400/960 calls done, 0.4729 credits
+425/960 calls done, 0.5203 credits
+450/960 calls done, 0.5236 credits
+475/960 calls done, 0.5710 credits
+500/960 calls done, 0.5743 credits
+525/960 calls done, 0.5780 credits
+550/960 calls done, 0.5814 credits
+575/960 calls done, 0.5851 credits
+600/960 calls done, 0.5885 credits
+625/960 calls done, 0.5920 credits
+650/960 calls done, 0.5953 credits
+675/960 calls done, 0.6207 credits
+700/960 calls done, 0.6242 credits
+725/960 calls done, 0.6496 credits
+750/960 calls done, 0.6531 credits
+775/960 calls done, 0.6565 credits
+800/960 calls done, 0.6820 credits
+825/960 calls done, 0.6853 credits
+850/960 calls done, 0.7108 credits
+875/960 calls done, 0.7141 credits
+900/960 calls done, 0.7178 credits
+925/960 calls done, 0.7211 credits
+950/960 calls done, 0.7246 credits
+Finished 960 of 960 calls, 0.7259 credits: 27 API errors, 0 replies without a valid score, 0 rate limits waited out.
+24 families, 48 prompts, 960 distinct calls, 27 still to run
+  full  raw done: 24 prompts, 480 calls
+  full  raw skipped: 24 prompts, 480 calls
+  gemma-4-31b-it: 27 calls, about 0.0387 credits, at most 0.5955
+  0.7259 credits already charged to results/raw/related-gemma-4-31b-it-b.jsonl; the budget for this file is 10.0
+25/27 calls done, 0.0472 credits
+Finished 27 of 27 calls, 0.0475 credits: 2 API errors, 0 replies without a valid score, 0 rate limits waited out.

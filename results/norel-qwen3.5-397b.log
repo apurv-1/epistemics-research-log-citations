@@ -1,0 +1,11 @@
+1 families, 2 prompts, 20 distinct calls, 20 still to run
+  full  raw done: 1 prompts, 10 calls
+  full  raw skipped: 1 prompts, 10 calls
+  qwen3.5-397b: 20 calls, about 0.2972 credits, at most 4.549
+  0.0000 credits already charged to results/raw/norel-qwen3.5-397b.jsonl; the budget for this file is 20.0
+Finished 20 of 20 calls, 0.2453 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+1 families, 2 prompts, 20 distinct calls, 0 still to run
+  full  raw done: 1 prompts, 10 calls
+  full  raw skipped: 1 prompts, 10 calls
+  0.2453 credits already charged to results/raw/norel-qwen3.5-397b.jsonl; the budget for this file is 20.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.

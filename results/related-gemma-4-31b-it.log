@@ -1,0 +1,49 @@
+24 families, 48 prompts, 960 distinct calls, 960 still to run
+  full  raw done: 24 prompts, 480 calls
+  full  raw skipped: 24 prompts, 480 calls
+  gemma-4-31b-it: 960 calls, about 1.3844 credits, at most 21.2049
+  0.0000 credits already charged to results/raw/related-gemma-4-31b-it.jsonl; the budget for this file is 10.0
+25/960 calls done, 0.0039 credits
+50/960 calls done, 0.0083 credits
+75/960 calls done, 0.0116 credits
+100/960 calls done, 0.0153 credits
+125/960 calls done, 0.0186 credits
+150/960 calls done, 0.0221 credits
+175/960 calls done, 0.0254 credits
+200/960 calls done, 0.0289 credits
+225/960 calls done, 0.0323 credits
+250/960 calls done, 0.0358 credits
+275/960 calls done, 0.0393 credits
+300/960 calls done, 0.0428 credits
+325/960 calls done, 0.0464 credits
+350/960 calls done, 0.0496 credits
+375/960 calls done, 0.0532 credits
+400/960 calls done, 0.0565 credits
+425/960 calls done, 0.0599 credits
+450/960 calls done, 0.0632 credits
+475/960 calls done, 0.0667 credits
+500/960 calls done, 0.0700 credits
+525/960 calls done, 0.0735 credits
+550/960 calls done, 0.0768 credits
+575/960 calls done, 0.0803 credits
+600/960 calls done, 0.0835 credits
+625/960 calls done, 0.0873 credits
+650/960 calls done, 0.0905 credits
+675/960 calls done, 0.0942 credits
+700/960 calls done, 0.0975 credits
+725/960 calls done, 0.1011 credits
+750/960 calls done, 0.1045 credits
+775/960 calls done, 0.1080 credits
+800/960 calls done, 0.1114 credits
+825/960 calls done, 0.1149 credits
+850/960 calls done, 0.1183 credits
+875/960 calls done, 0.1216 credits
+900/960 calls done, 0.1251 credits
+925/960 calls done, 0.1284 credits
+950/960 calls done, 0.1319 credits
+Finished 960 of 960 calls, 0.1332 credits: 0 API errors, 0 replies without a valid score, 2 rate limits waited out.
+24 families, 48 prompts, 960 distinct calls, 0 still to run
+  full  raw done: 24 prompts, 480 calls
+  full  raw skipped: 24 prompts, 480 calls
+  0.1332 credits already charged to results/raw/related-gemma-4-31b-it.jsonl; the budget for this file is 10.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.

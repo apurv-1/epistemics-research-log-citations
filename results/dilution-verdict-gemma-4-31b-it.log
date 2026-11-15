@@ -1,0 +1,44 @@
+20 families, 40 prompts, 800 distinct calls, 800 still to run (verdict instructions)
+  full  raw done: 20 prompts, 400 calls
+  full  raw skipped: 20 prompts, 400 calls
+  gemma-4-31b-it: 800 calls, about 1.1534 credits, at most 17.6698
+  0.0000 credits already charged to results/raw/dilution-verdict-gemma-4-31b-it.jsonl; the budget for this file is 10.0
+25/800 calls done, 0.0049 credits
+50/800 calls done, 0.0100 credits
+75/800 calls done, 0.0140 credits
+100/800 calls done, 0.0183 credits
+125/800 calls done, 0.0225 credits
+150/800 calls done, 0.0270 credits
+175/800 calls done, 0.0310 credits
+200/800 calls done, 0.0356 credits
+225/800 calls done, 0.0397 credits
+250/800 calls done, 0.0444 credits
+275/800 calls done, 0.0486 credits
+300/800 calls done, 0.0530 credits
+325/800 calls done, 0.0573 credits
+350/800 calls done, 0.0617 credits
+375/800 calls done, 0.0658 credits
+400/800 calls done, 0.0704 credits
+425/800 calls done, 0.0745 credits
+450/800 calls done, 0.0790 credits
+475/800 calls done, 0.0832 credits
+500/800 calls done, 0.0877 credits
+525/800 calls done, 0.0920 credits
+550/800 calls done, 0.0966 credits
+575/800 calls done, 0.1008 credits
+600/800 calls done, 0.1054 credits
+625/800 calls done, 0.1093 credits
+650/800 calls done, 0.1138 credits
+675/800 calls done, 0.1181 credits
+700/800 calls done, 0.1445 credits
+725/800 calls done, 0.1487 credits
+750/800 calls done, 0.1534 credits
+775/800 calls done, 0.1574 credits
+800/800 calls done, 0.1620 credits
+Finished 800 of 800 calls, 0.1620 credits: 1 API errors, 100 replies without a valid score, 4 rate limits waited out.
+20 families, 40 prompts, 800 distinct calls, 1 still to run (verdict instructions)
+  full  raw done: 20 prompts, 400 calls
+  full  raw skipped: 20 prompts, 400 calls
+  gemma-4-31b-it: 1 calls, about 0.0014 credits, at most 0.022
+  0.1620 credits already charged to results/raw/dilution-verdict-gemma-4-31b-it.jsonl; the budget for this file is 10.0
+Finished 1 of 1 calls, 0.0001 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.

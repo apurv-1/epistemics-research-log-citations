@@ -1,0 +1,15 @@
+5 families, 10 prompts, 100 distinct calls, 100 still to run (two instructions)
+  full  raw done: 5 prompts, 50 calls
+  full  raw skipped: 5 prompts, 50 calls
+  gemma-4-31b-it: 100 calls, about 0.1591 credits, at most 2.2682
+  0.0000 credits already charged to results/raw/malt-two-gemma-4-31b-it-b.jsonl; the budget for this file is 10.0
+25/100 calls done, 0.0078 credits
+50/100 calls done, 0.0143 credits
+75/100 calls done, 0.0208 credits
+100/100 calls done, 0.0272 credits
+Finished 100 of 100 calls, 0.0272 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+5 families, 10 prompts, 100 distinct calls, 0 still to run (two instructions)
+  full  raw done: 5 prompts, 50 calls
+  full  raw skipped: 5 prompts, 50 calls
+  0.0272 credits already charged to results/raw/malt-two-gemma-4-31b-it-b.jsonl; the budget for this file is 10.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
