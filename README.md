@@ -243,6 +243,11 @@ They are copied from <https://github.com/apurv-1/swarm-alignment-maoc> at commit
 
 Everything else in this repository is sprint work.
 
+## License
+
+The code, plans, constructed task families and results in this repository are released under the [MIT License](LICENSE).
+The folders built from MALT runs keep METR's own MIT License, as the data notice below describes.
+
 ## Data notice
 
 The logs in `data/families_malt/`, `data/families_malt_norel/` and `data/families_malt_stated/` are edited copies of runs from METR's MALT dataset, used under its MIT License.
