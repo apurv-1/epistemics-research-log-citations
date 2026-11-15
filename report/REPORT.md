@@ -184,11 +184,11 @@ Most of the effect comes from leaving the requirement implied, and related evide
 
 | Reviewer | Score, 7 neutral | Score, 7 related | Flagged | works, neutral → related | shown, neutral → related |
 |---|---|---|---|---|---|
-| deepseek-v4-flash | 5.8 | 10.6 | 100% | {{DS_WORKS}} | {{DS_SHOWN}} |
+| deepseek-v4-flash | 5.8 | 10.6 | 100% | 55 → 63 | 21 → 33 |
 | Claude Sonnet 5.5 | 2.5 | 3.1 | 100% | 57 → 69 | 4.5 → 6.5 |
 | Claude Opus 5.5 | 2.9 | 3.2 | 100% | 51 → 62 | 4.5 → 6.3 |
 
-Both Claude models raised **works** by 11 points when nearby checks passed (95% CIs +4.1 to +20.0 and +4.0 to +19.6 over tasks) while **shown** stayed near 5, so the related items were strong enough to move belief in the work, and the frontier reviewers kept that belief out of their judgement of the report.
+Both Claude models raised **works** by 11 points when nearby checks passed (95% CIs +4.1 to +20.0 and +4.0 to +19.6 over tasks) while **shown** stayed near 5, so the related items were strong enough to move belief in the work, and the frontier reviewers kept that belief out of their judgement of the report. deepseek-v4-flash let it in: its **shown** rose by 11 points (95% CI +5.1 to +17.5, 7 of 8 tasks up, p = 0.016).
 
 **Stating the requirement on real logs (pre-registered secondary).**
 Before any reading, `RELATED.md` fixed the same change on real logs: in the five related-evidence families, one sentence at the end of the task states its acceptance requirement in the task's own terms (Appendix C), and every step and every word of the report stay the same.

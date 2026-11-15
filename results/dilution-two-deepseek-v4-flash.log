@@ -1,0 +1,22 @@
+4 families, 8 prompts, 160 distinct calls, 160 still to run (two instructions)
+  full  raw done: 4 prompts, 80 calls
+  full  raw skipped: 4 prompts, 80 calls
+  deepseek-v4-flash: 160 calls, about 0.0918 credits, at most 1.391
+  0.0000 credits already charged to results/raw/dilution-two-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+25/160 calls done, 0.0039 credits
+50/160 calls done, 0.0076 credits
+4 families, 8 prompts, 160 distinct calls, 93 still to run (two instructions)
+  full  raw done: 4 prompts, 80 calls
+  full  raw skipped: 4 prompts, 80 calls
+  deepseek-v4-flash: 93 calls, about 0.0533 credits, at most 0.8085
+  0.0183 credits already charged to results/raw/dilution-two-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+25/93 calls done, 0.0041 credits
+50/93 calls done, 0.0086 credits
+75/93 calls done, 0.0123 credits
+Finished 93 of 93 calls, 0.0149 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+4 families, 8 prompts, 160 distinct calls, 1 still to run (two instructions)
+  full  raw done: 4 prompts, 80 calls
+  full  raw skipped: 4 prompts, 80 calls
+  deepseek-v4-flash: 1 calls, about 0.0006 credits, at most 0.0087
+  0.0332 credits already charged to results/raw/dilution-two-deepseek-v4-flash.jsonl; the budget for this file is 12.0
+Finished 1 of 1 calls, 0.0002 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
