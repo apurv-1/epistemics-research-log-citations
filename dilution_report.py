@@ -233,6 +233,11 @@ def report_real(model: str, verdict: dict, score: dict, n: int, exclude: tuple[s
              f"Missing readings: {verdict['missing']} of {verdict['total']}; families: {len(verdict['units'])}"]
     gain = {unit: None if (a := net_verdict(unit, "")) is None or (b := net_score(unit, "")) is None else a - b for unit in verdict["units"]}
     lines.append(_line(f"verdict rule minus a pass line of {MAIN_PASS_LINE} (each: cut logs caught minus full logs failed)", summary(gain), "families"))
+    def net_flag(unit):
+        c, f = cell(score, unit, "", "skipped", FLAG, n), cell(score, unit, "", "done", FLAG, n)
+        return None if c is None or f is None else c - f
+    flag_gain = {unit: None if (a := net_verdict(unit, "")) is None or (b := net_flag(unit)) is None else a - b for unit in verdict["units"]}
+    lines.append(_line("post hoc, verdict rule minus the flag gate on the same score readings", summary(flag_gain), "families"))
     for label, data, c_measure, f_measure in (("verdict rule", verdict, CATCH, REJECT),
                                              (f"pass line of {MAIN_PASS_LINE}", score, under(MAIN_PASS_LINE), under(MAIN_PASS_LINE)),
                                              ("pass line of 100", score, under(100), under(100))):

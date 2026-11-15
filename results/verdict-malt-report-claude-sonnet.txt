@@ -1,6 +1,7 @@
 == sonnet: verdict instructions on the real-log families ==
 Missing readings: 5 of 66; families: 11
   verdict rule minus a pass line of 50 (each: cut logs caught minus full logs failed): mean +13.3 points, 95% CI [-6.7, +36.7], 2 of 10 families up, 1 down, sign-flip p = 0.5000
+  post hoc, verdict rule minus the flag gate on the same score readings: mean +33.3 points, 95% CI [+10.0, +60.0], 4 of 10 families up, 0 down, sign-flip p = 0.1250
   verdict rule: cut logs caught 100%, full logs failed 23%
   pass line of 50: cut logs caught 91%, full logs failed 24%
   pass line of 100: cut logs caught 100%, full logs failed 100%

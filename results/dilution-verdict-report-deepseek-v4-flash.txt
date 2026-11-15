@@ -1,0 +1,13 @@
+== deepseek-v4-flash: verdict instructions ==
+Missing readings: 98 of 1600; templates: 8
+  catch rate at 15 other claims minus at 1: mean +0.0 points, 95% CI [+0.0, +0.0], 0 of 8 templates up, 0 down, sign-flip p = 1.0000
+  false-alarm rate on full logs at 15 other claims minus at 1: mean +0.6 points, 95% CI [+0.0, +1.9], 1 of 8 templates up, 0 down, sign-flip p = 1.0000
+Means over templates, by condition:                     k01     k03     k07     k15     pad
+  cut log: caught (false claim not SHOWN), %          100.0   100.0   100.0   100.0   100.0
+  cut log: rejected for any claim, %                  100.0   100.0   100.0   100.0   100.0
+  full log: false alarm (any claim not SHOWN), %        0.0     0.0     0.0     0.6     0.0
+Score rule on the same prompts. The verdict gate's false-alarm rate over all full logs is 0.1%, and the pass line nearest to it is 95 (0.1%).
+  cut log: fails a pass line of 50, %                  99.4   100.0   100.0   100.0   100.0
+  at 15 other claims, verdict catch rate minus the share failing a pass line of 50: mean +0.0 points, 95% CI [+0.0, +0.0], 0 of 8 templates up, 0 down, sign-flip p = 1.0000
+  cut log: fails a pass line of 95, %                 100.0   100.0   100.0   100.0   100.0
+  at 15 other claims, verdict catch rate minus the share failing a pass line of 95: mean +0.0 points, 95% CI [+0.0, +0.0], 0 of 8 templates up, 0 down, sign-flip p = 1.0000

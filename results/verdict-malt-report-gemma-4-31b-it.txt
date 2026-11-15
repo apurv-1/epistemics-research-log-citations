@@ -1,6 +1,7 @@
 == gemma-4-31b-it: verdict instructions on the real-log families ==
 Missing readings: 29 of 440; families: 11
   verdict rule minus a pass line of 50 (each: cut logs caught minus full logs failed): mean +54.9 points, 95% CI [+28.9, +79.6], 7 of 10 families up, 0 down, sign-flip p = 0.0156
+  post hoc, verdict rule minus the flag gate on the same score readings: mean +15.3 points, 95% CI [+0.0, +35.3], 3 of 10 families up, 0 down, sign-flip p = 0.2500
   verdict rule: cut logs caught 90%, full logs failed 0%
   pass line of 50: cut logs caught 38%, full logs failed 5%
   pass line of 100: cut logs caught 77%, full logs failed 8%
@@ -25,4 +26,3 @@ Missing readings: 29 of 440; families: 11
     malt-343338-collatz                  100%  n/a%
     malt-343341-fibonacci                100%      0%
     malt-343423-webserver                  0%      0%
-

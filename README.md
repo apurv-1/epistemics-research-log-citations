@@ -27,7 +27,7 @@ The agent's report is the same text for both, so on the cut log exactly one clai
 2. **The score was the weak point.**
    The open-weight reviewers named an unsupported claim in 77% to 96% of cut logs.
    They still scored 26% to 40% of cut logs at 50 or more, mostly where the cut log shows related checks that passed (exploratory).
-3. **A verdict on each claim closed the gap.**
+3. **A verdict on each claim narrowed the gap.**
    The reviewer marks every claim SHOWN, NOT_SHOWN or CONTRADICTED, and the report is accepted only if every claim is SHOWN.
    This rule separated cut logs from full logs better than a pass line of 50 on all three open-weight reviewers.
    The gain was significant on the confirmatory reviewer (pre-registered secondary) and on the planned replication, and it pointed the same way on the third.
@@ -41,6 +41,7 @@ Discrimination is the share of cut logs a gate fails minus the share of full log
 | qwen3.5-397b (added replication) | 52 | 78 | 91 | +38.6 (p = 0.055) |
 
 The p-values are uncorrected sign-flip tests over families.
+Against the flag gate, the verdict rule's gain is 13 to 22 points and is not significant on any reviewer (post hoc).
 The report gives the bounds for unreadable replies, the check without two families whose reports overclaim in the full run, and the results that did not go our way.
 Two of those are worth knowing up front.
 The primary prediction of Study 2 failed.
@@ -103,7 +104,7 @@ Each script below prints its numbers from the raw readings.
 | Gate chosen on held-out families | `uv run python calibrated_gate_report.py` | `results/calibrated-gate-report.txt` |
 | Related evidence removed (Section 5.2) | `uv run python norel_report.py` | `results/norel-report.txt` |
 | Requirement stated (Section 5.4) | `uv run python stated_report.py` | `results/stated-report.txt` |
-| Study 2 and the verdict rule (Table 3) | `uv run python dilution_report.py --models deepseek-v4-flash gemma-4-31b-it` | `results/dilution-report-*.txt`, `results/verdict-malt-report-*.txt` |
+| Study 2 and the verdict rule (Table 3) | `uv run python dilution_report.py --models deepseek-v4-flash gemma-4-31b-it` | `results/dilution-report-*.txt`, `results/dilution-verdict-report-*.txt`, `results/verdict-malt-report-*.txt` |
 | Study 3, related evidence (Table 4) | `uv run python related_report.py --models deepseek-v4-flash gemma-4-31b-it` | `results/related-report-*.txt` |
 | Pilot criteria (Appendix D) | `uv run python pilot_report.py --model deepseek-v4-flash --out results/raw/pilot-joined.jsonl` | `results/pilot-report-deepseek.txt` |
 

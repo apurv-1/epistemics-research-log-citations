@@ -1,4 +1,4 @@
-== deepseek-v4-flash: 440 score readings, 218 two-number readings ==
+== deepseek-v4-flash: 440 score readings, 220 two-number readings ==
   cut logs flagged: 96%; flagged and scored 50 or more: 26%
   discrimination, pass line 50: 44; flag gate: 67
   flag gate minus pass line 50: +23.2 points, 5 of 11 families up, 1 down, sign-flip p = 0.094
@@ -8,14 +8,21 @@
   shown < 50 minus flag gate: -6.8 points, 4 of 11 families up, 5 down, sign-flip p = 0.688
     related-evidence families, cut logs: works 70.7, shown 66.2 (50 readings)
     related-evidence families, full logs: works 69.3, shown 88.3 (50 readings)
-    other families, cut logs: works 54.6, shown 5.8 (59 readings)
-    other families, full logs: works 84.9, shown 97.3 (59 readings)
+    other families, cut logs: works 54.0, shown 5.8 (60 readings)
+    other families, full logs: works 85.2, shown 97.3 (60 readings)
 
-== gemma-4-31b-it: 431 score readings, 0 two-number readings ==
+== gemma-4-31b-it: 431 score readings, 220 two-number readings ==
   cut logs flagged: 77%; flagged and scored 50 or more: 40%
   discrimination, pass line 50: 32; flag gate: 68
   flag gate minus pass line 50: +36.0 points, 6 of 11 families up, 1 down, sign-flip p = 0.031
   flagged and passed: 49% in the 5 related-evidence families, 32% in the other 6
+  two numbers: discrimination of shown < 50: 57
+  shown < 50 minus pass line 50 on the score readings (planned): +25.3 points, 5 of 11 families up, 0 down, sign-flip p = 0.062
+  shown < 50 minus flag gate: -10.6 points, 1 of 11 families up, 3 down, sign-flip p = 0.500
+    related-evidence families, cut logs: works 92.2, shown 87.5 (50 readings)
+    related-evidence families, full logs: works 100.0, shown 100.0 (50 readings)
+    other families, cut logs: works 18.5, shown 0.0 (60 readings)
+    other families, full logs: works 83.3, shown 100.0 (60 readings)
 
 == qwen3.5-397b: 440 score readings, 0 two-number readings ==
   cut logs flagged: 95%; flagged and scored 50 or more: 35%
