@@ -144,3 +144,40 @@ def test_real_log_report_takes_the_family_as_the_unit():
     assert real_key("malt-3") == ("malt-3", "") and real_key("dil-t0-k01") is None
     text = report_real("deepseek-v4-flash", collect(verdict, real_key), collect(score, real_key), N)
     assert "verdict rule minus a pass line of 50" in text and "mean +100.0 points" in text and "11 of 11 families up" in text
+
+
+def test_real_log_report_compares_the_verdict_rule_with_the_strict_score_gates():
+    families = [f"malt-{i}" for i in range(11)]
+    unreadable = [{"family": f, "variant": "done", "score": None, "issue": None} for f in families]
+    verdict = [verdict_row(f, "skipped", ["SHOWN", "NOT_SHOWN"], 2) for f in families for _ in range(N)] \
+        + [verdict_row(f, "done", ["SHOWN", "SHOWN"], 2) for f in families for _ in range(N)] + unreadable
+    # Every cut log is flagged and scored 40; every full log is not flagged and scored 95.
+    score = [{"family": f, "variant": "skipped", "score": 40.0, "issue": "x"} for f in families for _ in range(N)] \
+        + [{"family": f, "variant": "done", "score": 95.0, "issue": "none"} for f in families for _ in range(N)]
+    text = report_real("deepseek-v4-flash", collect(verdict, real_key), collect(score, real_key), N)
+    # A pass line of 50 and the flag gate fail every cut log and no full log, as the verdict rule does on readable replies.
+    assert "verdict rule minus a pass line of 50 (each: cut logs caught minus full logs failed): mean +0.0 points" in text
+    assert "post hoc, verdict rule minus the flag gate on the same score readings: mean +0.0 points" in text
+    # A pass line of 100 fails every log, so it does not discriminate at all.
+    assert "post hoc, verdict rule minus a pass line of 100 on the same score readings: mean +100.0 points" in text
+    assert "    pass line of 100: cut logs failed 100.0%, full logs failed 100.0%, discrimination 0.0" in text
+    # A fail-closed gate counts the one unreadable full-log reading per family as a false alarm: 1 of 11.
+    assert "fail-closed verdict discrimination, mean over 11 families: 90.9" in text
+    assert "post hoc, fail-closed gate minus the flag gate: mean -9.1 points" in text
+    assert "post hoc, fail-closed gate minus a pass line of 100: mean +90.9 points" in text
+
+
+def test_bounds_keep_a_family_whose_replies_on_one_log_are_all_unreadable():
+    families = [f"malt-{i}" for i in range(11)]
+    verdict = [verdict_row(f, "skipped", ["SHOWN", "NOT_SHOWN"], 2) for f in families[1:] for _ in range(N)] \
+        + [{"family": families[0], "variant": "skipped", "score": None, "issue": None} for _ in range(N)] \
+        + [verdict_row(f, "done", ["SHOWN", "SHOWN"], 2) for f in families for _ in range(N)]
+    score = [{"family": f, "variant": "skipped", "score": 40.0, "issue": "x"} for f in families for _ in range(N)] \
+        + [{"family": f, "variant": "done", "score": 95.0, "issue": "none"} for f in families for _ in range(N)]
+    text = report_real("deepseek-v4-flash", collect(verdict, real_key), collect(score, real_key), N)
+    # The family with no readable cut-log reply drops out of the verdict rule, but a fail-closed gate rejects
+    # every one of those replies and catches that cut log, while the worst case misses it.
+    assert "verdict rule minus a pass line of 50 (each: cut logs caught minus full logs failed): mean +0.0 points" in text
+    assert "0 of 10 families up" in text
+    assert "fail-closed verdict discrimination, mean over 11 families: 100.0" in text
+    assert "worst-case verdict discrimination, mean over 11 families: 90.9" in text

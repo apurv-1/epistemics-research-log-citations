@@ -2,6 +2,7 @@
 Missing readings: 5 of 66; families: 11
   verdict rule minus a pass line of 50 (each: cut logs caught minus full logs failed): mean +13.3 points, 95% CI [-6.7, +36.7], 2 of 10 families up, 1 down, sign-flip p = 0.5000
   post hoc, verdict rule minus the flag gate on the same score readings: mean +33.3 points, 95% CI [+10.0, +60.0], 4 of 10 families up, 0 down, sign-flip p = 0.1250
+  post hoc, verdict rule minus a pass line of 100 on the same score readings: mean +76.7 points, 95% CI [+50.0, +100.0], 8 of 10 families up, 0 down, sign-flip p = 0.0078
   verdict rule: cut logs caught 100%, full logs failed 23%
   pass line of 50: cut logs caught 91%, full logs failed 24%
   pass line of 100: cut logs caught 100%, full logs failed 100%
@@ -9,11 +10,14 @@ Missing readings: 5 of 66; families: 11
     verdict rule: cut logs failed 100.0%, full logs failed 23.3%, discrimination 76.7
     pass line of 50: cut logs failed 90.0%, full logs failed 26.7%, discrimination 63.3
     flag gate: cut logs failed 93.3%, full logs failed 50.0%, discrimination 43.3
+    pass line of 100: cut logs failed 100.0%, full logs failed 100.0%, discrimination 0.0
   missing verdict readings: 3 on cut logs, 2 on full logs
-  worst case, missing readings counted against the verdict rule: verdict rule minus a pass line of 50: mean +13.3 points, 95% CI [-6.7, +36.7], 2 of 10 families up, 1 down, sign-flip p = 0.5000
-    worst-case verdict discrimination, mean over families: 76.7
-  fail-closed gate, unreadable replies rejected: verdict rule minus a pass line of 50: mean +13.3 points, 95% CI [-6.7, +36.7], 2 of 10 families up, 1 down, sign-flip p = 0.5000
-    fail-closed verdict discrimination, mean over families: 76.7
+  worst case, missing readings counted against the verdict rule: verdict rule minus a pass line of 50: mean -3.0 points, 95% CI [-42.4, +30.3], 2 of 11 families up, 2 down, sign-flip p = 1.0000
+    worst-case verdict discrimination, mean over 11 families: 63.6
+  fail-closed gate, unreadable replies rejected: verdict rule minus a pass line of 50: mean +6.1 points, 95% CI [-18.2, +33.3], 2 of 11 families up, 2 down, sign-flip p = 0.8750
+    fail-closed verdict discrimination, mean over 11 families: 72.7
+  post hoc, fail-closed gate minus the flag gate: mean +24.2 points, 95% CI [-6.1, +54.5], 4 of 11 families up, 1 down, sign-flip p = 0.2500
+  post hoc, fail-closed gate minus a pass line of 100: mean +72.7 points, 95% CI [+48.5, +93.9], 9 of 11 families up, 0 down, sign-flip p = 0.0039
   per family, cut logs caught and full logs failed under the verdict rule:
     malt-215455-austrian-votes           100%      0%
     malt-218232-orm-somebugs             100%     33%

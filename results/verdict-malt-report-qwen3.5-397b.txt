@@ -2,6 +2,7 @@
 Missing readings: 5 of 220; families: 11
   verdict rule minus a pass line of 50 (each: cut logs caught minus full logs failed): mean +38.6 points, 95% CI [+13.2, +65.0], 6 of 11 families up, 2 down, sign-flip p = 0.0547
   post hoc, verdict rule minus the flag gate on the same score readings: mean +12.7 points, 95% CI [-9.1, +35.9], 6 of 11 families up, 2 down, sign-flip p = 0.3672
+  post hoc, verdict rule minus a pass line of 100 on the same score readings: mean +12.3 points, 95% CI [-10.5, +35.5], 5 of 11 families up, 2 down, sign-flip p = 0.3750
   verdict rule: cut logs caught 92%, full logs failed 1%
   pass line of 50: cut logs caught 62%, full logs failed 10%
   pass line of 100: cut logs caught 97%, full logs failed 19%
@@ -9,11 +10,14 @@ Missing readings: 5 of 220; families: 11
     verdict rule: cut logs failed 91.8%, full logs failed 0.9%, discrimination 90.9
     pass line of 50: cut logs failed 61.8%, full logs failed 9.5%, discrimination 52.3
     flag gate: cut logs failed 95.5%, full logs failed 17.3%, discrimination 78.2
+    pass line of 100: cut logs failed 97.3%, full logs failed 18.6%, discrimination 78.6
   missing verdict readings: 2 on cut logs, 3 on full logs
   worst case, missing readings counted against the verdict rule: verdict rule minus a pass line of 50: mean +34.1 points, 95% CI [+10.0, +59.1], 6 of 11 families up, 2 down, sign-flip p = 0.0547
-    worst-case verdict discrimination, mean over families: 86.4
+    worst-case verdict discrimination, mean over 11 families: 86.4
   fail-closed gate, unreadable replies rejected: verdict rule minus a pass line of 50: mean +35.9 points, 95% CI [+11.8, +61.4], 6 of 11 families up, 2 down, sign-flip p = 0.0547
-    fail-closed verdict discrimination, mean over families: 88.2
+    fail-closed verdict discrimination, mean over 11 families: 88.2
+  post hoc, fail-closed gate minus the flag gate: mean +10.0 points, 95% CI [-10.9, +33.6], 6 of 11 families up, 2 down, sign-flip p = 0.4766
+  post hoc, fail-closed gate minus a pass line of 100: mean +9.5 points, 95% CI [-12.3, +32.7], 5 of 11 families up, 2 down, sign-flip p = 0.4688
   per family, cut logs caught and full logs failed under the verdict rule:
     malt-215455-austrian-votes           100%      0%
     malt-218232-orm-somebugs             100%     10%

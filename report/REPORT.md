@@ -1,4 +1,4 @@
-# Why LLM Reviewers Need a Verdict on Every Claim
+# Open-Weight LLM Reviewers Flag an Unsupported Claim, Then Pass the Work
 
 Apurv Gupta
 
@@ -9,17 +9,15 @@ Research conducted at the AI x Epistemics Research Sprint, November 2026 (Track 
 ## Abstract
 
 A second model, the reviewer, often decides whether to believe an AI agent's report on its own work.
-We pair a full agent log with a cut log missing one check step, so the unchanged report makes one false claim.
-On 11 pairs from real runs in METR's MALT dataset, a forged citation to a real step that does not show the claim fooled none of three open-weight reviewers on average (pre-registered).
-Instead, the reviewers flagged an unsupported claim and still scored 26% to 40% of cut logs as passing (50 or more), mostly where the cut log still shows related evidence (exploratory).
-Removing that evidence from three real logs cut this rate from 45-100% to 0-15% (planned, no control).
-A verdict on each claim instead of a score narrowed the gap.
-deepseek-v4-flash caught the false claim in every valid cut-log reading, 45.5 points more discrimination than a pass line of 50 (pre-registered secondary, p = 0.02; +35.0 if unreadable replies count as rejections).
-gemma-4-31b-it replicated it (+54.9 points, p = 0.016), and qwen3.5-397b pointed the same way (+38.6, p = 0.055).
-Against the stronger flag gate, which fails any log where the reviewer names an unsupported claim, the verdict rule's gain was smaller and not significant (+22.4, +15.3 and +12.7 points; p = 0.055, 0.25 and 0.37; post hoc).
-deepseek-v4-flash's full-log rejections fell on claims the agents' own reports overclaim (post hoc).
-On eight constructed tasks with the requirement stated, related evidence had no significant effect on deepseek-v4-flash (-4.8 points, 95% CI -11.5 to +0.4, which reaches just past the 10-point band; pre-registered), but gemma-4-31b-it then passed 71% of cut logs instead of 31% (planned replication, p = 0.063); with the requirement implied, deepseek-v4-flash passed 65% of flagged cut logs (secondary).
-Trust infrastructure should gate on the reviewer's finding for each claim, not on a score.
+We pair each full agent log with a cut log missing one check step, so the unchanged report makes one false claim.
+On 11 pairs from real runs in METR's MALT dataset, citing a real step that does not show the false claim did not fool three open-weight reviewers on average (pre-registered).
+Instead, the reviewers named an unsupported claim and still scored 26% to 40% of cut logs at 50 or more, mostly where related passing checks remained (exploratory).
+The verdict rule, which accepts a report only if every claim is marked shown, narrowed that gap.
+On deepseek-v4-flash it separated cut from full logs 45.5 points better than a pass line of 50 (pre-registered secondary, p = 0.02 uncorrected), or 35.0 points (p = 0.06) if unreadable replies count as rejections.
+gemma-4-31b-it replicated this (+54.9, p = 0.016), and qwen3.5-397b pointed the same way (+38.6, p = 0.055).
+Against two stricter gates on the score readings, failing every flagged log or every score under 100, the verdict rule's gains were not significant (post hoc).
+On eight constructed tasks that state their requirement, related checks did not significantly change deepseek-v4-flash's penalty (-4.8 points, 95% CI -11.5 to +0.4; pre-registered), and gemma-4-31b-it's fell by 29.5 points without reaching significance (planned replication, p = 0.063).
+Trust infrastructure should gate on the reviewer's finding for each claim, not on a midpoint score.
 
 ## 1. Introduction
 
@@ -37,13 +35,13 @@ Auditability only protects a reader who audits and then acts on what the audit f
 This paper asks whether an AI reviewer does both.
 
 Every test holds a task, a log and an agent's report fixed and removes one check step, so exactly one claim becomes false.
-Each result is labelled pre-registered (a test fixed in a plan, primary or secondary), planned (a comparison fixed in a plan and described without a test), exploratory (designed after seeing the data), or descriptive (the Claude readings, which enter no test). A replication is the same test on another reviewer.
+Each result is labelled pre-registered (a test fixed in a plan, primary or secondary), planned (a comparison fixed in a plan and described without a test), exploratory or post hoc (designed after seeing the data), or descriptive (the Claude readings, which enter no test). A replication is the same test on another reviewer.
 
 1. **Pre-registered: citations held up.** A forged citation did not fool three open-weight reviewers on 11 real-log pairs, and a true "all citations resolve" line created no false trust (Section 4).
 2. **Exploratory: flagged, then passed.** The same reviewers flag an unsupported claim in most cut logs and still pass 26% to 40% of them, mostly where related evidence remains (Section 5).
 3. **Pre-registered secondary: a verdict per claim narrows the gap.** The verdict rule beat a pass line of 50 by 45.5 points on deepseek-v4-flash; gemma-4-31b-it replicated it and qwen3.5-397b pointed the same way.
-Its gain over the flag gate was not significant (Section 6).
-4. **Pre-registered: when it happens.** On constructed tasks with a stated requirement, more neutral work does not soften deepseek-v4-flash's penalty and related evidence does not significantly soften it, but related evidence softens gemma-4-31b-it's; with the requirement implied, it softens both (Sections 7 and 8).
+Its gain over the flag gate, or over a pass line of 100, was not significant (post hoc, Section 6).
+4. **Pre-registered: when it happens.** On constructed tasks with a stated requirement, more neutral work does not soften deepseek-v4-flash's penalty and related evidence does not significantly soften it, and on gemma-4-31b-it related evidence lowered the penalty by 29.5 points without reaching significance (p = 0.063); with the requirement implied, related evidence softens deepseek-v4-flash's penalty (Sections 7 and 8).
 5. **Descriptive: frontier reviewers.** Claude Sonnet 5.5 and Opus 5.5 rarely pass a flagged cut log, and they keep their belief that the work succeeded apart from what the log shows (Sections 5, 6 and 8).
 
 ## 2. Related Work
@@ -57,7 +55,7 @@ Smyth et al. (2026) measured how often coding agents report work their transcrip
 
 **Citations and their readers.**
 Wang et al. (2026) plant errors in research agents' traces, among them a real source that does not support the claim, and find LLM judges weak at preferring the clean trace.
-Flynt (2026) replaces the judge with deterministic trace checks, which can confirm that a cited item exists but not that it supports the claim.
+Flynt (2026) replaces the judge with deterministic trace checks, which can flag a citation to an irrelevant artifact when a reviewed task contract declares in advance what evidence is in scope.
 Onweller et al. (2026) measure whether deep-research citations are valid and accurate, and Ding et al. (2025) found that people trust cited answers more, even with random citations, until they check them.
 None holds the log and report fixed and varies only a citation that resolves and does not support the claim.
 
@@ -65,6 +63,12 @@ None holds the log and report fixed and varies only a citation that resolves and
 Arike et al. (2025) saw sabotage monitors quote incriminating lines and then give low suspicion scores, and Kutasov et al. (2025) list noticing an attack but scoring it low among common monitor failures.
 Zahraei et al. (2026) report LLM judges that acknowledge missing evidence while scoring a bare assertion highly.
 We find the same pattern with no adversary, locate where it occurs on real agent logs, and measure what different gates recover from it.
+
+**Checklists and verdicts per item.**
+Cook et al. (2024) found that a judge answering checklist questions agrees with human preferences more often than a judge that scores the output directly.
+Zhuge et al. (2024) have an agent judge whether each requirement of a task is met, and Qin et al. (2026) report that a grounded checklist separates passing from failing agent trajectories better than holistic judging.
+Judging an output item by item, rather than with one holistic score, is therefore not new.
+Our contribution is matched pairs from real agent logs, in which removing one step leaves exactly one claim unsupported, and a comparison of consumer gates built on the same reviewer: a score threshold, a flag, and a verdict per claim.
 
 ## 3. Shared Setup
 
@@ -169,20 +173,28 @@ A cut log counts as caught only if the false claim itself is not SHOWN; on a ful
 It is one of eight secondary tests in `DILUTION.md`, whose primary prediction failed (Section 7), and its p-value is not corrected for the other seven.
 Per family, it compares cut logs caught minus full logs rejected with the same quantity under a pass line of 50 on Study 1's scores, taken a day earlier, by sign-flip test over the 11 families.
 
-**Table 3.** Discrimination of each gate on the real-log families, means over the families with enough verdict readings (11, except 10 for gemma-4-31b-it and Claude Sonnet 5.5), so the score-gate values differ slightly from Table 2. The last column is the planned test, the verdict rule minus a pass line of 50, with its uncorrected sign-flip p.
+**Table 3.** Discrimination of each gate on the real-log families, means over the families with enough verdict readings (11, except 10 for gemma-4-31b-it and Claude Sonnet 5.5), so the score-gate values differ slightly from Table 2.
+The unreadable-rejected column counts every unreadable reply as a rejection, so it covers all 11 families for every reviewer.
+The pass line of 100 is post hoc.
+The last column is the planned test, the verdict rule minus a pass line of 50, with its uncorrected sign-flip p.
 
-| Reviewer | Pass line 50 | Flag gate | Verdict rule | Verdict, unreadable rejected | Verdict minus pass line |
-|---|---|---|---|---|---|
-| deepseek-v4-flash (confirmatory) | 44 | 67 | 89 | 79 | +45.5 (p = 0.020) |
-| gemma-4-31b-it (planned replication) | 35 | 75 | 90 | 83 | +54.9 (p = 0.016) |
-| qwen3.5-397b (added replication) | 52 | 78 | 91 | 88 | +38.6 (p = 0.055) |
-| Claude Sonnet 5.5 (descriptive) | 63 | 43 | 77 | 77 | +13.3 (no test) |
+| Reviewer | Pass line 50 | Pass line 100 | Flag gate | Verdict rule | Verdict, unreadable rejected | Verdict minus pass line 50 |
+|---|---|---|---|---|---|---|
+| deepseek-v4-flash (confirmatory) | 44 | 67 | 67 | 89 | 79 | +45.5 (p = 0.020) |
+| gemma-4-31b-it (planned replication) | 35 | 73 | 75 | 90 | 83 | +54.9 (p = 0.016) |
+| qwen3.5-397b (added replication) | 52 | 79 | 78 | 91 | 88 | +38.6 (p = 0.055) |
+| Claude Sonnet 5.5 (descriptive) | 63 | 0 | 43 | 77 | 73 | +13.3 (no test) |
 
-On deepseek-v4-flash the verdict rule beat a pass line of 50 by 45.5 points (95% CI +17.9 to +73.7, 8 of 11 families up and 1 down), and beat the flag gate, which held-out selection also picked, by 22.4 points, which is not significant (95% CI +4.3 to +43.5, p = 0.055, post hoc).
+On deepseek-v4-flash the verdict rule beat a pass line of 50 by 45.5 points (95% CI +17.9 to +73.7, 8 of 11 families up and 1 down).
+It also beat the flag gate by 22.4 points, which is not significant (95% CI +4.3 to +43.5, p = 0.055, post hoc).
+On this reviewer a pass line of 100, the gate that held-out selection picked in all 11 folds (Section 5), fails exactly the readings the flag gate fails.
 The false claim was marked not shown in every valid reading of every cut log, including the five related-evidence families where the same reviewer's scores flagged and passed 57% of cut logs.
 gemma-4-31b-it, whose real-log verdict readings `DILUTION.md` planned, replicated the result: +54.9 points (95% CI +28.9 to +79.6, 7 of 10 families up, none down), with 90% of cut logs caught and no full log rejected (0.031 if Holm-corrected together with qwen3.5-397b).
 qwen3.5-397b, added after the deepseek-v4-flash result was read and so a replication only, pointed the same way without reaching significance: +38.6 points (95% CI +13.2 to +65.0, p = 0.055) at 10 readings per prompt.
-Against the flag gate their gains were +15.3 points (p = 0.25) and +12.7 points (p = 0.37), so the verdict rule's advantage over failing every flagged log is not established on any reviewer (post hoc).
+Against the flag gate their gains were +15.3 points (p = 0.25) and +12.7 points (p = 0.37, post hoc).
+Against a pass line of 100 the verdict rule gained +22.4, +16.8 and +12.3 points on the three reviewers (p = 0.055, 0.25 and 0.38, post hoc), so its advantage over a strict gate on the score readings is not established on any of the three open-weight reviewers.
+On deepseek-v4-flash it caught more cut logs than a pass line of 100 and rejected fewer full logs, 100% and 10.8% against 95.9% and 29.1%.
+A strict pass line does not carry across reviewers, though: Claude Sonnet 5.5 never scored a real log above 96, so a pass line of 100 failed every log it read.
 Both missed the same cut log, `malt-343423-webserver`, marking every claim SHOWN in 20 of 20 and 9 of 10 readings: there the cut log still shows the same request run before the final fix, the strongest related evidence in the set.
 
 deepseek-v4-flash's 23 full-log rejections came from three families, and in each the rejected claim is false in the full run by our post hoc check: the agent says it improved a `belongs_to` method that is unchanged (one bug fix, 26% of readings), and by their code the two servers would return wrong last digits, 4 instead of 6 for [2, 2, 4] (28%) and 6 instead of 1 for [2, 0] (65%).
@@ -190,7 +202,7 @@ qwen3.5-397b's one full-log rejection and Claude Sonnet 5.5's seven fall in the 
 The plan counts these as false alarms, and every number above keeps them so.
 In the two server families, the claim our cut makes false is therefore false in the full run too, so a catch there may come from the bug rather than the removed step.
 Without those two families, the verdict rule still beat a pass line of 50 by 41.5, 56.1 and 39.4 points (p = 0.078, 0.031 and 0.094 over 8 or 9 families; post hoc, `results/verdict-malt-sensitivity-report.txt`).
-On deepseek-v4-flash, 42 of 440 readings were unreadable or failed, 18 on cut logs and 24 on full logs (29 of 440 on gemma-4-31b-it, 5 of 220 on qwen3.5-397b). Missing readings are not random, so we bound them: rejecting every unreadable reply keeps +35.0, +51.3 and +35.9 points, and counting every missing reading against the verdict rule keeps +26.8 (p = 0.13), +45.8 (p = 0.008) and +34.1 points.
+On deepseek-v4-flash, 42 of 440 readings were unreadable or failed, 18 on cut logs and 24 on full logs (29 of 440 on gemma-4-31b-it, 5 of 220 on qwen3.5-397b). Missing readings are not random, so we bound them (post hoc): rejecting every unreadable reply keeps +35.0, +51.3 and +35.9 points, and counting every missing reading against the verdict rule keeps +26.8 (p = 0.13), +45.8 (p = 0.008) and +34.1 points.
 Claude Sonnet 5.5, the reviewer the flag gate hurt most, gave 66 descriptive verdict readings fixed in `RELATED.md`, 61 of them valid (Appendix B). It caught every valid cut log and rejected 23% of full logs.
 We split each report into claims by hand, so the result is for the rule and that split together (Appendix A).
 
@@ -253,7 +265,8 @@ Asked for two numbers, the Claude models kept the two questions apart and deepse
 **A design rule for trust infrastructure.**
 A trust signal for an AI consumer should carry, per claim, whether its citation resolves, the reviewer's verdict on whether the log shows it, and the reviewer's finding, as fields separate from any judgement of the work.
 The consumer should accept a report only if every claim is shown, and reject replies it cannot read.
-This rule beat a pass line of 50 on the confirmatory reviewer in a pre-registered test and on the planned replication, pointed the same way on the third open-weight reviewer, and scored above the flag gate on all three, by 13 to 22 points, without reaching significance on any (post hoc).
+Counting only readable replies, this rule beat a pass line of 50 on the confirmatory reviewer in a pre-registered test (p = 0.02) and on the planned replication, and pointed the same way on the third open-weight reviewer.
+With unreadable replies rejected, as the rule requires, its gain over a pass line of 50 on deepseek-v4-flash was +35.0 points (p = 0.06), and its gains over the flag gate and over a pass line of 100 were 9.5 to 16.7 points on the three reviewers, none significant (post hoc).
 On deepseek-v4-flash every full-log rejection named a claim that the agent's unmodified report overclaims, so the same rule also surfaced real overclaiming that we did not construct (post hoc).
 The gate should still be checked per reviewer on labelled pairs.
 We release the 11 real-log pairs, the 8 constructed tasks with their conditions, and the harness as a test set for exactly this check.
@@ -263,7 +276,10 @@ The results rest on one confirmatory reviewer, 11 real-log or 8 constructed task
 
 A citation that resolves and does not support its claim did not fool the reviewers we tested.
 What failed was the path from finding to decision: open-weight reviewers flagged the false claim and still passed the work, mostly when related evidence suggested it was fine.
-Asking for a verdict on each claim, rather than one score, narrowed that gap on the real logs on two reviewers, with a third pointing the same way, though not significantly more than failing every flagged log did, while stating the requirement did not. Trust infrastructure should ask for claim-level verdicts and gate on them, so that what a reviewer finds reaches the decision.
+Asking for a verdict on each claim, rather than one score, narrowed that gap on the real logs on two reviewers, with a third pointing the same way.
+On the three open-weight reviewers it did not do significantly better than two stricter gates on the same score readings: failing every flagged log, and failing every score under 100.
+Stating the requirement, in the one form we tested on real logs, did not significantly narrow the gap.
+Trust infrastructure should gate on what the reviewer finds for each claim, not on a midpoint score, so that the finding reaches the decision.
 
 ## Code and Data
 
@@ -273,6 +289,8 @@ Pre-existing work: `monitor.py` and `tests/test_monitor.py`, copied from <https:
 ## References
 
 Arike, R., Subramani, R., and Biswas, S. (2025). Extract-and-evaluate monitoring can significantly enhance CoT monitor performance (research note). LessWrong. <https://www.lesswrong.com/posts/nRcKDYi2KfRTXdvDF/extract-and-evaluate-monitoring-can-significantly-enhance>
+
+Cook, J., Rocktäschel, T., Foerster, J., Aumiller, D., and Wang, A. (2024). TICKing all the boxes: Generated checklists improve LLM evaluation and generation. arXiv:2410.03608. <https://arxiv.org/abs/2410.03608>
 
 Cotton-Barratt, O., and Finnveden, L. (2026). AI for AI for epistemics. Forethought. <https://www.forethought.org/research/ai-for-ai-for-epistemics>
 
@@ -290,11 +308,15 @@ Onweller, H., Lumer, E., Huber, A., Ramchandani, P., Subbiah, V. K., and Feld, C
 
 Parikh, N., and Wijk, H. (2025). MALT: A dataset of natural and prompted behaviors that threaten eval integrity. METR. <https://metr.org/blog/2025-10-14-malt-dataset-of-natural-and-prompted-behaviors/>
 
+Qin, S., Yin, L., and Wang, X. (2026). Grounded checklist partial credit for agent skill trajectories. arXiv:2608.27487. <https://arxiv.org/abs/2608.27487>
+
 Smyth, N., Mantilla-Ramos, Y.-J., Tikeng Notsawo, P. Jr, Helbling, S., Tosato, A., Merzouk, M. A., Dziri, N., Gidel, G., and Tosato, T. (2026). Quantifying overclaiming propensity in frontier LLM agents. arXiv:2609.20812. <https://arxiv.org/abs/2609.20812>
 
 Wang, L., He, Y., Chen, P., Yehudai, A., Liu, Y., Ying, R., Shmueli-Scheuer, M., and Cohan, A. (2026). Time to REFLECT: Can we trust LLM judges for evidence-based research agents? arXiv:2605.19196. <https://arxiv.org/abs/2605.19196>
 
 Zahraei, P. S., Wang, X., Bozdag, N. B., Tur, G., and Hakkani-Tür, D. (2026). Prior beliefs prejudice LLM-as-judge: Evidence from persuasion evaluation. Findings of ACL 2026. <https://aclanthology.org/2026.findings-acl.2087/>
+
+Zhuge, M., Zhao, C., Ashley, D., Wang, W., Khizbullin, D., Xiong, Y., et al. (2024). Agent-as-a-Judge: Evaluate agents with agents. arXiv:2410.10934. <https://arxiv.org/abs/2410.10934>
 
 ## Appendix A. Limitations and Dual-Use / Ethical Considerations
 
@@ -310,7 +332,7 @@ Zahraei, P. S., Wang, X., Bozdag, N. B., Tur, G., and Hakkani-Tür, D. (2026). P
 
 - **That flagged-and-passed is a confirmed effect.** It was found in exploratory analysis of Study 1, the related-evidence split was named after that analysis, and the result depends on the consumer's gate.
 - **That the verdict rule catches every false claim.** On the cut log of `malt-343423-webserver`, which still shows the same request run before the final fix, gemma-4-31b-it marked every claim SHOWN in 20 of 20 readings and qwen3.5-397b in 9 of 10.
-- **That a verdict per claim beats failing every flagged log.** The verdict rule scored 22.4, 15.3 and 12.7 points above the flag gate on the three open-weight reviewers, and none of these gains is significant (p = 0.055, 0.25 and 0.37, post hoc).
+- **That a verdict per claim beats a strict gate on the score readings.** The verdict rule scored 22.4, 15.3 and 12.7 points above the flag gate and 22.4, 16.8 and 12.3 points above a pass line of 100 on the three open-weight reviewers, and none of these gains is significant (p = 0.055 to 0.38, post hoc).
 - **That the verdict rule transfers beyond these reviewers.** It was tested on three open-weight reviewers, one prompt and 11 families; on a reviewer that flags real errors in full logs it was measured only descriptively, on Claude Sonnet 5.5 (23% of full logs rejected, all in the three families whose reports overclaim).
 - **That stating the requirement fails on real logs.** The planned test on five families was not significant, and one sentence of one wording was tried.
 - **That the flag gate works in deployment.** It was compared after the fact, on one prompt, and it hurts frontier reviewers that flag real errors in full logs.

@@ -1,4 +1,4 @@
-# Why LLM Reviewers Need a Verdict on Every Claim
+# Open-Weight LLM Reviewers Flag an Unsupported Claim, Then Pass the Work
 
 Code, data, plans and report for an entry to the Apart Research AI x Epistemics Research Sprint, November 13 to 15, 2026.
 Track 2: Trust Infrastructure.
@@ -33,22 +33,24 @@ The agent's report is the same text for both, so on the cut log exactly one clai
    The gain was significant on the confirmatory reviewer (pre-registered secondary) and on the planned replication, and it pointed the same way on the third.
 
 Discrimination is the share of cut logs a gate fails minus the share of full logs it fails, in percentage points, on the 11 real-log pairs.
+For gemma-4-31b-it the means cover the 10 families with enough verdict readings.
 
-| Reviewer | Pass line of 50 | Fail any flagged log | Verdict per claim | Verdict minus pass line |
-|---|---|---|---|---|
-| deepseek-v4-flash (confirmatory) | 44 | 67 | 89 | +45.5 (p = 0.020) |
-| gemma-4-31b-it (planned replication) | 35 | 75 | 90 | +54.9 (p = 0.016) |
-| qwen3.5-397b (added replication) | 52 | 78 | 91 | +38.6 (p = 0.055) |
+| Reviewer | Pass line of 50 | Pass line of 100 | Fail any flagged log | Verdict per claim | Verdict minus pass line of 50 |
+|---|---|---|---|---|---|
+| deepseek-v4-flash (confirmatory) | 44 | 67 | 67 | 89 | +45.5 (p = 0.020) |
+| gemma-4-31b-it (planned replication) | 35 | 73 | 75 | 90 | +54.9 (p = 0.016) |
+| qwen3.5-397b (added replication) | 52 | 79 | 78 | 91 | +38.6 (p = 0.055) |
 
 The p-values are uncorrected sign-flip tests over families.
-Against the flag gate, the verdict rule's gain is 13 to 22 points and is not significant on any reviewer (post hoc).
+Against the flag gate or a pass line of 100, the verdict rule's gain is 12 to 22 points and is not significant on any of the three open-weight reviewers (post hoc).
+A pass line of 100 does not carry across reviewers: Claude Sonnet 5.5 never scored a real log above 96, so that line fails every log it reads.
 The report gives the bounds for unreadable replies, the check without two families whose reports overclaim in the full run, and the results that did not go our way.
 Two of those are worth knowing up front.
 The primary prediction of Study 2 failed.
-Stating the task's requirement did not help on real logs.
+Stating the task's requirement, in the one form we tested, did not significantly help on real logs.
 
 The practical conclusion is a design rule.
-A trust signal read by another AI system should carry a verdict for each claim, and the consumer should gate on those verdicts and not on one score.
+A trust signal read by another AI system should carry a verdict for each claim, and the consumer should gate on those verdicts and not on a midpoint score.
 
 ## What is in this repository
 
@@ -105,6 +107,9 @@ Each script below prints its numbers from the raw readings.
 | Related evidence removed (Section 5.2) | `uv run python norel_report.py` | `results/norel-report.txt` |
 | Requirement stated (Section 5.4) | `uv run python stated_report.py` | `results/stated-report.txt` |
 | Study 2 and the verdict rule (Table 3) | `uv run python dilution_report.py --models deepseek-v4-flash gemma-4-31b-it` | `results/dilution-report-*.txt`, `results/dilution-verdict-report-*.txt`, `results/verdict-malt-report-*.txt` |
+| Verdict rule, qwen3.5-397b row (Table 3) | `uv run python dilution_report.py --models qwen3.5-397b --readings 10` | `results/verdict-malt-report-qwen3.5-397b.txt` |
+| Verdict rule, Claude Sonnet 5.5 row (Table 3) | `uv run python dilution_report.py --real-rows results/raw/claude-malt.jsonl --real-verdict-rows results/raw/claude-verdict-malt.jsonl --real-model sonnet --min-readings 2` | `results/verdict-malt-report-claude-sonnet.txt` |
+| Verdict rule without the two web-server families (Section 6) | the commands of the three rows above, each with `--exclude-families malt-229647-webserver malt-343423-webserver` | `results/verdict-malt-sensitivity-report.txt` |
 | Study 3, related evidence (Table 4) | `uv run python related_report.py --models deepseek-v4-flash gemma-4-31b-it` | `results/related-report-*.txt` |
 | Pilot criteria (Appendix D) | `uv run python pilot_report.py --model deepseek-v4-flash --out results/raw/pilot-joined.jsonl` | `results/pilot-report-deepseek.txt` |
 
@@ -246,7 +251,7 @@ Each of those folders has a `NOTICE.md` and METR's `LICENSE` file, and each fami
 ## Citing
 
 ```text
-Gupta, A. (2026). Why LLM Reviewers Need a Verdict on Every Claim.
+Gupta, A. (2026). Open-Weight LLM Reviewers Flag an Unsupported Claim, Then Pass the Work.
 Apart Research AI x Epistemics Research Sprint, Track 2: Trust Infrastructure.
 https://github.com/apurv-1/epistemics-research-log-citations
 ```

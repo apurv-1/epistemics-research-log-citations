@@ -33,6 +33,7 @@ LOW, HIGH, PAD = "k01", "k15", "pad"
 CONDITIONS = (*DOSES, PAD)
 PASS_LINES = (50, 80, 100)
 MAIN_PASS_LINE = 50  # the line MAIN.md fixed for a caught log
+STRICT_PASS_LINE = 100  # post hoc: fails any score under 100, the gate held-out selection picked on the confirmatory reviewer
 SWEEP = (50, 60, 70, 80, 90, 95, 100)
 SHOWN = "SHOWN"
 FAMILY_ID = re.compile(r"^dil-(?P<template>.+)-(?P<condition>k\d\d|pad)$")
@@ -219,32 +220,44 @@ def report_verdict(model: str, data: dict, score_data: dict | None, n: int) -> s
 def report_real(model: str, verdict: dict, score: dict, n: int, exclude: tuple[str, ...] = ()) -> str:
     """The verdict instructions on the 11 real-log families, against a pass line of 50 on the main study's readings.
 
-    Families in exclude are left out of every number except the missing-reading count, for a sensitivity check."""
+    Families in exclude are left out of every number except the missing-reading counts, for a sensitivity check.
+    Every comparison marked post hoc was added after the real-log verdict results were read."""
     verdict = {**verdict, "units": [u for u in verdict["units"] if u not in exclude]}
-    def net_verdict(unit, _):
-        c, f = cell(verdict, unit, "", "skipped", CATCH, n), cell(verdict, unit, "", "done", REJECT, n)
-        return None if c is None or f is None else c - f
+    kept = set(verdict["units"])
 
-    def net_score(unit, _):
-        c, f = cell(score, unit, "", "skipped", under(MAIN_PASS_LINE), n), cell(score, unit, "", "done", under(MAIN_PASS_LINE), n)
-        return None if c is None or f is None else c - f
+    def kept_cells(data):  # the same data with excluded families' readings dropped, for the pooled rates
+        return {**data, "cells": {k: v for k, v in data["cells"].items() if k[0] in kept}}
+
+    def net(data, c_measure, f_measure):
+        """Per family: the share of cut-log readings the gate fails minus the share of full-log readings it fails."""
+        def value(unit):
+            c, f = cell(data, unit, "", "skipped", c_measure, n), cell(data, unit, "", "done", f_measure, n)
+            return None if c is None or f is None else c - f
+        return value
+
+    def gain(a, b) -> dict:
+        """Per family, gate a's discrimination minus gate b's, where both are defined."""
+        return {unit: None if (x := a(unit)) is None or (y := b(unit)) is None else x - y for unit in verdict["units"]}
+
+    net_verdict = net(verdict, CATCH, REJECT)
+    net_score = net(score, under(MAIN_PASS_LINE), under(MAIN_PASS_LINE))
+    net_strict = net(score, under(STRICT_PASS_LINE), under(STRICT_PASS_LINE))
+    net_flag = net(score, FLAG, FLAG)
 
     lines = [f"== {model}: verdict instructions on the real-log families" + (f", without {', '.join(exclude)}" if exclude else "") + " ==",
              f"Missing readings: {verdict['missing']} of {verdict['total']}; families: {len(verdict['units'])}"]
-    gain = {unit: None if (a := net_verdict(unit, "")) is None or (b := net_score(unit, "")) is None else a - b for unit in verdict["units"]}
-    lines.append(_line(f"verdict rule minus a pass line of {MAIN_PASS_LINE} (each: cut logs caught minus full logs failed)", summary(gain), "families"))
-    def net_flag(unit):
-        c, f = cell(score, unit, "", "skipped", FLAG, n), cell(score, unit, "", "done", FLAG, n)
-        return None if c is None or f is None else c - f
-    flag_gain = {unit: None if (a := net_verdict(unit, "")) is None or (b := net_flag(unit)) is None else a - b for unit in verdict["units"]}
-    lines.append(_line("post hoc, verdict rule minus the flag gate on the same score readings", summary(flag_gain), "families"))
+    lines.append(_line(f"verdict rule minus a pass line of {MAIN_PASS_LINE} (each: cut logs caught minus full logs failed)",
+                       summary(gain(net_verdict, net_score)), "families"))
+    lines.append(_line("post hoc, verdict rule minus the flag gate on the same score readings", summary(gain(net_verdict, net_flag)), "families"))
+    lines.append(_line(f"post hoc, verdict rule minus a pass line of {STRICT_PASS_LINE} on the same score readings",
+                       summary(gain(net_verdict, net_strict)), "families"))
     for label, data, c_measure, f_measure in (("verdict rule", verdict, CATCH, REJECT),
                                              (f"pass line of {MAIN_PASS_LINE}", score, under(MAIN_PASS_LINE), under(MAIN_PASS_LINE)),
-                                             ("pass line of 100", score, under(100), under(100))):
-        c, f = pooled(data, "skipped", c_measure), pooled(data, "done", f_measure)
+                                             (f"pass line of {STRICT_PASS_LINE}", score, under(STRICT_PASS_LINE), under(STRICT_PASS_LINE))):
+        c, f = pooled(kept_cells(data), "skipped", c_measure), pooled(kept_cells(data), "done", f_measure)
         lines.append(f"  {label}: cut logs caught {'n/a' if c is None else format(c, '.0f')}%, full logs failed {'n/a' if f is None else format(f, '.0f')}%")
     # Means over the families where the verdict rule has enough readings, so every gate is compared on the same families.
-    shared = [unit for unit in verdict["units"] if net_verdict(unit, "") is not None and net_score(unit, "") is not None]
+    shared = [unit for unit in verdict["units"] if net_verdict(unit) is not None and net_score(unit) is not None]
 
     def family_rates(data, c_measure, f_measure):
         pairs = [(cell(data, unit, "", "skipped", c_measure, n), cell(data, unit, "", "done", f_measure, n)) for unit in shared]
@@ -258,34 +271,33 @@ def report_real(model: str, verdict: dict, score: dict, n: int, exclude: tuple[s
     lines.append(f"    verdict rule: {family_rates(verdict, CATCH, REJECT)}")
     lines.append(f"    pass line of {MAIN_PASS_LINE}: {family_rates(score, under(MAIN_PASS_LINE), under(MAIN_PASS_LINE))}")
     lines.append(f"    flag gate: {family_rates(score, FLAG, FLAG)}")
+    lines.append(f"    pass line of {STRICT_PASS_LINE}: {family_rates(score, under(STRICT_PASS_LINE), under(STRICT_PASS_LINE))}")
     miss = verdict.get("missing_cells", {})
     lines.append(f"  missing verdict readings: {sum(v for k, v in miss.items() if k[2] == 'skipped')} on cut logs, "
                  f"{sum(v for k, v in miss.items() if k[2] == 'done')} on full logs")
 
-    def worst(unit):  # every missing cut-log reading counted as not caught, every missing full-log reading as a false alarm
+    def filled(unit, missing_cut_caught: bool):
+        """Verdict discrimination with every planned reading counted. A missing full-log reading is a false alarm;
+        a missing cut-log reading is caught by a gate that rejects what it cannot read, and missed in the worst case."""
         cut, full = verdict["cells"].get((unit, "", "skipped"), []), verdict["cells"].get((unit, "", "done"), [])
         mc, mf = miss.get((unit, "", "skipped"), 0), miss.get((unit, "", "done"), 0)
-        if not cut or not full:
+        if not (cut or mc) or not (full or mf):
             return None
-        return (100.0 * sum(r["catch"] for r in cut) / (len(cut) + mc)
-                - 100.0 * (sum(r["reject"] for r in full) + mf) / (len(full) + mf))
-    worst_gain = {unit: None if (a := worst(unit)) is None or (b := net_score(unit, "")) is None else a - b for unit in verdict["units"]}
+        caught = sum(r["catch"] for r in cut) + (mc if missing_cut_caught else 0)
+        return 100.0 * caught / (len(cut) + mc) - 100.0 * (sum(r["reject"] for r in full) + mf) / (len(full) + mf)
+
+    worst = lambda unit: filled(unit, missing_cut_caught=False)  # noqa: E731
+    closed = lambda unit: filled(unit, missing_cut_caught=True)  # noqa: E731
     lines.append(_line("worst case, missing readings counted against the verdict rule: verdict rule minus a pass line of "
-                       f"{MAIN_PASS_LINE}", summary(worst_gain), "families"))
-    lines.append(f"    worst-case verdict discrimination, mean over families: "
-                 f"{mean(v for v in (worst(u) for u in verdict['units']) if v is not None):.1f}")
-    def closed(unit):  # a deployed gate that rejects any reply it cannot read: missing cut readings caught, missing full ones false alarms
-        cut, full = verdict["cells"].get((unit, "", "skipped"), []), verdict["cells"].get((unit, "", "done"), [])
-        mc, mf = miss.get((unit, "", "skipped"), 0), miss.get((unit, "", "done"), 0)
-        if not cut or not full:
-            return None
-        return (100.0 * (sum(r["catch"] for r in cut) + mc) / (len(cut) + mc)
-                - 100.0 * (sum(r["reject"] for r in full) + mf) / (len(full) + mf))
-    closed_gain = {unit: None if (a := closed(unit)) is None or (b := net_score(unit, "")) is None else a - b for unit in verdict["units"]}
+                       f"{MAIN_PASS_LINE}", summary(gain(worst, net_score)), "families"))
+    worst_values = [v for v in (worst(u) for u in verdict["units"]) if v is not None]
+    lines.append(f"    worst-case verdict discrimination, mean over {len(worst_values)} families: {mean(worst_values):.1f}")
     lines.append(_line("fail-closed gate, unreadable replies rejected: verdict rule minus a pass line of "
-                       f"{MAIN_PASS_LINE}", summary(closed_gain), "families"))
-    lines.append(f"    fail-closed verdict discrimination, mean over families: "
-                 f"{mean(v for v in (closed(u) for u in verdict['units']) if v is not None):.1f}")
+                       f"{MAIN_PASS_LINE}", summary(gain(closed, net_score)), "families"))
+    closed_values = [v for v in (closed(u) for u in verdict["units"]) if v is not None]
+    lines.append(f"    fail-closed verdict discrimination, mean over {len(closed_values)} families: {mean(closed_values):.1f}")
+    lines.append(_line("post hoc, fail-closed gate minus the flag gate", summary(gain(closed, net_flag)), "families"))
+    lines.append(_line(f"post hoc, fail-closed gate minus a pass line of {STRICT_PASS_LINE}", summary(gain(closed, net_strict)), "families"))
     lines.append("  per family, cut logs caught and full logs failed under the verdict rule:")
     for unit in verdict["units"]:
         c, f = cell(verdict, unit, "", "skipped", CATCH, n), cell(verdict, unit, "", "done", REJECT, n)
