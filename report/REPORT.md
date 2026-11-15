@@ -1,4 +1,4 @@
-# Gate on Claims, Not Scores: LLM Reviewers Flag the False Claim in an Agent's Report and Still Pass It
+# Flagged, Then Passed: Why LLM Reviewers Need a Verdict on Every Claim
 
 Apurv Gupta
 
