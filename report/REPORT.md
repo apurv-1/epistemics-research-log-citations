@@ -41,7 +41,7 @@ Each result is labelled pre-registered (a test fixed in a plan, primary or secon
 2. **Exploratory: flagged, then passed.** The same reviewers flag an unsupported claim in most cut logs and still pass 26% to 40% of them, mostly where related evidence remains (Section 5).
 3. **Pre-registered secondary: a verdict per claim narrows the gap.** The verdict rule beat a pass line of 50 by 45.5 points on deepseek-v4-flash; gemma-4-31b-it replicated it and qwen3.5-397b pointed the same way.
 Its gain over the flag gate, or over a pass line of 100, was not significant (post hoc, Section 6).
-4. **Pre-registered: when it happens.** On constructed tasks with a stated requirement, more neutral work does not soften deepseek-v4-flash's penalty and related evidence does not significantly soften it, and on gemma-4-31b-it related evidence lowered the penalty by 29.5 points without reaching significance (p = 0.063); with the requirement implied, related evidence softens deepseek-v4-flash's penalty (Sections 7 and 8).
+4. **Pre-registered: when it happens.** On constructed tasks with a stated requirement, neither more neutral work nor related evidence significantly softens deepseek-v4-flash's penalty, and gemma-4-31b-it's fell by 29.5 points without reaching significance (p = 0.063); with the requirement implied, related evidence softens deepseek-v4-flash's penalty (Sections 7 and 8).
 5. **Descriptive: frontier reviewers.** Claude Sonnet 5.5 and Opus 5.5 rarely pass a flagged cut log, and they keep their belief that the work succeeded apart from what the log shows (Sections 5, 6 and 8).
 
 ## 2. Related Work
@@ -203,7 +203,7 @@ The plan counts these as false alarms, and every number above keeps them so.
 In the two server families, the claim our cut makes false is therefore false in the full run too, so a catch there may come from the bug rather than the removed step.
 Without those two families, the verdict rule still beat a pass line of 50 by 41.5, 56.1 and 39.4 points (p = 0.078, 0.031 and 0.094 over 8 or 9 families; post hoc, `results/verdict-malt-sensitivity-report.txt`).
 On deepseek-v4-flash, 42 of 440 readings were unreadable or failed, 18 on cut logs and 24 on full logs (29 of 440 on gemma-4-31b-it, 5 of 220 on qwen3.5-397b). Missing readings are not random, so we bound them (post hoc): rejecting every unreadable reply keeps +35.0, +51.3 and +35.9 points, and counting every missing reading against the verdict rule keeps +26.8 (p = 0.13), +45.8 (p = 0.008) and +34.1 points.
-Claude Sonnet 5.5, the reviewer the flag gate hurt most, gave 66 descriptive verdict readings fixed in `RELATED.md`, 61 of them valid (Appendix B). It caught every valid cut log and rejected 23% of full logs.
+Claude Sonnet 5.5, the reviewer the flag gate hurt most, caught every valid cut log and rejected 23% of full logs in 61 valid descriptive verdict readings (Appendix B).
 We split each report into claims by hand, so the result is for the rule and that split together (Appendix A).
 
 ## 7. Study 2: Does More Surrounding Work Dilute the False Claim? (Pre-registered)
@@ -217,8 +217,7 @@ The reviewer flagged every cut log at every dose and scored them 8.2, 6.8, 5.8 a
 The dilution effect was +3.2 points (95% CI +1.6 to +4.7, p = 0.023), opposite to the prediction and inside the 10-point band, and log length alone did nothing (-0.6 points).
 Because the reviewer already failed these cut logs, the test had little room to show dilution.
 The planned replication on gemma-4-31b-it also moved the wrong way, +7.9 points (95% CI +5.0 to +11.2, 7 of 7 tasks up, p = 0.016).
-Under the verdict instructions on the same tasks, deepseek-v4-flash caught every cut log at every dose and rejected 0.1% of full logs, in 1,502 of 1,600 readings.
-That is no gain over a pass line of 50, which already failed 99% to 100% of these cut logs (planned secondary, `results/dilution-verdict-report-deepseek-v4-flash.txt`).
+Under the verdict instructions on the same tasks, deepseek-v4-flash caught every cut log and rejected 0.1% of full logs (1,502 of 1,600 readings valid), no gain over a pass line of 50, which already failed 99% to 100% of these cut logs (planned secondary).
 
 ## 8. Study 3: Does Related Evidence Cause It? (Pre-registered)
 
