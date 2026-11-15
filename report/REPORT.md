@@ -1,4 +1,4 @@
-# Flagged, Then Passed: Why LLM Reviewers Need a Verdict on Every Claim
+# Why LLM Reviewers Need a Verdict on Every Claim
 
 Apurv Gupta
 
