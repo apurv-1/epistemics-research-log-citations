@@ -1,0 +1,39 @@
+8 families, 16 prompts, 320 distinct calls, 320 still to run (two instructions)
+  full  raw done: 8 prompts, 160 calls
+  full  raw skipped: 8 prompts, 160 calls
+  deepseek-v4-flash: 320 calls, about 0.1843 credits, at most 2.785
+  0.0000 credits already charged to results/raw/related-two-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+25/320 calls done, 0.0071 credits
+50/320 calls done, 0.0116 credits
+75/320 calls done, 0.0170 credits
+100/320 calls done, 0.0216 credits
+125/320 calls done, 0.0286 credits
+150/320 calls done, 0.0330 credits
+175/320 calls done, 0.0391 credits
+8 families, 16 prompts, 320 distinct calls, 138 still to run (two instructions)
+  full  raw done: 8 prompts, 160 calls
+  full  raw skipped: 8 prompts, 160 calls
+  deepseek-v4-flash: 138 calls, about 0.0795 credits, at most 1.2011
+  0.0489 credits already charged to results/raw/related-two-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+25/138 calls done, 0.0053 credits
+50/138 calls done, 0.0101 credits
+75/138 calls done, 0.0147 credits
+100/138 calls done, 0.0189 credits
+125/138 calls done, 0.0227 credits
+Finished 138 of 138 calls, 0.0256 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+8 families, 16 prompts, 320 distinct calls, 1 still to run (two instructions)
+  full  raw done: 8 prompts, 160 calls
+  full  raw skipped: 8 prompts, 160 calls
+  deepseek-v4-flash: 1 calls, about 0.0006 credits, at most 0.0087
+  0.0745 credits already charged to results/raw/related-two-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+Finished 1 of 1 calls, 0.0005 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+8 families, 16 prompts, 320 distinct calls, 0 still to run (two instructions)
+  full  raw done: 8 prompts, 160 calls
+  full  raw skipped: 8 prompts, 160 calls
+  0.0750 credits already charged to results/raw/related-two-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.
+8 families, 16 prompts, 320 distinct calls, 0 still to run (two instructions)
+  full  raw done: 8 prompts, 160 calls
+  full  raw skipped: 8 prompts, 160 calls
+  0.0750 credits already charged to results/raw/related-two-deepseek-v4-flash-b.jsonl; the budget for this file is 12.0
+Finished 0 of 0 calls, 0.0000 credits: 0 API errors, 0 replies without a valid score, 0 rate limits waited out.

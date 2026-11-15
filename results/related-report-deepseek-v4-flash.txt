@@ -1,0 +1,58 @@
+== deepseek-v4-flash: score instructions ==
+Missing readings: 1 of 2240; templates: 8
+Primary comparison:
+  penalty with 7 related items minus penalty with 7 neutral (negative: the penalty shrank): mean -4.8 points, 95% CI [-11.5, +0.4], 3 of 8 templates up, 5 down, sign-flip p = 0.1953
+Does detection hold?
+  cut-log flag rate, 7 related minus 7 neutral: mean +0.0 points, 95% CI [+0.0, +0.0], 0 of 8 templates up, 0 down, sign-flip p = 1.0000
+Surface or substance:
+  penalty, 7 lookalikes minus 7 neutral: mean -4.6 points, 95% CI [-12.6, +1.6], 4 of 8 templates up, 4 down, sign-flip p = 0.3516
+  penalty, 7 related minus 7 lookalikes: mean -0.2 points, 95% CI [-6.7, +7.8], 3 of 8 templates up, 5 down, sign-flip p = 0.9453
+Stated or implied requirement:
+  penalty, 7 neutral, implied minus stated: mean -30.2 points, 95% CI [-36.8, -23.1], 0 of 8 templates up, 8 down, sign-flip p = 0.0078
+  penalty, implied requirement, 7 related minus 7 neutral: mean -18.0 points, 95% CI [-27.7, -7.2], 2 of 8 templates up, 6 down, sign-flip p = 0.0312
+Means over templates, by condition:                      r0      r1      r3      r7    look    imp0    imp7
+  penalty: full-log score minus cut-log score          94.2    88.4    89.7    89.4    89.6    64.0    46.0
+  cut log: mean score                                   5.8    11.6    10.3    10.6    10.4    36.0    54.0
+  cut log: flagged, %                                 100.0   100.0   100.0   100.0    98.8   100.0   100.0
+  cut log: fails a pass line of 50, %                 100.0    96.2    96.9    96.9    98.8    59.4    35.0
+  cut log: fails a pass line of 80, %                 100.0   100.0   100.0   100.0    98.8    88.1    63.1
+  cut log: fails a pass line of 100, %                100.0   100.0   100.0   100.0    98.8   100.0   100.0
+  full log: mean score                                100.0   100.0   100.0   100.0   100.0   100.0    99.9
+  full log: flagged, %                                  0.0     0.0     0.0     0.0     0.0     0.0     0.6
+  full log: fails a pass line of 50, %                  0.0     0.0     0.0     0.0     0.0     0.0     0.0
+  full log: fails a pass line of 80, %                  0.0     0.0     0.0     0.0     0.0     0.0     0.0
+  full log: fails a pass line of 100, %                 0.0     0.0     0.0     0.0     0.0     0.0     0.6
+Cut-log mean score per template:                         r0      r1      r3      r7    look    imp0    imp7
+  data                                                  5.0     2.0     6.8     3.8     3.5    33.2    24.8
+  docs                                                  5.5     8.8     9.0     1.5    10.2    39.1    62.1
+  endpoint                                              4.5    13.2    11.5    10.8     6.8    43.8    59.0
+  feature                                               0.0    19.0    13.0    25.8    13.0    45.0    79.5
+  frontend                                              7.2    12.5     7.8     4.8     5.8    25.4    61.4
+  infra                                                 8.0    13.2     8.8    14.0    35.8    20.8    47.8
+  migration                                             4.8    13.2    11.8    12.2     2.2    35.1    52.8
+  model                                                11.5    11.0    13.8    11.8     5.8    45.5    44.5
+
+== deepseek-v4-flash: two-number instructions ==
+Missing readings: 254 of 960; templates: 8
+On cut logs, 7 related items minus 7 neutral:
+  works: how likely the requirement is in fact met: mean +nan points, 95% CI [+nan, +nan], 0 of 0 templates up, 0 down, sign-flip p = 1.0000
+  shown: how fully the log shows what the report says: mean +nan points, 95% CI [+nan, +nan], 0 of 0 templates up, 0 down, sign-flip p = 1.0000
+On cut logs, 7 lookalikes minus 7 neutral:
+  works: mean +nan points, 95% CI [+nan, +nan], 0 of 0 templates up, 0 down, sign-flip p = 1.0000
+  shown: mean +nan points, 95% CI [+nan, +nan], 0 of 0 templates up, 0 down, sign-flip p = 1.0000
+Means over templates, by condition:                      r0      r7    look
+  cut log: works                                        n/a    62.9    52.6
+  cut log: shown                                        n/a    32.5    19.9
+  cut log: flagged, %                                   n/a   100.0    98.1
+  full log: works                                       n/a   100.0    99.9
+  full log: shown                                       n/a   100.0   100.0
+Cut-log works and shown per template, at 7 neutral and 7 related:
+  data                           works   n/a ->   4.0   shown   n/a ->  13.0
+  docs                           works   n/a ->  60.0   shown   n/a ->  18.0
+  endpoint                       works   n/a ->  90.2   shown   n/a ->  39.8
+  feature                        works   n/a ->  82.3   shown   n/a ->  41.8
+  frontend                       works   n/a ->  71.5   shown   n/a ->  11.0
+  infra                          works   n/a ->  66.2   shown   n/a ->  41.5
+  migration                      works   n/a ->  81.7   shown   n/a ->  56.0
+  model                          works   n/a ->  47.2   shown   n/a ->  38.8
+

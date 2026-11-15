@@ -1,0 +1,19 @@
+5 families, 10 prompts, 200 distinct calls, 185 still to run (verdict instructions)
+  full  raw done: 5 prompts, 100 calls
+  full  raw skipped: 5 prompts, 100 calls
+  gemma-4-31b-it: 185 calls, about 0.2936 credits, at most 4.1935
+  0.0271 credits already charged to results/raw/verdict-malt-gemma-4-31b-it-b.jsonl; the budget for this file is 10.0
+25/185 calls done, 0.0069 credits
+50/185 calls done, 0.0136 credits
+75/185 calls done, 0.0206 credits
+100/185 calls done, 0.0271 credits
+125/185 calls done, 0.0339 credits
+150/185 calls done, 0.0406 credits
+175/185 calls done, 0.0473 credits
+Finished 185 of 185 calls, 0.0501 credits: 0 API errors, 23 replies without a valid score, 0 rate limits waited out.
+5 families, 10 prompts, 200 distinct calls, 1 still to run (verdict instructions)
+  full  raw done: 5 prompts, 100 calls
+  full  raw skipped: 5 prompts, 100 calls
+  gemma-4-31b-it: 1 calls, about 0.0014 credits, at most 0.0221
+  0.0772 credits already charged to results/raw/verdict-malt-gemma-4-31b-it-b.jsonl; the budget for this file is 10.0
+Finished 1 of 1 calls, 0.0002 credits: 0 API errors, 1 replies without a valid score, 0 rate limits waited out.
