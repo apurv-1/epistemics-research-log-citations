@@ -10,5 +10,4 @@ The files here are edited copies of those families.
 Each file lists its own edits in `[report]`, and its `[stated]` table gives the one sentence added to the task and why it is faithful to the original task.
 
 The MIT License asks that its copyright and permission notice travel with copies of the work.
-The dataset's `LICENSE` file is not yet in this folder.
-Copy it here from the dataset before this repository is made public.
+The dataset's `LICENSE` file is in this folder, unchanged.

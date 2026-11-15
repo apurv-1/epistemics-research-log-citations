@@ -240,7 +240,7 @@ Everything else in this repository is sprint work.
 ## Data notice
 
 The logs in `data/families_malt/`, `data/families_malt_norel/` and `data/families_malt_stated/` are edited copies of runs from METR's MALT dataset, used under its MIT License.
-Each of those folders has a `NOTICE.md`, and each file names the run it came from.
+Each of those folders has a `NOTICE.md` and METR's `LICENSE` file, and each family file names the run it came from.
 
 ## Citing
 
