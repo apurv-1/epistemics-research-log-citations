@@ -1,4 +1,4 @@
-"""Tests for pilot_report.py, on made-up rows."""
+"""Tests for pilot_report.py, on synthetic rows with known answers."""
 
 from families import LENGTHS
 from pilot_report import CITED_DONE, RAW_DONE, RAW_SKIPPED, criteria, report, summarize

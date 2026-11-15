@@ -1,4 +1,4 @@
-"""Tests for main_report.py, on made-up rows."""
+"""Tests for main_report.py, on synthetic rows with known answers."""
 
 import pytest
 

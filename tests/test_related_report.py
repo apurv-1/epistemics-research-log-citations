@@ -1,4 +1,4 @@
-"""Tests for related_report.py, on made-up rows."""
+"""Tests for related_report.py, on synthetic rows with known answers."""
 
 from dilution_report import collect
 from related_report import CONDITIONS, TWO_CONDITIONS, key_for, report_score, report_two, report_verdict

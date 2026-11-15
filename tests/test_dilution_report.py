@@ -1,4 +1,4 @@
-"""Tests for dilution_report.py, on made-up rows."""
+"""Tests for dilution_report.py, on synthetic rows with known answers."""
 
 from dilution_report import (
     CATCH, CONDITIONS, FLAG, HIGH, LOW, PAD, REJECT, SCORE, SCORE_IF_FLAGGED, cell, collect, contrast, monotone, parse,
