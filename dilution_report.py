@@ -235,16 +235,21 @@ def report_real(model: str, verdict: dict, score: dict, n: int) -> str:
                                              ("pass line of 100", score, under(100), under(100))):
         c, f = pooled(data, "skipped", c_measure), pooled(data, "done", f_measure)
         lines.append(f"  {label}: cut logs caught {'n/a' if c is None else format(c, '.0f')}%, full logs failed {'n/a' if f is None else format(f, '.0f')}%")
-    def family_mean(data, c_measure, f_measure):
-        nets = [c - f for unit in data["units"]
-                if (c := cell(data, unit, "", "skipped", c_measure, n)) is not None
-                and (f := cell(data, unit, "", "done", f_measure, n)) is not None]
-        return mean(nets) if nets else float("nan")
+    # Means over the families where the verdict rule has enough readings, so every gate is compared on the same families.
+    shared = [unit for unit in verdict["units"] if net_verdict(unit, "") is not None and net_score(unit, "") is not None]
 
-    lines.append("  discrimination as a mean over families (cut logs failed minus full logs failed): "
-                 f"verdict rule {family_mean(verdict, CATCH, REJECT):.1f}, "
-                 f"flag gate {family_mean(score, FLAG, FLAG):.1f}, pass line of {MAIN_PASS_LINE} "
-                 f"{family_mean(score, under(MAIN_PASS_LINE), under(MAIN_PASS_LINE)):.1f}")
+    def family_rates(data, c_measure, f_measure):
+        pairs = [(cell(data, unit, "", "skipped", c_measure, n), cell(data, unit, "", "done", f_measure, n)) for unit in shared]
+        pairs = [(c, f) for c, f in pairs if c is not None and f is not None]
+        if not pairs:
+            return "n/a"
+        c, f = mean(p[0] for p in pairs), mean(p[1] for p in pairs)
+        return f"cut logs failed {c:.1f}%, full logs failed {f:.1f}%, discrimination {c - f:.1f}"
+
+    lines.append(f"  means over the {len(shared)} families with enough verdict readings:")
+    lines.append(f"    verdict rule: {family_rates(verdict, CATCH, REJECT)}")
+    lines.append(f"    pass line of {MAIN_PASS_LINE}: {family_rates(score, under(MAIN_PASS_LINE), under(MAIN_PASS_LINE))}")
+    lines.append(f"    flag gate: {family_rates(score, FLAG, FLAG)}")
     miss = verdict.get("missing_cells", {})
     lines.append(f"  missing verdict readings: {sum(v for k, v in miss.items() if k[2] == 'skipped')} on cut logs, "
                  f"{sum(v for k, v in miss.items() if k[2] == 'done')} on full logs")
@@ -302,9 +307,21 @@ def load_gateway(model: str, path: Path, set_name: str, arm: str, readings: int,
     return merged
 
 
-def load_rows(path: Path) -> list[dict]:
-    """Plain rows, one JSON object per line: family, variant, score, issue, and for verdict readings verdicts and false_claim."""
-    return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+def load_rows(path: Path, model: str | None = None, arm: str | None = None) -> list[dict]:
+    """Plain rows, one JSON object per line: family, variant, score, issue, and for verdict readings verdicts and false_claim.
+
+    Rows that carry a reading key (claude_reviewer.py) keep only the last record per key, preferring a scored one,
+    and can be limited to one model and one arm."""
+    rows = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+    rows = [r for r in rows if not r.get("started") and (model is None or r.get("model") == model)
+            and (arm is None or r.get("arm", arm) == arm)]
+    if not any("key" in r for r in rows):
+        return rows
+    best: dict[str, dict] = {}
+    for r in rows:
+        if r["key"] not in best or r.get("score") is not None or best[r["key"]].get("score") is None:
+            best[r["key"]] = r
+    return list(best.values())
 
 
 def main() -> None:
@@ -319,6 +336,9 @@ def main() -> None:
     parser.add_argument("--rows", type=Path, help="A plain rows file of score readings, for a reviewer run outside monitor.py.")
     parser.add_argument("--verdict-rows", type=Path, help="A plain rows file of verdict readings, for the same reviewer.")
     parser.add_argument("--name", default="reviewer", help="The reviewer's name, with --rows.")
+    parser.add_argument("--real-rows", type=Path, help="Score readings on the real-log families from claude_reviewer.py.")
+    parser.add_argument("--real-verdict-rows", type=Path, help="Verdict readings on the real-log families from claude_reviewer.py.")
+    parser.add_argument("--real-model", help="The model name in those rows, such as sonnet.")
     parser.add_argument("--min-readings", type=int, help="Scores a cell needs for its template to count. Default: half the planned readings.")
     args = parser.parse_args()
     n = args.min_readings or max(1, args.readings // 2)
@@ -341,6 +361,10 @@ def main() -> None:
             verdict = collect(load(model, f"verdict-malt-{model}.jsonl", "malt", "verdict", args.readings), real_key)
             score = collect(load(model, f"main-{model}.jsonl", "malt", "score", 20), real_key)
             print(report_real(model, verdict, score, n) + "\n")
+    if args.real_rows and args.real_verdict_rows:
+        verdict = collect(load_rows(args.real_verdict_rows, args.real_model, "verdict"), real_key)
+        score = collect(load_rows(args.real_rows, args.real_model, "score"), real_key)
+        print(report_real(args.real_model or args.name, verdict, score, n) + "\n")
     if args.rows:
         score_data = collect(load_rows(args.rows))
         print(report_score(args.name, score_data, n)[0] + "\n")

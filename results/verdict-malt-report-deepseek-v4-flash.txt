@@ -4,7 +4,10 @@ Missing readings: 42 of 440; families: 11
   verdict rule: cut logs caught 100%, full logs failed 12%
   pass line of 50: cut logs caught 70%, full logs failed 26%
   pass line of 100: cut logs caught 96%, full logs failed 29%
-  discrimination as a mean over families (cut logs failed minus full logs failed): verdict rule 89.2, flag gate 66.8, pass line of 50 43.6
+  means over the 11 families with enough verdict readings:
+    verdict rule: cut logs failed 100.0%, full logs failed 10.8%, discrimination 89.2
+    pass line of 50: cut logs failed 69.5%, full logs failed 25.9%, discrimination 43.6
+    flag gate: cut logs failed 95.9%, full logs failed 29.1%, discrimination 66.8
   missing verdict readings: 18 on cut logs, 24 on full logs
   worst case, missing readings counted against the verdict rule: verdict rule minus a pass line of 50: mean +26.8 points, 95% CI [-3.2, +57.3], 6 of 11 families up, 5 down, sign-flip p = 0.1299
     worst-case verdict discrimination, mean over families: 70.5

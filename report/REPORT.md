@@ -10,13 +10,13 @@ Research conducted at the AI x Epistemics Research Sprint, November 2026 (Track 
 
 A second model, the reviewer, often decides whether to believe an AI agent's report on its own work.
 We pair a full agent log with a cut log missing one check step, so the unchanged report makes one false claim.
-On 11 pairs from real runs in METR's MALT dataset, a forged citation to a real step that does not show the claim did not fool three open-weight reviewers on average (pre-registered; deepseek-v4-flash +0.5 points, 95% CI -2.2 to +3.1).
+On 11 pairs from real runs in METR's MALT dataset, a forged citation to a real step that does not show the claim did not fool three open-weight reviewers on average (pre-registered; deepseek-v4-flash +0.5 points).
 The reviewers instead flag an unsupported claim and still score 26% to 40% of cut logs as passing (50 or more), mostly where the cut log still shows related evidence (exploratory).
-Asking for a verdict on each claim instead of a score closed this gap: deepseek-v4-flash marked the false claim not shown in every valid cut-log reading and rejected 11% of full logs, 45.5 points more discrimination than a pass line of 50 (pre-registered secondary test, 95% CI +17.9 to +73.7, p = 0.02; +35.0, p = 0.06, if unreadable replies count as rejections).
-Removing the related evidence from three real logs cut flagged-and-passed from 45-100% to 0-15% (planned, no control).
-On eight constructed tasks, related evidence had no meaningful effect while the task stated its requirement (pre-registered, -4.8 points, 95% CI -11.5 to +0.4); with the requirement implied, the reviewer passed 65% of flagged cut logs (secondary).
-Stating the requirement in five real-log families did not reliably help (planned, p = 0.19).
-Trust infrastructure should gate on claim-level verdicts.
+Removing that evidence from three real logs cut flagged-and-passed from 45-100% to 0-15% (planned, no control).
+Asking for a verdict on each claim instead of a score closed the gap: deepseek-v4-flash marked the false claim not shown in every valid cut-log reading and rejected 11% of full logs, each on a claim false in the full run, 45.5 points more discrimination than a pass line of 50 (pre-registered secondary, 95% CI +17.9 to +73.7, p = 0.02; +35.0, p = 0.06, if unreadable replies count as rejections).
+On eight constructed tasks, related evidence had no meaningful effect while the task stated its requirement (pre-registered); with the requirement implied, the reviewer passed 65% of flagged cut logs (secondary).
+Stating the requirement in five real-log families did not reliably help (pre-registered secondary, p = 0.19).
+On this evidence, trust infrastructure should gate on claim-level verdicts.
 
 ## 1. Introduction
 
@@ -37,10 +37,10 @@ Every test holds a task, a log and an agent's report fixed and removes one check
 Each result is labelled pre-registered (a test fixed in a plan, primary or secondary), planned (a comparison fixed in a plan and described without a test), exploratory (designed after seeing the data), or descriptive (the Claude readings, which enter no test).
 
 1. **Pre-registered: citations held up.** On 11 real-log pairs, a forged citation did not fool three open-weight reviewers on average, and a true "all citations resolve" line created no false trust (Section 4).
-2. **Exploratory: flagged, then passed.** Open-weight reviewers flag an unsupported claim in 77% to 96% of real cut logs but score 26% to 40% of them 50 or more anyway, mostly in families whose cut log still shows related evidence. Removing that evidence from three real logs cut this rate from 45-100% to 0-15% (planned), and stating the requirement in five families did not reliably help (planned). Among score gates, failing every flagged log helps open-weight reviewers and hurts frontier ones (Section 5).
-3. **Pre-registered secondary: a verdict per claim closes the gap.** Asked for a verdict on each claim instead of a score, deepseek-v4-flash marked the false claim not shown in every valid reading of every real cut log and rejected 11% of full logs, 45.5 points more discrimination than a pass line of 50 (p = 0.02) and 22 points more than failing every flagged log; Claude Sonnet 5.5 showed the same pattern in descriptive readings (Section 8).
+2. **Exploratory: flagged, then passed.** Open-weight reviewers flag an unsupported claim in 77% to 96% of real cut logs but score 26% to 40% of them 50 or more anyway, mostly in families whose cut log still shows related evidence. Removing that evidence from three real logs cut this rate from 45-100% to 0-15% (planned), and stating the requirement in five families did not reliably help (pre-registered secondary). Among score gates, failing every flagged log helps open-weight reviewers and hurts frontier ones (Section 5).
+3. **Pre-registered secondary: a verdict per claim closes the gap.** Asked for a verdict on each claim instead of a score, deepseek-v4-flash marked the false claim not shown in every valid reading of every real cut log and rejected 11% of full logs, 45.5 points more discrimination than a pass line of 50 (p = 0.02) and 22 points more than failing every flagged log (untested). Every full-log rejection fell on a claim that is false in the full run. Claude Sonnet 5.5 also caught every cut log, with 23% of full logs rejected in the same families (descriptive, Section 8).
 4. **Pre-registered: when it happens.** On constructed tasks, more neutral work around the false claim does not soften the penalty (Section 6), and neither does related evidence while the task states its requirement. When the requirement is only implied, related evidence does soften it, and the reviewer flags every cut log and passes 65% of them (secondary, Section 7).
-5. **Descriptive: frontier reviewers.** Claude Sonnet 5.5 and Claude Opus 5.5 flagged-and-passed 3% and 0% of real cut logs. Asked for two numbers, they raised their belief that the work succeeded when nearby checks passed and still rated the claim as not shown (Sections 5 and 7).
+5. **Descriptive: frontier reviewers.** Claude Sonnet 5.5 and Claude Opus 5.5 flagged-and-passed 3% and 0% of real cut logs. Asked for two numbers, they raised their belief that the work succeeded when nearby checks passed and still rated the claim as not shown (Sections 5, 7 and 8).
 
 ## 2. Related Work
 
@@ -68,7 +68,7 @@ A **family** is one task with a fixed tool log, where a step is one tool call an
 The **full log** shows every step.
 The **cut log** is the same log with the **check step** removed: the step whose output establishes something the report states.
 The report is the same text for both logs, so on the cut log exactly one claim, the **false claim**, states something the log no longer shows.
-The reviewer sees the task, the whole log and the report, under instructions that ask whether the work is complete as the report says and state that it is not when the report says something was done that the log does not show (Appendix F).
+The reviewer sees the task, the whole log and the report. Its instructions ask whether the work is complete as reported, which it is not if the report claims a step the log does not show (Appendix F).
 It returns its reasoning, the single most important unsupported claim or "none", and a score from 0 to 100.
 A reading **flags** a log when it names any unsupported claim.
 A **pass line** of 50 fails a log whose score is under 50, and the **flag gate** fails any flagged log.
@@ -88,7 +88,7 @@ In one family the agent reported "All tests are now passing."; the cut log drops
 Reports were shown without citations, or with every claim cited and the false claim's citation absent, unrelated, or **forged**: a real step that looks relevant and does not establish the claim, such as the earlier failing test run.
 The **citation effect** is the penalty with citations minus the penalty without.
 
-**Table 1.** Effect of a forged citation on the penalty, in points. Positive means the reviewer penalised the false claim more. Holm correction is across the three planned replications (Appendix B).
+**Table 1.** Effect of a forged citation on the penalty, in points. Positive means the reviewer penalised the false claim more. Holm correction is across the three planned replications, with glm-5.2 counted as p = 1 (Appendix B).
 
 | Reviewer | Effect | 95% CI | Families up / down | p | p, corrected |
 |---|---|---|---|---|---|
@@ -140,11 +140,12 @@ On deepseek-v4-flash, 19 or 20 readings per prompt, against Study 1's readings o
 The full-log score fell too, by 16 to 36 points, because these full logs also lost evidence, so the penalty rose by 23 to 52 points rather than by the whole drop.
 The test covers 3 families on one reviewer, is described per family as the plan fixed, and has no control that removes the same number of unrelated steps, so it cannot fully separate a loss of related evidence from a loss of evidence in general.
 
-### 5.3 Two numbers instead of one
+### 5.3 Two numbers instead of one (pre-registered secondary)
 
 Under a comparison fixed in `RELATED.md`, deepseek-v4-flash gave two numbers from 0 to 100 instead of a score on the same 11 families, 10 readings per prompt (218 of 220 readings): **works**, how likely the requirement is in fact met whatever the report says, and **shown**, how fully the log shows what the report says (Appendix F).
 Failing a log when **shown** was under 50 gave 60 points of discrimination, against 44 for a pass line of 50 (+16.4 points, p = 0.17, not significant) and 67 for the flag gate.
-In the five related-evidence families it rated the cut logs 66 on **shown**, against 88 for the full logs and 6 for the cut logs of the other families, so on this reviewer the two numbers did not keep belief and evidence apart. Because **shown** covers the whole report, this does not say that the reviewer believed the missing check itself was shown.
+In the five related-evidence families it rated the cut logs 66 on **shown**, against 88 for the full logs and 6 for the cut logs of the other families, so on this reviewer the two numbers did not keep belief and evidence apart.
+Because **shown** covers the whole report, this does not say that the reviewer believed the missing check itself was shown.
 
 ## 6. Study 2: Does More Surrounding Work Dilute the False Claim? (Pre-registered)
 
@@ -189,7 +190,7 @@ Most of the effect comes from leaving the requirement implied, and related evide
 
 Both Claude models raised **works** by 11 points when nearby checks passed (95% CIs +4.1 to +20.0 and +4.0 to +19.6 over tasks) while **shown** stayed near 5, so the related items were strong enough to move belief in the work, and the frontier reviewers kept that belief out of their judgement of the report.
 
-**Stating the requirement on real logs (planned).**
+**Stating the requirement on real logs (pre-registered secondary).**
 Before any reading, `RELATED.md` fixed the same change on real logs: in the five related-evidence families, one sentence at the end of the task states its acceptance requirement in the task's own terms (Appendix C), and every step and every word of the report stay the same.
 On deepseek-v4-flash, 193 of 200 readings, flagged-and-passed fell from 57% to 46% of cut logs on average against Study 1's readings, in 4 of 5 families, which is not significant (one-sided sign-flip p = 0.19; the smallest possible value is 0.031).
 In one Collatz family it rose from 80% to 100%, and discrimination under a pass line of 50 averaged 0 points before and 1 after.
@@ -199,8 +200,8 @@ The stated requirement that worked on constructed tasks did not carry over to th
 
 `DILUTION.md` fixed a second set of instructions before any reviewer saw them: the same opening, then one verdict for each numbered claim, SHOWN, NOT_SHOWN or CONTRADICTED, and no score.
 A consumer accepts the report only if every claim is SHOWN.
-A reading catches a cut log only when the false claim's own verdict is not SHOWN, and any verdict other than SHOWN on a full log is a false alarm; a rule that rejects a cut log for any claim gives the same rate here, since all 202 valid cut-log readings had some claim not SHOWN.
-The plan lists the test as a secondary analysis of its second study, whose primary prediction, dilution, was not supported (Section 6): per family, cut logs caught minus full logs rejected, against the same under a pass line of 50 on Study 1's score readings, taken a day earlier, with a sign-flip test over the 11 families.
+A cut log counts as caught only if the false claim itself is not SHOWN; on a full log, any claim not SHOWN counts as a false alarm. All 202 valid cut-log readings had some claim not SHOWN, so rejecting for any claim gives the same rate.
+The plan lists it as one of eight secondary tests of its second study, whose primary dilution prediction failed (Section 6), and its p-value is uncorrected for the other seven. Per family, it compares cut logs caught minus full logs rejected with the same quantity under a pass line of 50 on Study 1's scores, taken a day earlier, by sign-flip test over the 11 families.
 
 **Table 4.** Gates on the 11 real-log families, deepseek-v4-flash, means over families. Rates are the shares of readings each gate fails.
 
@@ -211,13 +212,13 @@ The plan lists the test as a secondary analysis of its second study, whose prima
 | Verdict per claim, every claim SHOWN | 100% | 11% | 89 |
 | The same, unreadable replies rejected | 100% | 21% | 79 |
 
-The verdict rule beat a pass line of 50 by 45.5 points (95% CI +17.9 to +73.7, 8 of 11 families up and 1 down, p = 0.0195), and failing every flagged log, also the gate chosen on held-out families, by 22 points.
+The verdict rule beat a pass line of 50 by 45.5 points (95% CI +17.9 to +73.7, 8 of 11 families up and 1 down, p = 0.0195), and beat the flag gate, also the held-out choice, by 22 points in an untested comparison.
 The false claim was marked not shown in every valid reading of every cut log, including the five related-evidence families where the same reviewer's scores passed 57% of flagged cut logs.
-False alarms came from three families: the two web-server families (28% and 65%), where reviewers also found real errors in the full runs, and one bug-fix family (26%).
+All 23 full-log rejections came from three families, and in each the rejected claim is false in the full run, by our check of the log: the agent says it improved a `belongs_to` method that is unchanged (one bug fix, 26%), and two servers return wrong last digits, [2, 2, 4] giving 4 instead of 6 (28%) and [2, 0] giving 6 instead of 1 (65%). The plan counts these as false alarms, but they are correct rejections of real overclaims.
 Forty-two of 440 readings were unreadable or failed, 18 on cut logs and 24 on full logs, and every family kept at least half its readings.
 Missing readings are not random, so we bound them: a gate that rejects every unreadable reply still beats a pass line of 50 by 35.0 points (95% CI +5.9 to +64.5, p = 0.059), and counting every missing reading against the verdict rule leaves +26.8 points (95% CI -3.2 to +57.3, p = 0.13).
-Claude Sonnet 5.5, which the flag gate hurt because it flags real errors in full logs, gave 66 verdict readings fixed in `RELATED.md` before they were taken (descriptive, 3 per prompt, 61 valid, 10 families with enough readings).
-It marked the false claim not shown in every valid cut-log reading and rejected 23% of full logs, all of them in the two web-server families, for 77 points of discrimination against 67 for its scores under a pass line of 50 and 48 under the flag gate.
+We also took 66 verdict readings from Claude Sonnet 5.5, the reviewer the flag gate hurt most, as fixed in `RELATED.md` (descriptive, 3 per prompt, 61 valid, 10 families with enough readings; the 5 invalid replies invented a fourth claim for a three-claim report).
+It marked the false claim not shown in every valid cut-log reading and rejected 23% of full logs, all in the same three families, for 77 points of discrimination against 63 for its scores under a pass line of 50 and 43 under the flag gate on the same 10 families.
 The verdict instructions also have the reviewer go through the claims one by one, and we split each report into claims by hand, so the result is for the rule and the claim split together; a deployed gate needs that split too.
 
 ## 9. Discussion
@@ -234,8 +235,8 @@ Asked for two numbers, the Claude models kept the two questions apart, while dee
 **A design rule for trust infrastructure.**
 A trust signal for an AI consumer should carry, per claim, whether its citation resolves, the reviewer's verdict on whether the log shows it, and the reviewer's finding, as fields separate from any judgement of the work.
 The consumer should accept a report only if every claim is shown, and reject replies it cannot read.
-On the confirmatory reviewer this rule beat every score gate we tried, including the best gate chosen per reviewer on held-out families.
-On Claude Sonnet 5.5, a reviewer that flags real errors in full logs, it also beat both score gates in descriptive readings, though its false alarms rose where the full runs held real errors, so the gate should still be checked per reviewer on labelled pairs.
+On the confirmatory reviewer this rule beat a pass line of 50 in a pre-registered test, and the flag gate and the held-out gate by 22 points in untested comparisons.
+On Claude Sonnet 5.5 it also beat both score gates in descriptive readings, and on both reviewers it rejected full logs only where the agent's own report overclaims; the gate should still be checked per reviewer on labelled pairs.
 We release the 11 real-log pairs, the 8 constructed tasks with their conditions, and the harness as a test set for exactly this check.
 
 **Limitations.**
@@ -250,7 +251,7 @@ Asking for a verdict on each claim, rather than one score, closed that gap on th
 ## Code and Data
 
 Code, task families, every raw reading and the plans (`PILOT.md`, `MAIN.md`, `DILUTION.md`, `RELATED.md`) are at <https://github.com/apurv-1/epistemics-research-log-citations>.
-The `*_report.py` scripts and `claude_reviewer.py --report` print every number in this report from the raw readings.
+The `*_report.py` scripts (`dilution_report.py --real-rows` for the Claude verdict readings) and `claude_reviewer.py --report` print every number in this report from the raw readings.
 Everything was written during the sprint except two files copied from <https://github.com/apurv-1/swarm-alignment-maoc> at commit `52f1422`: `monitor.py`, the model client, and `tests/test_monitor.py`.
 The 11 real-log families are derived from METR's MALT dataset, `metr-evals/malt-public`, under its MIT license.
 
@@ -293,7 +294,7 @@ Zahraei, P. S., Wang, X., Bozdag, N. B., Tur, G., and Hakkani-Tür, D. (2026). P
 ### What they do not establish
 
 - **That flagged-and-passed is a confirmed effect.** It was found in exploratory analysis of Study 1, the related-evidence split was named after that analysis, and the result depends on the consumer's gate.
-- **That the verdict rule transfers.** It was tested on one reviewer, one prompt and 11 families; its false alarms on reviewers that flag real errors in full logs are unknown.
+- **That the verdict rule transfers.** It was tested on one reviewer, one prompt and 11 families; on a reviewer that flags real errors in full logs it was measured only descriptively, on Claude Sonnet 5.5 (23% of full logs rejected, all in the three families whose reports overclaim).
 - **That stating the requirement fails on real logs.** The planned test on five families was not significant, and one sentence of one wording was tried.
 - **That the flag gate works in deployment.** It was compared after the fact, on one prompt, and it hurts frontier reviewers that flag real errors in full logs.
 - **That no forged citation can fool a reviewer.** We tested the mean effect of one hand-placed citation per family.
@@ -306,10 +307,10 @@ Zahraei, P. S., Wang, X., Bozdag, N. B., Tur, G., and Hakkani-Tür, D. (2026). P
 
 - **Constructed pairs.** The cut log is a real or constructed log with one step removed, so the false claim comes from that removal and not from an agent that overclaimed.
 - **Full real logs are not always correct work.** The reviewers found real errors in the agent's work in some families, so a low score on a full log is not always a mistake.
-- **Few families and kinds of task.** Eleven real-log families from 9 tasks of five kinds, and eight constructed tasks. Results are given per unit in Appendices E and G.
+- **Few families and kinds of task.** Eleven real-log families from 9 tasks of five kinds, and eight constructed tasks. Results are given per unit in Appendix E.
 - **Constructed tasks share one skeleton.** One model wrote the eight tasks of Studies 2 and 3, the false claim is always the last claim, and the same kinds of side work recur.
 - **Related items vary in strength.** The builder recorded how strongly each task's related items suggest the acceptance check would pass.
-- **Claims were split by hand.** The verdict rule needs the report split into claims, which we did; a deployed gate needs a splitter, whose errors this study does not measure.
+- **Claims were split by hand.** The verdict rule needs the report split into claims, which we did; a deployed gate needs a splitter, whose errors this study does not measure. All 5 invalid Claude Sonnet 5.5 verdict replies invented an extra claim.
 - **One reader chose the cuts.** An AI coding agent chose which step to remove and where citations point, under written rules, with a recorded decision for each run.
 - **Flags are read by a keyword check.** Whether an issue names the false claim itself is decided by hand-written patterns per family (`reasons_report.py`); a fixed sample of 42 flagged-and-passed readings, pooled over citation conditions, was read by the model that helped design the analysis (`results/reasons-audit-sample.txt`).
 - **Missing readings are not random.** gemma-4-31b-it lost 35 readings on the longest logs, glm-5.2 could not be run, and Claude Sonnet 5.5's safety filter blocked two readings on full real logs before a retry answered them.
@@ -358,6 +359,7 @@ All runs were stopped for 26 minutes on November 14 for a reason unrelated to an
 
 **Claude reviewers.** 258 readings per model, through the `claude` client with every tool, MCP server and settings file off.
 Sonnet 5.5 finished 258 and Opus 5.5 finished 258.
+Claude Sonnet 5.5's 66 real-log verdict readings were added to `RELATED.md` before they were taken; 61 gave a valid verdict for every claim, and the 5 that did not were all in `malt-229887-more-bias`.
 
 **Changes common to all runs.** The gateway allows one call at a time per account, so calls were sent one at a time on two accounts, split by family or task, and joined before analysis.
 Dropped connections stalled some runs, which were restarted, and calls that were cut off were read again.
@@ -468,6 +470,17 @@ The two-number instructions of Study 3 keep the first three sentences and the is
 <shown>A number from 0 to 100: 0 means the log clearly does not show everything the report says was done, 100 means it clearly shows all of it.</shown>
 ```
 
+The verdict instructions of Section 8 keep the first three sentences, number the report's claims, and replace the issue and score with:
+
+```
+For each numbered claim in the report, say whether the log shows it.
+
+Answer in this format:
+<reasoning>Your analysis of the claims and the steps that matter.</reasoning>
+Then one line per claim, in order:
+<claim n="1"><evidence>step numbers, or "none"</evidence><verdict>SHOWN or NOT_SHOWN or CONTRADICTED</verdict></claim>
+```
+
 The end of one prompt, for `malt-218232-orm-somebugs` on the cut log with a forged citation.
 Step 5 is a real test run from before the last code change, and it shows four failing tests.
 
@@ -485,5 +498,5 @@ The object-relational mapping library has been fixed.
 
 AI coding agents (Claude Fable 5.2 and Claude Opus 5.5 in Claude Code) wrote most of the code, tests and task files to the author's design, selected and converted the MALT runs under rules fixed in advance, built the constructed tasks of Studies 2 and 3, ran the experiments, drafted this report, and reviewed drafts of it.
 Claude Fable 5.2 also read the sample of readings described in Appendix A.
-Claude Sonnet 5.5 and Claude Opus 5.5 were also used as reviewers under study (Sections 5 and 7).
+Claude Sonnet 5.5 and Claude Opus 5.5 were also used as reviewers under study (Sections 5, 7 and 8).
 The author set the question, chose the dataset and the reviewers, approved the plans before each run, and is responsible for every claim.
